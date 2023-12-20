@@ -1,4 +1,4 @@
-package com.blog.cmsworld;
+package com.cms.world;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

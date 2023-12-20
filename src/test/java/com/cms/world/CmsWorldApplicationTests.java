@@ -1,4 +1,4 @@
-package com.blog.cmsworld;
+package com.cms.world;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
