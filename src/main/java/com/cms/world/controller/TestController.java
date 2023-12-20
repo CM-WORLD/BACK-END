@@ -11,7 +11,7 @@ import java.io.IOException;
 
 @RestController
 @RequiredArgsConstructor
-public class S3Controller {
+public class TestController {
 
     private final S3UploadService s3UploadService;
 
@@ -20,6 +20,6 @@ public class S3Controller {
         // 1. db에 s3에 업로드한 파일 경로를 저장한다.
         // 2.
         //
-        return s3UploadService.saveFile(multipartFile);
+        return s3UploadService.saveFile(multipartFile, "/apply"); //신청서
     }
 }

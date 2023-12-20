@@ -3,6 +3,8 @@ package com.cms.world.utils;
 
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.Random;
+
 @Slf4j
 public class StringUtil {
 
@@ -28,6 +30,21 @@ public class StringUtil {
     public static String lPad(String str, int length, String padStr) { //좌측을 특정 문자로 채운다.
         int repeatTimes = length - str.length();
         return repeat(padStr, repeatTimes) + str;
+    }
+    
+    // 난수 생성
+    public static synchronized String generate()
+    {
+        int leftLimit = 48; // letter 'A'
+        int rightLimit = 90; // letter 'Z'
+        int targetStringLength = 18;
+        Random random = new Random();
+        String generatedString = random.ints(leftLimit, rightLimit + 1)
+                .filter(i -> (i <= 57 || i >= 65))
+                .limit(targetStringLength)
+                .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+                .toString();
+        return generatedString;
     }
 
 }

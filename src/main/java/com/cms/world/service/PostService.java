@@ -21,8 +21,8 @@ public class PostService {
         this.s3UploadService = s3UploadService;
     }
 
-    public void add(PostVo vo) throws IOException {
-        String imgUrl = s3UploadService.saveFile(vo.getImg());
+    public void add(PostVo vo, String folderPath) throws IOException {
+        String imgUrl = s3UploadService.saveFile(vo.getImg(), folderPath);
         PostDto dto = PostDto.builder().TITLE(vo.getTitle()).CONTENT(vo.getContent()).IMG_URL(imgUrl).build();
         repository.save(dto);
     }

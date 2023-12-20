@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -19,16 +20,17 @@ public class S3UploadService {
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
-    public String saveFile(MultipartFile multipartFile) throws IOException {
+    public String saveFile(MultipartFile multipartFile, String folderPath) throws IOException {
         String originalFilename = multipartFile.getOriginalFilename();
 
         ObjectMetadata metadata = new ObjectMetadata();
         metadata.setContentLength(multipartFile.getSize());
         metadata.setContentType(multipartFile.getContentType());
 
-        //동일한 파일명의 경우 중복되면 사라지므로 앞에 특별 uuid를 붙이는 것이 필요할 듯.
-
-        amazonS3.putObject(bucket, originalFilename, multipartFile.getInputStream(), metadata);
+        //동일파일명 삭제 방지
+        String uuid = UUID.randomUUID() + "_" + originalFilename;
+        
+        amazonS3.putObject(bucket, uuid, multipartFile.getInputStream(), metadata);
         return amazonS3.getUrl(bucket, originalFilename).toString();
     }
 }

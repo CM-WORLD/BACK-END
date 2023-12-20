@@ -24,7 +24,7 @@ public class PostController { // 블로그 이미지 리스트
     @PostMapping("/insert")
     public ResponseEntity<String> add(PostVo vo) throws IOException {
         try {
-            service.add(vo);
+            service.add(vo, "/post");
             return ResponseEntity.ok().body(GlobalStatus.SUCCESS.getMsg());
         } catch (IOException e) {
             return ResponseEntity.status(GlobalStatus.INTERNAL_SERVER_ERR.getStatus()).body(GlobalStatus.INTERNAL_SERVER_ERR.getMsg());

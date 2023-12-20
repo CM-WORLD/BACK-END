@@ -12,9 +12,9 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 @Entity
+@Table(name = "post")
 @Getter
 @Setter
-@Table(name = "post")
 public class PostDto {
 
     public PostDto() {
