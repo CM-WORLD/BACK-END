@@ -34,13 +34,13 @@ public class PostDto {
     @Column(name = "ID")
     private Long ID;
 
-    @Column
+    @Column(nullable = false)
     private String TITLE;
 
-    @Column
+    @Column(nullable = false)
     private String CONTENT;
 
-    @Column
+    @Column(nullable = false)
     private String IMG_URL;
 
     @Column
