@@ -8,11 +8,23 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum GlobalCode { //타입 등의 코드
 
+    //커미션 신청 타입
     TYPE_SINGLE("TY01", "1인 기본"),
     TYPE_SINGLE_BG("TY02", "1인 배경"),
     TYPE_COUP("TY03", "2인 기본"),
     TYPE_COUP_BG("TY04", "2인 배경"),
-    TYPE_MULTI_BG("TY05", "3인 이상 배경");
+    TYPE_MULTI_BG("TY05", "3인 이상 배경"),
+
+    //커미션 프로세스
+    REQ_PENDING("CM01", "신청 대기중"),
+    PAY_PENDING("CM02", "결제 대기중"),
+    PAY_COMPLETE("CM03", "결제 완료"),
+    CMS_START("CM04", "작업 시작"),
+    CMS_PROCESS("CM05", "작업중"),
+    CMS_COMPLETE("CM06", "작업물 제출"),
+    CMS_REQ_EDITING("CM07", "요청사항 수정중"),
+    CMS_CONFIRM("CM08", "최종 완료"),
+    CMS_REVIEW("CM09", "리뷰 작성 완료");
 
     private final String code;
     private final String desc;
