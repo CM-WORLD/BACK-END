@@ -21,16 +21,20 @@ public class S3UploadService {
     private String bucket;
 
     public String saveFile(MultipartFile multipartFile, String folderPath) throws IOException {
-        String originalFilename = multipartFile.getOriginalFilename();
 
         ObjectMetadata metadata = new ObjectMetadata();
         metadata.setContentLength(multipartFile.getSize());
         metadata.setContentType(multipartFile.getContentType());
 
+        String tempFileName = multipartFile.getOriginalFilename();
+        if (tempFileName.length() > 110) {
+            tempFileName = "..." + tempFileName.substring(tempFileName.length() - 110);
+        }
+
         //동일파일명 삭제 방지
-        String uuid = UUID.randomUUID() + "_" + originalFilename;
-        
-        amazonS3.putObject(bucket, uuid, multipartFile.getInputStream(), metadata);
-        return amazonS3.getUrl(bucket, originalFilename).toString();
+        String imgUrl = folderPath + "/" + System.currentTimeMillis() + "_" + tempFileName;
+
+        amazonS3.putObject(bucket, imgUrl, multipartFile.getInputStream(), metadata);
+        return amazonS3.getUrl(bucket, imgUrl).toString();
     }
 }
