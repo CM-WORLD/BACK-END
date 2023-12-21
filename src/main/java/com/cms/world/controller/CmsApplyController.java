@@ -1,14 +1,18 @@
 package com.cms.world.controller;
 
 
+import com.cms.world.domain.dto.CmsApplyDto;
+import com.cms.world.domain.vo.ApplySrchVo;
 import com.cms.world.domain.vo.CmsApplyVo;
 import com.cms.world.service.CmsApplyService;
 import com.cms.world.utils.GlobalStatus;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -16,12 +20,14 @@ import java.util.Map;
 public class CmsApplyController {
 
     private CmsApplyService service;
-    public CmsApplyController (CmsApplyService service){
+
+    public CmsApplyController(CmsApplyService service) {
         this.service = service;
     }
 
+    /* 커미션 신청 */
     @PostMapping("/form")
-    public Map<Integer, String> submit (CmsApplyVo vo) {
+    public Map<Integer, String> submit(CmsApplyVo vo) {
         Map<Integer, String> map = new HashMap<>();
         if (service.insert(vo) == GlobalStatus.EXECUTE_SUCCESS.getStatus()) {
             map.put(GlobalStatus.SUCCESS.getStatus(), GlobalStatus.SUCCESS.getMsg());
@@ -30,4 +36,15 @@ public class CmsApplyController {
         }
         return map;
     }
+
+    /* 커미션 신청 리스트 */
+    @GetMapping("/list")
+    public Map<String, List<CmsApplyDto>> list(ApplySrchVo vo) {
+        Map<String, List<CmsApplyDto>> listMap = new HashMap<>();
+        listMap.put("list", service.list(vo));
+        return listMap;
+    }
+
+
+
 }
