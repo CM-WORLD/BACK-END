@@ -17,10 +17,10 @@ import java.time.LocalDateTime;
 public class CmsApplyDto {
 
     @Builder
-    public CmsApplyDto (String user_name, String bank_owner, String cms_tp, String content) {
-        this.user_name = user_name;
-        this.bank_owner = bank_owner;
-        this.cms_tp = cms_tp;
+    public CmsApplyDto (String userName, String bankOwner, String cmsType, String content) {
+        this.userName = userName;
+        this.bankOwner = bankOwner;
+        this.cmsType = cmsType;
         this.content = content;
     }
 
@@ -31,40 +31,39 @@ public class CmsApplyDto {
     private String id;
 
     @Column(name = "TP_CD")
-    private String cms_tp;
+    private String cmsType;
 
     @Column(name = "CONTENT", nullable = false)
     @Length(min = 5, max = 2000)
     private String content;
     
     @Column(name = "USER_NM", nullable = false)
-    private String user_name; //사용자 이름
+    private String userName; //사용자 이름
 
     // TODO:: 나중에 user_id를 fk로 추가 고려
 
     @Column(name = "ACC_NM", nullable = false)
-    private String bank_owner;
+    private String bankOwner;
 
     //선택사항
     @Column(name = "PAY_AMT")
-    private Double pay_amt;
+    private Double payAmt;
 
     @Column(name = "DPSIT_YN")
-    private String deposit_yn;
+    private String depositYn;
 
     @Column(name = "CMMNT")
-    private String admin_cmmnt;
+    private String adminCmmnt;
     
     @Column(name = "STATUS")
     private String status ;
 
     @Column(name = "END_DT")
-    @CreationTimestamp
-    private LocalDateTime end_date;
+    private LocalDateTime endDate;
 
     @Column(name = "RGTR_DT")
     @CreationTimestamp
-    private LocalDateTime reg_date;
+    private LocalDateTime regDate;
 
     public CmsApplyDto() {
 
@@ -72,7 +71,7 @@ public class CmsApplyDto {
 
     @PrePersist
     public void doPersist () {
-        this.cms_tp = GlobalCode.TYPE_SINGLE.getCode();
+        this.cmsType = GlobalCode.TYPE_SINGLE.getCode();
     }
 
 }

@@ -20,9 +20,9 @@ public class CmsApplyImgDto {
     }
 
     @Builder
-    public CmsApplyImgDto (CmsApplyDto applyDto, String img_url){
+    public CmsApplyImgDto (CmsApplyDto applyDto, String imgUrl){
         this.applyDto = applyDto;
-        this.img_url = img_url;
+        this.imgUrl = imgUrl;
     }
 
     @Id
@@ -36,9 +36,9 @@ public class CmsApplyImgDto {
     private CmsApplyDto applyDto;
 
     @Column(name = "IMG_URL", nullable = false, columnDefinition = "varchar(100)")
-    private String img_url;
+    private String imgUrl;
 
     @Column(name = "RGTR_DT")
-    private String reg_date = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy.MM.dd"));
+    private String regDate = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy.MM.dd"));
 
 }
