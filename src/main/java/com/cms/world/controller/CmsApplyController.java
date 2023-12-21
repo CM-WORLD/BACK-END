@@ -6,10 +6,7 @@ import com.cms.world.domain.vo.ApplySrchVo;
 import com.cms.world.domain.vo.CmsApplyVo;
 import com.cms.world.service.CmsApplyService;
 import com.cms.world.utils.GlobalStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -43,6 +40,18 @@ public class CmsApplyController {
         Map<String, List<CmsApplyDto>> listMap = new HashMap<>();
         listMap.put("list", service.list(vo));
         return listMap;
+    }
+
+    /* 커미션 상태 변경 */
+    @PutMapping("/{id}")
+    public Map<Integer, String> updateStatus (@PathVariable String id, String status) {
+        Map<Integer, String> map = new HashMap<>();
+        if (service.updateStatus(id, status) == GlobalStatus.EXECUTE_SUCCESS.getStatus()) {
+            map.put(GlobalStatus.SUCCESS.getStatus(), GlobalStatus.SUCCESS.getMsg());
+        } else {
+            map.put(GlobalStatus.INTERNAL_SERVER_ERR.getStatus(), GlobalStatus.INTERNAL_SERVER_ERR.getMsg());
+        }
+        return map;
     }
 
 

@@ -9,13 +9,11 @@ import com.cms.world.repository.CmsApplyImgRepository;
 import com.cms.world.repository.CmsApplyRepository;
 import com.cms.world.utils.GlobalStatus;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -59,6 +57,18 @@ public class CmsApplyService {
         List<CmsApplyDto> list = repository.findAll(Sort.by("regDate"));
         //TODO:: regDate 하드코딩이라 바꾸고 싶다.
         return list;
+    }
+
+    /* 커미션 상태 변경 */
+    @Transactional
+    public int updateStatus (String id, String status) {
+        try {
+            CmsApplyDto dto = repository.findById(id).get();
+            dto.setStatus(status);
+            return GlobalStatus.EXECUTE_SUCCESS.getStatus();
+        } catch (Exception e) {
+            return GlobalStatus.EXECUTE_FAILED.getStatus();
+        }
     }
 
 }
