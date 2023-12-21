@@ -34,7 +34,7 @@ public class CmsApplyDto {
     private String cms_tp;
 
     @Column(name = "CONTENT", nullable = false)
-    @Length(min = 10, max = 2000)
+    @Length(min = 5, max = 2000)
     private String content;
     
     @Column(name = "USER_NM", nullable = false)
