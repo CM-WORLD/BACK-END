@@ -10,10 +10,10 @@ public enum GlobalCode { //타입 등의 코드
 
     //커미션 신청 타입
     TYPE_SINGLE("TY01", "1인 기본"),
-    TYPE_SINGLE_BG("TY02", "1인 배경"),
+//    TYPE_SINGLE_BG("TY02", "1인 배경"),
     TYPE_COUP("TY03", "2인 기본"),
-    TYPE_COUP_BG("TY04", "2인 배경"),
-    TYPE_MULTI_BG("TY05", "3인 이상 배경"),
+//    TYPE_COUP_BG("TY04", "2인 배경"),
+    TYPE_MULTI("TY05", "단체 (3인 이상)"),
 
     //커미션 프로세스
     REQ_PENDING("CM01", "신청 대기중"),

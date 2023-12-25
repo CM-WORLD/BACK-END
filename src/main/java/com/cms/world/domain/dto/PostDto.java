@@ -45,6 +45,9 @@ public class PostDto {
 
     @Column
     private String TP_CD; // 커미션 타입 코드
+    
+    @Column 
+    private String BG_YN; // 배경 유무
 
     @Column
     private String RGTR_DT;
