@@ -22,39 +22,39 @@ public class PostDto {
     }
 
     @Builder
-    public PostDto(String TITLE, String CONTENT, String IMG_URL, String TP_CD) {
-        this.TITLE = TITLE;
-        this.CONTENT = CONTENT;
-        this.IMG_URL = IMG_URL;
-        this.TP_CD = TP_CD;
+    public PostDto(String title, String content, String imgUrl, String type) {
+        this.title = title;
+        this.content = content;
+        this.imgUrl = imgUrl;
+        this.type = type;
     }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
-    private Long ID;
+    private Long id;
 
-    @Column(nullable = false)
-    private String TITLE;
+    @Column(name="TITLE", nullable = false)
+    private String title;
 
-    @Column(nullable = false)
-    private String CONTENT;
+    @Column(name="CONTENT", nullable = false)
+    private String content;
 
-    @Column(nullable = false)
-    private String IMG_URL;
+    @Column(name="IMG_URL", nullable = false)
+    private String imgUrl;
 
-    @Column
-    private String TP_CD; // 커미션 타입 코드
+    @Column(name="TP_CD")
+    private String type; // 커미션 타입 코드
     
-    @Column 
-    private String BG_YN; // 배경 유무
+    @Column(name="BG_YN")
+    private String isNotBg; // 배경 유무
 
-    @Column
-    private String RGTR_DT;
+    @Column(name="RGTR_DT")
+    private String regDate;
 
     @PrePersist
     public void onPrePersist() { // 디비에 넣기 전에 현재 시각 날짜를 format해서 insert
-        this.RGTR_DT = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy.MM.dd"));
-        if (StringUtil.isEmpty(this.TP_CD)) this.TP_CD = GlobalCode.TYPE_SINGLE.getCode(); // 타입 코드가 없으면 1인 기본 설정
+        this.regDate = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy.MM.dd"));
+        if (StringUtil.isEmpty(this.type)) this.type = GlobalCode.TYPE_SINGLE.getCode(); // 타입 코드가 없으면 1인 기본 설정
     }
 }

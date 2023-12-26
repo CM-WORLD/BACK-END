@@ -32,7 +32,7 @@ public class PostController { // 블로그 이미지 리스트
     }
 
     @GetMapping("/list")
-    public List<PostDto> list() {
-        return service.list();
+    public List<PostDto> list(String type) {
+        return service.list(type);
     }
 }

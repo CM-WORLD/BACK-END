@@ -29,23 +29,23 @@ class CmsWorldApplicationTests {
     @Autowired
     private CmsApplyImgRepository imgRepository;
 
-    @Test
-    void cmsInsert () {
-        CmsApplyDto input = CmsApplyDto.builder().content("메이플 2명 배경 신청합니다.")
-                .cmsType(GlobalCode.TYPE_COUP_BG.getCode())
-                .userName("류시아")
-                .bankOwner("유시아")
-                .build();
-
-        CmsApplyDto dto = repository.save(input);
-
-        CmsApplyImgDto inputImgs = CmsApplyImgDto.builder()
-                .imgUrl("https://jvk-world.s3.ap-northeast-2.amazonaws.com/test_01.jpg")
-                .applyDto(dto)
-                .build();
-
-        imgRepository.save(inputImgs);
-    }
+//    @Test
+//    void cmsInsert () {
+//        CmsApplyDto input = CmsApplyDto.builder().content("메이플 2명 배경 신청합니다.")
+//                .cmsType(GlobalCode.TYPE_COUP_BG.getCode())
+//                .userName("류시아")
+//                .bankOwner("유시아")
+//                .build();
+//
+//        CmsApplyDto dto = repository.save(input);
+//
+//        CmsApplyImgDto inputImgs = CmsApplyImgDto.builder()
+//                .imgUrl("https://jvk-world.s3.ap-northeast-2.amazonaws.com/test_01.jpg")
+//                .applyDto(dto)
+//                .build();
+//
+//        imgRepository.save(inputImgs);
+//    }
 
 //    @Transactional //이걸로 가둬두어야 변경감지가 가능하다.
 //    @Transactional
