@@ -1,7 +1,7 @@
 package com.cms.world.service;
 
 
-import com.cms.world.domain.bo.KakaoBo;
+import com.cms.world.domain.social.KakaoBo;
 import com.cms.world.utils.GlobalStatus;
 import com.cms.world.utils.StringUtil;
 import org.json.JSONObject;

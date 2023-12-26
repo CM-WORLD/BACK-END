@@ -1,7 +1,8 @@
 package com.cms.world;
 
 import com.cms.world.domain.dto.CmsApplyDto;
-import com.cms.world.domain.dto.CmsApplyImgDto;
+import com.cms.world.domain.common.AlertMsg;
+import com.cms.world.domain.social.TelegramChat;
 import com.cms.world.repository.CmsApplyImgRepository;
 import com.cms.world.repository.CmsApplyRepository;
 import com.cms.world.utils.GlobalCode;
@@ -9,11 +10,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 
 @SpringBootTest
@@ -71,6 +69,21 @@ class CmsWorldApplicationTests {
         for(CmsApplyDto dto : list) {
             System.out.println("dto....... =  " + dto.getRegDate());
         }
+    }
+    
+    @Autowired
+    AlertMsg alertMsg;
+
+    @Autowired
+    TelegramChat telegramChat;
+    @Test
+    public void createMsg () {
+        AlertMsg msg = new AlertMsg();
+        msg.setChatId("1353669758");
+        msg.setText("test alert.. aply... ");
+        telegramChat.sendAlert(msg);
+
+        
 
     }
 }

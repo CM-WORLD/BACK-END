@@ -1,4 +1,4 @@
-package com.cms.world.domain.bo;
+package com.cms.world.domain.social;
 
 
 import lombok.*;

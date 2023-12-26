@@ -1,8 +1,8 @@
 package com.cms.world.service;
 
 
-import com.cms.world.domain.bo.KakaoBo;
-import com.cms.world.domain.bo.KakaoMsgBo;
+import com.cms.world.domain.social.KakaoBo;
+import com.cms.world.domain.social.KakaoMsgBo;
 import com.cms.world.utils.GlobalStatus;
 import org.json.JSONObject;
 import org.slf4j.Logger;

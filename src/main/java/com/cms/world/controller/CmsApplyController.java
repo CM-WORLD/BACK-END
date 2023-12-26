@@ -2,10 +2,12 @@ package com.cms.world.controller;
 
 
 import com.cms.world.domain.dto.CmsApplyDto;
+import com.cms.world.domain.social.TelegramChat;
 import com.cms.world.domain.vo.ApplySrchVo;
 import com.cms.world.domain.vo.CmsApplyVo;
 import com.cms.world.service.CmsApplyService;
 import com.cms.world.utils.GlobalStatus;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -22,12 +24,16 @@ public class CmsApplyController {
         this.service = service;
     }
 
+    @Autowired
+    TelegramChat telegramChat;
+
     /* 커미션 신청 */
     @PostMapping("/form")
     public Map<Integer, String> submit(CmsApplyVo vo) {
         Map<Integer, String> map = new HashMap<>();
         if (service.insert(vo) == GlobalStatus.EXECUTE_SUCCESS.getStatus()) {
             map.put(GlobalStatus.SUCCESS.getStatus(), GlobalStatus.SUCCESS.getMsg());
+            //telegram alert 전송
         } else {
             map.put(GlobalStatus.INTERNAL_SERVER_ERR.getStatus(), GlobalStatus.INTERNAL_SERVER_ERR.getMsg());
         }
