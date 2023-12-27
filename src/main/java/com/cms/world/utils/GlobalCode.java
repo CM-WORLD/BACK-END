@@ -29,7 +29,11 @@ public enum GlobalCode { //타입 등의 코드
 
     //커미션 열/닫
     CMS_CLOSED("RP01", "커미션 닫힘"),
-    CMS_OPENED("RP02", "커미션 열림");
+    CMS_OPENED("RP02", "커미션 열림"),
+
+
+    //게시판 타입
+    BBS_APLY ("BS01", "커미션 신청 게시판");
 
     private final String code;
     private final String desc;
