@@ -1,7 +1,7 @@
 package com.cms.world.config;
 
 
-import com.cms.world.aop.BlackListInterceptor;
+import com.cms.world.aop.BasicInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -17,7 +17,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
 
         List<String> URL_PATTERNS = Arrays.asList("/apply/form", "/apply/list");
-        registry.addInterceptor(new BlackListInterceptor())
+        registry.addInterceptor(new BasicInterceptor())
                 .addPathPatterns(URL_PATTERNS)
                 .excludePathPatterns("/css/**", "/images/**", "/js/**");
 
