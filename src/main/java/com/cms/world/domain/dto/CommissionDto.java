@@ -1,6 +1,7 @@
 package com.cms.world.domain.dto;
 
 
+import com.cms.world.utils.GlobalCode;
 import com.cms.world.utils.StringUtil;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -29,6 +30,9 @@ public class CommissionDto {
 
     @Column(name = "PPOFILE_IMG")
     private String profileImg;
+    
+    @Column(name = "STATUS") // 신청 닫힘/열림
+    private String status;
 
     @Column(name = "DEL_YN")
     private String delYn;
@@ -45,6 +49,9 @@ public class CommissionDto {
     public void doBefore() {
         if (StringUtil.isEmpty(delYn)) {
             this.delYn = "N";
+        }
+        if (StringUtil.isEmpty(status)) {
+            this.status = GlobalCode.CMS_OPENED.getCode();
         }
     }
 }

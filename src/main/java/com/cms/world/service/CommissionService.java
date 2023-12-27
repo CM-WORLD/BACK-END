@@ -4,9 +4,10 @@ package com.cms.world.service;
 import com.cms.world.domain.dto.CommissionDto;
 import com.cms.world.domain.vo.CommissionVo;
 import com.cms.world.repository.CommissionRepository;
-import com.cms.world.utils.BoolStatus;
+import com.cms.world.utils.GlobalStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -39,5 +40,19 @@ public class CommissionService {
 
     public List<CommissionDto> list(String delYn) {
         return repository.findByDelYnContaining(delYn);
+    }
+
+    /* 커미션 전체 열기/닫기 */
+    @Transactional
+    public int toggleAllStatus (String status) {
+        try {
+            List<CommissionDto> list = repository.findAll();
+            for(CommissionDto item: list) {
+                item.setStatus(status);
+            }
+            return GlobalStatus.EXECUTE_SUCCESS.getStatus();
+        } catch (Exception e) {
+            return GlobalStatus.EXECUTE_FAILED.getStatus();
+        }
     }
 }

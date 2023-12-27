@@ -1,18 +1,14 @@
 package com.cms.world.controller;
 
-
 import com.cms.world.domain.dto.CommissionDto;
 import com.cms.world.domain.vo.CommissionVo;
 import com.cms.world.service.CommissionService;
+import com.cms.world.utils.CommonUtil;
+import com.cms.world.utils.GlobalCode;
 import com.cms.world.utils.GlobalStatus;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,9 +16,9 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/cms")
+@RequiredArgsConstructor
 public class CommissionController {
 
-    @Autowired
     CommissionService service;
 
     @PostMapping("/form")
@@ -41,6 +37,18 @@ public class CommissionController {
     public List<CommissionDto> list () {
         List<CommissionDto> list = service.list("N");
         return list;
+    }
+
+    @PutMapping("/close/all")
+    public Map<Integer, String> closeAll() {
+        Map<Integer, String> resultMap = CommonUtil.getResultMap(service.toggleAllStatus(GlobalCode.CMS_CLOSED.getCode()));
+        return resultMap;
+    }
+
+    @PutMapping("/open/all")
+    public Map<Integer, String> openAll() {
+        Map<Integer, String> resultMap = CommonUtil.getResultMap(service.toggleAllStatus(GlobalCode.CMS_OPENED.getCode()));
+        return resultMap;
     }
 
 }

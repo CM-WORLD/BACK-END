@@ -24,7 +24,12 @@ public enum GlobalCode { //타입 등의 코드
     CMS_COMPLETE("CM06", "작업물 제출"),
     CMS_REQ_EDITING("CM07", "요청사항 수정중"),
     CMS_CONFIRM("CM08", "최종 완료"),
-    CMS_REVIEW("CM09", "리뷰 작성 완료");
+    CMS_REVIEW("CM09", "리뷰 작성 완료"),
+
+
+    //커미션 열/닫
+    CMS_CLOSED("RP01", "커미션 닫힘"),
+    CMS_OPENED("RP02", "커미션 열림");
 
     private final String code;
     private final String desc;
