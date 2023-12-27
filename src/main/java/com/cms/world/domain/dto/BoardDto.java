@@ -23,10 +23,11 @@ public class BoardDto {
     }
 
     @Builder
-    public BoardDto(String title, String content, String writer) {
+    public BoardDto(String title, String content, String writer, String type) {
         this.title = title;
         this.content = content;
         this.writer = writer;
+        this.type = type;
     }
 
     @Id
