@@ -3,12 +3,10 @@ package com.cms.world.service;
 
 import com.cms.world.domain.dto.CmsApplyDto;
 import com.cms.world.domain.dto.CmsApplyImgDto;
-import com.cms.world.domain.dto.TimeLogDto;
 import com.cms.world.domain.vo.ApplySrchVo;
 import com.cms.world.domain.vo.CmsApplyVo;
 import com.cms.world.repository.CmsApplyImgRepository;
 import com.cms.world.repository.CmsApplyRepository;
-import com.cms.world.repository.TimeLogRepository;
 import com.cms.world.utils.GlobalStatus;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -26,13 +24,16 @@ public class CmsApplyService {
 
     private final S3UploadService uploadService;
 
-    private final TimeLogRepository timeLogRepository;
+    private final TimeLogService timeLogService;
 
-    public CmsApplyService(CmsApplyRepository repository, CmsApplyImgRepository imgRepository, S3UploadService uploadService, TimeLogRepository timeLogRepository) {
+    public CmsApplyService(CmsApplyRepository repository,
+                           CmsApplyImgRepository imgRepository,
+                           S3UploadService uploadService,
+                           TimeLogService timeLogService) {
         this.repository = repository;
         this.imgRepository = imgRepository;
         this.uploadService = uploadService;
-        this.timeLogRepository = timeLogRepository;
+        this.timeLogService = timeLogService;
     }
 
     /* 커미션 신청 */
@@ -53,7 +54,7 @@ public class CmsApplyService {
                 CmsApplyImgDto imgDto = CmsApplyImgDto.builder().applyDto(dto).imgUrl(awsUrl).build();
                 imgRepository.save(imgDto);
             }
-            recordLog(dto);
+            timeLogService.recordLog(dto);
 
             return GlobalStatus.EXECUTE_SUCCESS.getStatus();
         } catch (IOException e) {
@@ -74,7 +75,7 @@ public class CmsApplyService {
         try {
             CmsApplyDto dto = repository.findById(id).get();
             dto.setStatus(status);
-            recordLog(dto);
+            timeLogService.recordLog(dto);
 
             return GlobalStatus.EXECUTE_SUCCESS.getStatus();
         } catch (Exception e) {
@@ -82,11 +83,9 @@ public class CmsApplyService {
         }
     }
 
-
-    /* 로그 기록 */
-    public void recordLog (CmsApplyDto dto) {
-        TimeLogDto timeDto= TimeLogDto.builder().status(dto.getStatus()).applyDto(dto).build();
-        timeLogRepository.save(timeDto);
+    /* 조건당 커미션 신청 수 조회 */
+    public long cntByStatus (String status) {
+        return repository.countByStatus(status);
     }
 
 }

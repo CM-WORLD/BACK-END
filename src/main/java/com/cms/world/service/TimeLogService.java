@@ -1,6 +1,7 @@
 package com.cms.world.service;
 
 
+import com.cms.world.domain.dto.CmsApplyDto;
 import com.cms.world.domain.dto.TimeLogDto;
 import com.cms.world.repository.TimeLogRepository;
 import org.springframework.stereotype.Service;
@@ -18,5 +19,10 @@ public class TimeLogService {
 
     public List<TimeLogDto> listByCmsId(String cmsId) {
         return repository.findAll();
+    }
+
+    public void recordLog (CmsApplyDto dto) {
+        TimeLogDto timeDto= TimeLogDto.builder().status(dto.getStatus()).applyDto(dto).build();
+        repository.save(timeDto);
     }
 }
