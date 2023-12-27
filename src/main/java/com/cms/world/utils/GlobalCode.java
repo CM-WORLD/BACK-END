@@ -16,6 +16,7 @@ public enum GlobalCode { //타입 등의 코드
     TYPE_MULTI("TY05", "단체 (3인 이상)"),
 
     //커미션 프로세스
+    RESERVE("CM00", "예약중"),
     REQ_PENDING("CM01", "신청 대기중"),
     PAY_PENDING("CM02", "결제 대기중"),
     PAY_COMPLETE("CM03", "결제 완료"),

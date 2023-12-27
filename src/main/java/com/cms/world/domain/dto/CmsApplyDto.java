@@ -30,7 +30,7 @@ public class CmsApplyDto {
     @Column(name = "ID")
     private String id;
 
-    @Column(name = "TP_CD")
+    @Column(name = "TP_CD") // 1인이냐 2인이냐
     private String cmsType;
 
     @Column(name = "CONTENT", nullable = false)
@@ -55,7 +55,7 @@ public class CmsApplyDto {
     @Column(name = "CMMNT")
     private String adminCmmnt;
     
-    @Column(name = "STATUS")
+    @Column(name = "STATUS") // 커미션 프로세스  + 예약
     private String status ;
 
     @Column(name = "END_DT")

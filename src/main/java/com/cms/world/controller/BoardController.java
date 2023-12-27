@@ -27,14 +27,11 @@ public class BoardController {
         return map;
     }
 
-    /* 커미션 신청 공지 게시판 */
+    /* 커미션 신청 공지 게시판 리스트 */
     @GetMapping("/aply/cms")
     public List<BoardDto> aplyCmsList () {
         List<BoardDto> list = service.list(GlobalCode.BBS_APLY.getCode());
         return list;
     }
-
-
-    //
 }
 

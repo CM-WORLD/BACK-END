@@ -60,6 +60,14 @@ public class CmsApplyController {
         return map;
     }
 
+    /* 상태별 커미션 cnt 조회 */
+    @GetMapping("/cnt")
+    public Map<String, Object> cntByStatus (String status) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("count", service.cntByStatus(status));
+        return map;
+    }
+
 
 
 }

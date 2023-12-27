@@ -7,4 +7,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CmsApplyRepository extends JpaRepository<CmsApplyDto, String> {
+
+    Long countByStatus(String status);
 }

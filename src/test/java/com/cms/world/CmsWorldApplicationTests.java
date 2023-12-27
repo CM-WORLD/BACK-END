@@ -78,9 +78,8 @@ class CmsWorldApplicationTests {
     TelegramChat telegramChat;
     @Test
     public void createMsg () {
-        AlertMsg msg = new AlertMsg();
-        msg.setChatId("1353669758");
-        msg.setText("test alert.. aply... ");
+        AlertMsg msg = alertMsg;
+        msg.setText("test alert.. aply...test....... ");
         telegramChat.sendAlert(msg);
 
         
