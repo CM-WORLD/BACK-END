@@ -16,13 +16,16 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/cms")
-@RequiredArgsConstructor
 public class CommissionController {
 
-    CommissionService service;
+    private final CommissionService service;
+
+    public CommissionController (CommissionService service) {
+        this.service = service;
+    }
 
     @PostMapping("/form")
-    public Map<Integer, String> submit(CommissionVo vo) throws Exception {
+    public Map<Integer, String> submit(@RequestBody CommissionVo vo) throws Exception {
         Map<Integer, String> map = new HashMap<>();
         try {
             service.insert(vo);
@@ -48,6 +51,12 @@ public class CommissionController {
     @PutMapping("/open/all")
     public Map<Integer, String> openAll() {
         Map<Integer, String> resultMap = CommonUtil.getResultMap(service.toggleAllStatus(GlobalCode.CMS_OPENED.getCode()));
+        return resultMap;
+    }
+
+    @PutMapping("/toggle")
+    public Map<Integer, String> toggleStatus (@RequestBody Map<String, Long> data) {
+        Map<Integer, String> resultMap = CommonUtil.getResultMap(service.toggleStatus(data.get("id")));
         return resultMap;
     }
 

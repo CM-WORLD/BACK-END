@@ -6,7 +6,6 @@ import com.cms.world.utils.StringUtil;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.apache.ibatis.annotations.Update;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -22,22 +21,22 @@ public class CommissionDto {
     @Column(name = "ID")
     private Long id;
 
-    @Column(name = "NAME")
+    @Column(name = "NAME", nullable = false)
     private String name;
 
-    @Column(name = "CONTENT")
+    @Column(name = "CONTENT", nullable = false)
     private String content;
 
-    @Column(name = "PPOFILE_IMG")
+    @Column(name = "PPOFILE_IMG", nullable = false)
     private String profileImg;
     
-    @Column(name = "STATUS") // 신청 닫힘/열림
+    @Column(name = "STATUS", nullable = false) // 신청 닫힘/열림
     private String status;
 
-    @Column(name = "DEL_YN")
+    @Column(name = "DEL_YN", nullable = false)
     private String delYn;
 
-    @Column(name = "RGTR_DT")
+    @Column(name = "RGTR_DT", nullable = false)
     @CreationTimestamp
     private String regDate;
 

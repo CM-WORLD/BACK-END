@@ -4,6 +4,7 @@ package com.cms.world.service;
 import com.cms.world.domain.dto.CommissionDto;
 import com.cms.world.domain.vo.CommissionVo;
 import com.cms.world.repository.CommissionRepository;
+import com.cms.world.utils.GlobalCode;
 import com.cms.world.utils.GlobalStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -50,6 +51,21 @@ public class CommissionService {
             for(CommissionDto item: list) {
                 item.setStatus(status);
             }
+            return GlobalStatus.EXECUTE_SUCCESS.getStatus();
+        } catch (Exception e) {
+            return GlobalStatus.EXECUTE_FAILED.getStatus();
+        }
+    }
+
+    @Transactional
+
+    public int toggleStatus (Long id) {
+        try {
+            CommissionDto dto = repository.findById(id).get();
+            dto.setStatus(dto.getStatus().equals(GlobalCode.CMS_CLOSED.getCode())
+                    ? GlobalCode.CMS_OPENED.getCode()
+                    : GlobalCode.CMS_CLOSED.getCode()
+            );
             return GlobalStatus.EXECUTE_SUCCESS.getStatus();
         } catch (Exception e) {
             return GlobalStatus.EXECUTE_FAILED.getStatus();
