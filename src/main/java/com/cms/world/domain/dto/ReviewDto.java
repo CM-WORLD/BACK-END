@@ -16,9 +16,19 @@ public class ReviewDto {
     @Column(name="ID")
     private Long id;
 
-    @Column(name="TITLE")
-    private String title;
+    @ManyToOne
+    @JoinColumn(name = "CMS_APLY_ID", referencedColumnName = "ID")
+    private CommissionDto cmsDto;
+
+    @Column(name="CONTENT")
+    private String content;
 
     @Column(name="WRT_ID")
     private String writer;
+
+    @Column(name="DSPY_YN")
+    private String displayYn;
+
+
+
 }

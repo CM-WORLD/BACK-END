@@ -31,7 +31,7 @@ public class CmsApplyDto {
     @Column(name = "ID")
     private String id;
 
-    @ManyToOne()
+    @ManyToOne
     @JoinColumn(name = "CMS_ID", referencedColumnName = "ID")
     private CommissionDto cmsDto;
 
