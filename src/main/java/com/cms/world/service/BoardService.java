@@ -8,6 +8,7 @@ import com.cms.world.utils.GlobalStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 
@@ -34,8 +35,8 @@ public class BoardService {
 
 
     public Page<BoardDto> list (String type, int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        Page<BoardDto> pageList = repository.findByTypeContaining(type, pageable);
+        Pageable pageable = PageRequest.of(page, size,  Sort.by(Sort.Direction.DESC, "regDate"));
+        Page<BoardDto> pageList = repository.findAllByTypeContaining(type, pageable); // 날짜별 내림차순
         return pageList;
     }
 }
