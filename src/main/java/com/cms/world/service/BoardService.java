@@ -5,9 +5,11 @@ import com.cms.world.domain.dto.BoardDto;
 import com.cms.world.domain.vo.BoardVo;
 import com.cms.world.repository.BoardRepository;
 import com.cms.world.utils.GlobalStatus;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 
 @Service
 public class BoardService {
@@ -30,7 +32,10 @@ public class BoardService {
         return GlobalStatus.EXECUTE_SUCCESS.getStatus();
     }
 
-    public List<BoardDto> list (String type) {
-        return repository.findByTypeContaining(type);
+
+    public Page<BoardDto> list (String type, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<BoardDto> pageList = repository.findByTypeContaining(type, pageable);
+        return pageList;
     }
 }

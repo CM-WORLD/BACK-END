@@ -7,10 +7,8 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.springframework.boot.context.properties.bind.DefaultValue;
 
 @Entity
 @Table(name="board")
@@ -18,9 +16,8 @@ import org.springframework.boot.context.properties.bind.DefaultValue;
 @Setter
 public class BoardDto {
 
-    public BoardDto() {
+    public BoardDto() {}
 
-    }
 
     @Builder
     public BoardDto(String title, String content, String writer, String type) {

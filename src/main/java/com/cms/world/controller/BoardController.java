@@ -6,6 +6,8 @@ import com.cms.world.domain.vo.BoardVo;
 import com.cms.world.service.BoardService;
 import com.cms.world.utils.CommonUtil;
 import com.cms.world.utils.GlobalCode;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,6 +22,7 @@ public class BoardController {
         this.service = service;
     }
 
+    /* 공통 게시판 추가 */
     @PostMapping("/form")
     public Map<String, Object> form (@RequestBody BoardVo vo) {
         return CommonUtil.getResultMapTest2(service.insert(vo));
@@ -27,14 +30,21 @@ public class BoardController {
 
     /* 커미션 신청 공지 게시판 */
     @GetMapping("/aply/cms")
-    public List<BoardDto> aplyCmsList () {
-        return service.list(GlobalCode.BBS_APLY.getCode());
+    public Page<BoardDto> aplyCmsList (@RequestParam(defaultValue = "0") int page,
+                                       @RequestParam(defaultValue = "10") int size) {
+        return getListByBoardType(GlobalCode.BBS_APLY.getCode(), page, size);
     }
 
     /* 문의하기 게시판 */
     @GetMapping("/inquiry")
-    public List<BoardDto> inquiryList () {
-        return service.list(GlobalCode.BBS_INQUIRY.getCode());
+    public Page<BoardDto> inquiryList (@RequestParam(defaultValue = "0") int page,
+                                @RequestParam(defaultValue = "10") int size) {
+        return getListByBoardType(GlobalCode.BBS_INQUIRY.getCode(), page, size);
+    }
+
+    public Page<BoardDto> getListByBoardType (String type, int page, int size) {
+        return service.list(type, page, size);
     }
 }
+
 

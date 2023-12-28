@@ -13,6 +13,9 @@ import com.cms.world.utils.GlobalCode;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
 import java.util.List;
@@ -97,5 +100,28 @@ class CmsWorldApplicationTests {
         BoardDto dto = boardRepository.findById(1L).get();
         List<ReplyDto> list = replyRepository.findReplyDtoByBoardDto(dto);
         System.out.println("dto = " + list);
+    }
+
+
+    @Test
+    public void inquiryList () {
+        for(int i = 0; i < 15; i++) {
+            BoardDto dto = new BoardDto();
+            dto.setContent("test");
+            dto.setWriter("jinvicky");
+            dto.setTitle("title ..... ");
+            dto.setType(GlobalCode.BBS_INQUIRY.getCode());
+
+            boardRepository.save(dto);
+        }
+
+        int page = 0;
+        int size = 6;
+        Pageable pageable = PageRequest.of(page, size);
+        Page<BoardDto> pageList = boardRepository.findAll(pageable);
+
+        for(BoardDto item : pageList) {
+            System.out.println("item = " + item);
+        }
     }
 }
