@@ -17,9 +17,9 @@ public class CommissionDto {
 
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "ID")
-    private Long id;
+    private String id;
 
     @Column(name = "NAME", nullable = false)
     private String name;
