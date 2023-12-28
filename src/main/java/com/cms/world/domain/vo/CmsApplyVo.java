@@ -17,5 +17,6 @@ public class CmsApplyVo {
     private String content;
     private String userName;
     private String bnkOwner;
+    private String refundAccNo;
     private List<MultipartFile> imgList;
 }

@@ -44,6 +44,7 @@ public class CmsApplyService {
                     .content(vo.getContent())
                     .userName(vo.getUserName())
                     .bankOwner(vo.getBnkOwner())
+                    .refundAccNo(vo.getRefundAccNo())
                     .build();
 
             repository.save(dto);

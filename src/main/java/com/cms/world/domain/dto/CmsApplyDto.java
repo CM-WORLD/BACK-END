@@ -17,11 +17,12 @@ import java.time.LocalDateTime;
 public class CmsApplyDto {
 
     @Builder
-    public CmsApplyDto (String userName, String bankOwner, String cmsType, String content) {
+    public CmsApplyDto (String userName, String bankOwner, String cmsType, String content, String refundAccNo) {
         this.userName = userName;
         this.bankOwner = bankOwner;
         this.cmsType = cmsType;
         this.content = content;
+        this.refundAccNo = refundAccNo;
     }
 
     //필수사항
@@ -29,6 +30,10 @@ public class CmsApplyDto {
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "ID")
     private String id;
+
+    @ManyToOne()
+    @JoinColumn(name = "CMS_ID", referencedColumnName = "ID")
+    private CommissionDto cmsDto;
 
     @Column(name = "TP_CD") // 1인이냐 2인이냐
     private String cmsType;
@@ -44,6 +49,9 @@ public class CmsApplyDto {
 
     @Column(name = "ACC_NM", nullable = false)
     private String bankOwner;
+
+    @Column(name = "RFN_ACC", nullable = false)
+    private String refundAccNo;
 
     //선택사항
     @Column(name = "PAY_AMT")
