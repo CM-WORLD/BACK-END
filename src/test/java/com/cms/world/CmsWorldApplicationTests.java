@@ -1,10 +1,14 @@
 package com.cms.world;
 
+import com.cms.world.domain.dto.BoardDto;
 import com.cms.world.domain.dto.CmsApplyDto;
 import com.cms.world.domain.common.AlertMsg;
+import com.cms.world.domain.dto.ReplyDto;
 import com.cms.world.domain.social.TelegramChat;
+import com.cms.world.repository.BoardRepository;
 import com.cms.world.repository.CmsApplyImgRepository;
 import com.cms.world.repository.CmsApplyRepository;
+import com.cms.world.repository.ReplyRepository;
 import com.cms.world.utils.GlobalCode;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,8 +85,17 @@ class CmsWorldApplicationTests {
         AlertMsg msg = alertMsg;
         msg.setText("test alert.. aply...test....... ");
         telegramChat.sendAlert(msg);
+    }
 
-        
+    @Autowired
+    ReplyRepository replyRepository;
 
+    @Autowired
+    BoardRepository boardRepository;
+    @Test
+    public void replyList () {
+        BoardDto dto = boardRepository.findById(1L).get();
+        List<ReplyDto> list = replyRepository.findReplyDtoByBoardDto(dto);
+        System.out.println("dto = " + list);
     }
 }
