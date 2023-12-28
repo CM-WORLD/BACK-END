@@ -20,18 +20,21 @@ public class BoardController {
         this.service = service;
     }
 
-
     @PostMapping("/form")
     public Map<String, Object> form (@RequestBody BoardVo vo) {
-        Map<String, Object> map = CommonUtil.getResultMapTest2(service.insert(vo));
-        return map;
+        return CommonUtil.getResultMapTest2(service.insert(vo));
     }
 
-    /* 커미션 신청 공지 게시판 리스트 */
+    /* 커미션 신청 공지 게시판 */
     @GetMapping("/aply/cms")
     public List<BoardDto> aplyCmsList () {
-        List<BoardDto> list = service.list(GlobalCode.BBS_APLY.getCode());
-        return list;
+        return service.list(GlobalCode.BBS_APLY.getCode());
+    }
+
+    /* 문의하기 게시판 */
+    @GetMapping("/inquiry")
+    public List<BoardDto> inquiryList () {
+        return service.list(GlobalCode.BBS_INQUIRY.getCode());
     }
 }
 

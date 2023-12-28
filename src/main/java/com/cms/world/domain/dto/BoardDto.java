@@ -48,7 +48,6 @@ public class BoardDto {
     private String type; //게시판 타입
 
     @Column(name = "VW_CNT")
-//    @ColumnDefault("0") //???
     private int viewCnt;
 
     @Column(name = "RGTR_DT")
