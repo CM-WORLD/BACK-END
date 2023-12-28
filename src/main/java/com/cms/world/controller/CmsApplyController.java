@@ -3,7 +3,6 @@ package com.cms.world.controller;
 
 import com.cms.world.domain.dto.CmsApplyDto;
 import com.cms.world.domain.social.TelegramChat;
-import com.cms.world.domain.vo.ApplySrchVo;
 import com.cms.world.domain.vo.CmsApplyVo;
 import com.cms.world.service.CmsApplyService;
 import com.cms.world.utils.GlobalStatus;
@@ -42,9 +41,9 @@ public class CmsApplyController {
 
     /* 커미션 신청 리스트 */
     @GetMapping("/list")
-    public Map<String, List<CmsApplyDto>> list(ApplySrchVo vo) {
+    public Map<String, List<CmsApplyDto>> list() {
         Map<String, List<CmsApplyDto>> listMap = new HashMap<>();
-        listMap.put("list", service.list(vo));
+        listMap.put("list", service.list());
         return listMap;
     }
 

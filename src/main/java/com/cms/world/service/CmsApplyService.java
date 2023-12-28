@@ -3,7 +3,6 @@ package com.cms.world.service;
 
 import com.cms.world.domain.dto.CmsApplyDto;
 import com.cms.world.domain.dto.CmsApplyImgDto;
-import com.cms.world.domain.vo.ApplySrchVo;
 import com.cms.world.domain.vo.CmsApplyVo;
 import com.cms.world.repository.CmsApplyImgRepository;
 import com.cms.world.repository.CmsApplyRepository;
@@ -63,7 +62,7 @@ public class CmsApplyService {
     }
 
     /* 커미션 전체 리스트 조회 (등록 최신순) */
-    public List<CmsApplyDto> list (ApplySrchVo vo) {
+    public List<CmsApplyDto> list () {
         List<CmsApplyDto> list = repository.findAll(Sort.by("regDate"));
         //TODO:: regDate 하드코딩이라 바꾸고 싶다.
         return list;
