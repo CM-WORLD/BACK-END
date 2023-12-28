@@ -16,4 +16,5 @@ public class BannerVo {
     private String comment;
     private String startDate;
     private String endDate;
+    private String delYn;
 }

@@ -1,6 +1,7 @@
 package com.cms.world.domain.dto;
 
 
+import com.cms.world.utils.StringUtil;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -33,6 +34,9 @@ public class BannerDto {
     @Column(name ="END_DT")
     private String endDate;
 
+    @Column(name = "DEL_YN")
+    private String delYn;
+
     @Column(name = "RGTR_DT")
     @CreationTimestamp
     private String regDate;
@@ -40,4 +44,9 @@ public class BannerDto {
     @Column(name = "UPT_DT")
     @UpdateTimestamp
     private String uptDate;
+
+    @PrePersist
+    public void doPersist () {
+        if(StringUtil.isEmpty(this.delYn)) this.setDelYn("N");
+    }
 }
