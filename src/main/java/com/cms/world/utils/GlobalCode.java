@@ -34,7 +34,11 @@ public enum GlobalCode { //타입 등의 코드
     //게시판 타입
     BBS_APLY ("BS01", "커미션 신청 게시판"),
     BBS_INQUIRY ("BS02", "문의 게시판"),
-    BBS_REVIEW ("BS03", "커미션 후기 게시판");
+    BBS_REVIEW ("BS03", "커미션 후기 게시판"),
+
+    //사용자 상태
+    USER_ACTIVE("US01", "정상 유저"),
+    USER_BLOCKED("US02", "블락된 유저");
 
     private final String code;
     private final String desc;
