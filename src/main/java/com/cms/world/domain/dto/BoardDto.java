@@ -7,8 +7,9 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Entity
 @Table(name="board")
@@ -48,7 +49,6 @@ public class BoardDto {
     private int viewCnt;
 
     @Column(name = "RGTR_DT")
-    @CreationTimestamp
     private String regDate;
 
     @Column(name = "UPT_DT")
@@ -57,6 +57,7 @@ public class BoardDto {
 
     @PrePersist
     public void doPersist () {
+        this.regDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy.MM.dd"));
         if(StringUtil.isEmpty(type)) {
             this.type = GlobalCode.BBS_APLY.getCode();
         }

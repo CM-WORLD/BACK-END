@@ -30,8 +30,8 @@ public class BoardController {
 
     /* 커미션 신청 공지 게시판 */
     @GetMapping("/aply/cms")
-    public Page<BoardDto> aplyCmsList (@RequestParam(defaultValue = "0") int page,
-                                       @RequestParam(defaultValue = "10") int size) {
+    public Page<BoardDto> aplyCmsList (@RequestParam(name="page", defaultValue = "0") Integer page,
+                                       @RequestParam(name="size", defaultValue = "10") Integer size) {
         return getListByBoardType(GlobalCode.BBS_APLY.getCode(), page, size);
     }
 
