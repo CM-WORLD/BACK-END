@@ -11,6 +11,10 @@ import com.cms.world.utils.GlobalCode;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 import java.util.List;
 
@@ -92,10 +96,21 @@ class CmsWorldApplicationTests {
     @Test
     public void insertUser () {
         MemberDto dto = new MemberDto();
-        dto.setEmail("jinvicky@naver.com");
-        dto.setNickName("user_jinvicky");
+        dto.setEmail("jinvicky17@gmail.com");
+        dto.setNickName("user_011007");
 
         memberRepository.save(dto);
 
+    }
+
+    @Test
+    public void findBbsByNick () {
+        Pageable pageable = PageRequest.of(0, 10,  Sort.by(Sort.Direction.DESC, "regDate"));
+        Page<BoardDto> dtoList = boardRepository.findAllByBbsCodeAndNickNameContainingIgnoreCase(GlobalCode.BBS_INQUIRY.getCode(), "user_011007", pageable);
+        System.out.println("pageable = " + dtoList);
+        
+        for(BoardDto item: dtoList) {
+            System.out.println("item.getContent() = " + item.getContent());
+        }
     }
 }

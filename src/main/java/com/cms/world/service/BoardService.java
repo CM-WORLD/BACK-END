@@ -38,4 +38,10 @@ public class BoardService {
         Page<BoardDto> pageList = repository.findAllByBbsCodeContaining(type, pageable);
         return pageList;
     }
+
+    public Page<BoardDto> listByNickName (String bbsCode, String nickName, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size,  Sort.by(Sort.Direction.DESC, "regDate"));
+        Page<BoardDto> pageList = repository.findAllByBbsCodeAndNickNameContainingIgnoreCase(bbsCode, nickName, pageable);
+        return pageList;
+    }
 }

@@ -33,11 +33,19 @@ public class BoardController {
         return getListByBbsCode(GlobalCode.BBS_APLY.getCode(), page, size);
     }
 
-    /* 문의하기 게시판 */
+    /* 문의 리스트 전체 (어드민 조회용) */
     @GetMapping("/inquiry")
     public Page<BoardDto> inquiryList (@RequestParam(defaultValue = "0") int page,
                                 @RequestParam(defaultValue = "10") int size) {
         return getListByBbsCode(GlobalCode.BBS_INQUIRY.getCode(), page, size);
+    }
+
+    /*회원별로 문의 조회 */
+    @GetMapping("/inquiry/{nickName}")
+    public Page<BoardDto> inquiryListByNick (@PathVariable String nickName,
+                                             @RequestParam(defaultValue = "0") int page,
+                                             @RequestParam(defaultValue = "10") int size) {
+        return service.listByNickName(GlobalCode.BBS_INQUIRY.getCode(), nickName, page, size);
     }
 
     public Page<BoardDto> getListByBbsCode (String type, int page, int size) {
