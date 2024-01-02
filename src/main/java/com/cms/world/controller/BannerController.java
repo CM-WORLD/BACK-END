@@ -27,6 +27,6 @@ public class BannerController {
 
     @PostMapping("/form")
     public Map<String, Object> form (BannerVo vo) { //관리자가 postman으로 할 것이라서 @RequestBody 제외
-        return CommonUtil.getResultMapTest2(service.insert(vo));
+        return CommonUtil.resultMap(service.insert(vo));
     }
 }
