@@ -28,6 +28,10 @@ class CmsWorldApplicationTests {
     @Autowired
     private CmsApplyImgRepository imgRepository;
 
+
+    @Autowired
+    BoardRepository boardRepository;
+
 //    @Test
 //    void cmsInsert () {
 //        CmsApplyDto input = CmsApplyDto.builder().content("메이플 2명 배경 신청합니다.")
@@ -75,17 +79,12 @@ class CmsWorldApplicationTests {
         telegramChat.sendAlert(msg);
     }
 
-    @Autowired
-    ReplyRepository replyRepository;
-
-    @Autowired
-    BoardRepository boardRepository;
-    @Test
-    public void replyList () {
-        BoardDto dto = boardRepository.findById(1L).get();
-        List<ReplyDto> list = replyRepository.findReplyDtoByBoardDto(dto);
-        System.out.println("dto = " + list);
-    }
+//    @Test
+//    public void replyList () {
+//        BoardDto dto = boardRepository.findById(1L).get();
+//        List<ReplyDto> list = replyRepository.findReplyDtoByBoardDto(dto);
+//        System.out.println("dto = " + list);
+//    }
 
     @Autowired
     MemberRepository memberRepository;

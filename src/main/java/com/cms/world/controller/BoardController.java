@@ -7,10 +7,8 @@ import com.cms.world.service.BoardService;
 import com.cms.world.utils.CommonUtil;
 import com.cms.world.utils.GlobalCode;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -25,24 +23,24 @@ public class BoardController {
     /* 공통 게시판 추가 */
     @PostMapping("/form")
     public Map<String, Object> form (@RequestBody BoardVo vo) {
-        return CommonUtil.getResultMapTest2(service.insert(vo));
+        return CommonUtil.resultMap(service.insert(vo));
     }
 
     /* 커미션 신청 공지 게시판 */
     @GetMapping("/aply/cms")
     public Page<BoardDto> aplyCmsList (@RequestParam(defaultValue = "0") int page,
                                        @RequestParam(defaultValue = "10") int size) {
-        return getListByBoardType(GlobalCode.BBS_APLY.getCode(), page, size);
+        return getListByBbsCode(GlobalCode.BBS_APLY.getCode(), page, size);
     }
 
     /* 문의하기 게시판 */
     @GetMapping("/inquiry")
     public Page<BoardDto> inquiryList (@RequestParam(defaultValue = "0") int page,
                                 @RequestParam(defaultValue = "10") int size) {
-        return getListByBoardType(GlobalCode.BBS_INQUIRY.getCode(), page, size);
+        return getListByBbsCode(GlobalCode.BBS_INQUIRY.getCode(), page, size);
     }
 
-    public Page<BoardDto> getListByBoardType (String type, int page, int size) {
+    public Page<BoardDto> getListByBbsCode (String type, int page, int size) {
         return service.list(type, page, size);
     }
 }

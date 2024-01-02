@@ -22,12 +22,11 @@ public class BoardService {
     }
 
     public int insert(BoardVo vo) {
-       BoardDto dto = BoardDto.builder()
-               .title(vo.getTitle())
-               .content(vo.getContent())
-               .writer(vo.getWriter())
-               .type(vo.getType())
-               .build();
+       BoardDto dto = new BoardDto();
+       dto.setTitle(vo.getTitle());
+       dto.setContent(vo.getContent());
+       dto.setBbsCode(vo.getBbsCode());
+       dto.setNickName(vo.getNickName());
 
         repository.save(dto);
         return GlobalStatus.EXECUTE_SUCCESS.getStatus();
@@ -36,7 +35,7 @@ public class BoardService {
 
     public Page<BoardDto> list (String type, int page, int size) {
         Pageable pageable = PageRequest.of(page, size,  Sort.by(Sort.Direction.DESC, "regDate"));
-        Page<BoardDto> pageList = repository.findAllByTypeContaining(type, pageable); // 날짜별 내림차순
+        Page<BoardDto> pageList = repository.findAllByBbsCodeContaining(type, pageable);
         return pageList;
     }
 }

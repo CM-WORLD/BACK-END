@@ -15,7 +15,7 @@ public class CommonUtil {
         return map;
     }
 
-    public static Map<String, Object> getResultMapTest2(int statusCode) {
+    public static Map<String, Object> resultMap(int statusCode) {
         Map<String, Object> map = new HashMap<>();
         if (statusCode == GlobalStatus.EXECUTE_SUCCESS.getStatus()) {
             map.put("status" , GlobalStatus.SUCCESS.getStatus());

@@ -7,6 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface BoardRepository extends JpaRepository<BoardDto, Long> {
 
-    Page<BoardDto> findAllByTypeContaining(String type,
+    Page<BoardDto> findAllByBbsCodeContaining(String type,
                                         Pageable pageable);
 }
