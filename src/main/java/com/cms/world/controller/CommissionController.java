@@ -42,20 +42,20 @@ public class CommissionController {
     }
 
     @PutMapping("/close/all")
-    public Map<Integer, String> closeAll() {
-        Map<Integer, String> resultMap = CommonUtil.getResultMap(service.toggleAllStatus(GlobalCode.CMS_CLOSED.getCode()));
+    public Map<String, Object> closeAll() {
+        Map<String, Object> resultMap = CommonUtil.resultMap(service.toggleAllStatus(GlobalCode.CMS_CLOSED.getCode()));
         return resultMap;
     }
 
     @PutMapping("/open/all")
-    public Map<Integer, String> openAll() {
-        Map<Integer, String> resultMap = CommonUtil.getResultMap(service.toggleAllStatus(GlobalCode.CMS_OPENED.getCode()));
+    public Map<String, Object> openAll() {
+        Map<String, Object> resultMap = CommonUtil.resultMap(service.toggleAllStatus(GlobalCode.CMS_OPENED.getCode()));
         return resultMap;
     }
 
     @PutMapping("/toggle")
-    public Map<Integer, String> toggleStatus (@RequestBody Map<String, Long> data) {
-        Map<Integer, String> resultMap = CommonUtil.getResultMap(service.toggleStatus(data.get("id")));
+    public Map<String, Object> toggleStatus (@RequestBody Map<String, Long> data) {
+        Map<String, Object> resultMap = CommonUtil.resultMap(service.toggleStatus(data.get("id")));
         return resultMap;
     }
 
