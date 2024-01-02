@@ -5,6 +5,7 @@ import com.cms.world.domain.dto.CmsApplyDto;
 import com.cms.world.domain.social.TelegramChat;
 import com.cms.world.domain.vo.CmsApplyVo;
 import com.cms.world.service.CmsApplyService;
+import com.cms.world.utils.GlobalCode;
 import com.cms.world.utils.GlobalStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -59,11 +60,19 @@ public class CmsApplyController {
         return map;
     }
 
-    /* 상태별 커미션 cnt 조회 */
-    @GetMapping("/cnt")
-    public Map<String, Object> cntByStatus (String status) {
+    /* 커미션 진행중 count 조회 */
+    @GetMapping("/cnt/processing")
+    public Map<String, Object> cntByProcessing () {
         Map<String, Object> map = new HashMap<>();
-        map.put("count", service.cntByStatus(status));
+        map.put("cnt", service.cntByStatus(GlobalCode.CMS_PROCESS.getCode()));
+        return map;
+    }
+
+    /* 커미션 예약중 count 조회 */
+    @GetMapping("/cnt/reserved")
+    public Map<String, Object> cntByRsv () {
+        Map<String, Object> map = new HashMap<>();
+        map.put("cnt", service.cntByStatus(GlobalCode.CMS_RESERVE.getCode()));
         return map;
     }
 

@@ -28,23 +28,23 @@ public class BoardController {
 
     /* 커미션 신청 공지 게시판 */
     @GetMapping("/aply/cms")
-    public Page<BoardDto> aplyCmsList (@RequestParam(defaultValue = "0") int page,
-                                       @RequestParam(defaultValue = "10") int size) {
+    public Page<BoardDto> aplyCmsList (@RequestParam(name="page", defaultValue = "0") Integer page,
+                                       @RequestParam(name="size", defaultValue = "10") Integer size) {
         return getListByBbsCode(GlobalCode.BBS_APLY.getCode(), page, size);
     }
 
     /* 문의 리스트 전체 (어드민 조회용) */
     @GetMapping("/inquiry")
-    public Page<BoardDto> inquiryList (@RequestParam(defaultValue = "0") int page,
-                                @RequestParam(defaultValue = "10") int size) {
+    public Page<BoardDto> inquiryList (@RequestParam(defaultValue = "0") Integer page,
+                                @RequestParam(defaultValue = "10") Integer size) {
         return getListByBbsCode(GlobalCode.BBS_INQUIRY.getCode(), page, size);
     }
 
     /*회원별로 문의 조회 */
     @GetMapping("/inquiry/{nickName}")
     public Page<BoardDto> inquiryListByNick (@PathVariable String nickName,
-                                             @RequestParam(defaultValue = "0") int page,
-                                             @RequestParam(defaultValue = "10") int size) {
+                                             @RequestParam(defaultValue = "0") Integer page,
+                                             @RequestParam(defaultValue = "10") Integer size) {
         return service.listByNickName(GlobalCode.BBS_INQUIRY.getCode(), nickName, page, size);
     }
 

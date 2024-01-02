@@ -80,7 +80,7 @@ public class CmsApplyDto {
     @PrePersist
     public void doPersist () {
         this.cmsType = GlobalCode.TYPE_SINGLE.getCode();
-        this.status = GlobalCode.REQ_PENDING.getCode();
+        this.status = GlobalCode.CMS_PENDING.getCode();
     }
 
 }
