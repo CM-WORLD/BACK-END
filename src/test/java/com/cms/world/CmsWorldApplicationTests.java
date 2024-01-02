@@ -3,20 +3,14 @@ package com.cms.world;
 import com.cms.world.domain.dto.BoardDto;
 import com.cms.world.domain.dto.CmsApplyDto;
 import com.cms.world.domain.common.AlertMsg;
+import com.cms.world.domain.dto.MemberDto;
 import com.cms.world.domain.dto.ReplyDto;
 import com.cms.world.domain.social.TelegramChat;
-import com.cms.world.repository.BoardRepository;
-import com.cms.world.repository.CmsApplyImgRepository;
-import com.cms.world.repository.CmsApplyRepository;
-import com.cms.world.repository.ReplyRepository;
+import com.cms.world.repository.*;
 import com.cms.world.utils.GlobalCode;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 
 import java.util.List;
 
@@ -68,15 +62,6 @@ class CmsWorldApplicationTests {
         System.out.println("dto2 = " + dto2);
 
     }
-
-    @Test
-    public void list () {
-        List<CmsApplyDto> list = repository.findAll(Sort.by("regDate"));
-
-        for(CmsApplyDto dto : list) {
-            System.out.println("dto....... =  " + dto.getRegDate());
-        }
-    }
     
     @Autowired
     AlertMsg alertMsg;
@@ -102,26 +87,16 @@ class CmsWorldApplicationTests {
         System.out.println("dto = " + list);
     }
 
+    @Autowired
+    MemberRepository memberRepository;
 
     @Test
-    public void inquiryList () {
-        for(int i = 0; i < 15; i++) {
-            BoardDto dto = new BoardDto();
-            dto.setContent("test");
-            dto.setWriter("jinvicky");
-            dto.setTitle("title ..... ");
-            dto.setType(GlobalCode.BBS_INQUIRY.getCode());
+    public void insertUser () {
+        MemberDto dto = new MemberDto();
+        dto.setEmail("jinvicky@naver.com");
+        dto.setNickName("user_jinvicky");
 
-            boardRepository.save(dto);
-        }
+        memberRepository.save(dto);
 
-        int page = 0;
-        int size = 6;
-        Pageable pageable = PageRequest.of(page, size);
-        Page<BoardDto> pageList = boardRepository.findAll(pageable);
-
-        for(BoardDto item : pageList) {
-            System.out.println("item = " + item);
-        }
     }
 }
