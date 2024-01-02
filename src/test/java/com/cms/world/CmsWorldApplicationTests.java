@@ -113,4 +113,23 @@ class CmsWorldApplicationTests {
             System.out.println("item.getContent() = " + item.getContent());
         }
     }
+
+    @Autowired
+    ReplyRepository replyRepository;
+    @Test
+    public void replyInsert () {
+        //일단 게시글을 하나 가져와서
+        BoardDto bbsDto = boardRepository.findById(2L).get(); //실존하는 2L
+
+
+        ReplyDto replyDto = new ReplyDto();
+        replyDto.setWriter("user_jinvicky");
+        replyDto.setContent("안녕하세요. 관리자 걍진입니다. 해당 문의 주신 사항은.....");
+        replyDto.setBoardDto(bbsDto);
+
+        replyRepository.save(replyDto);
+
+
+
+    }
 }

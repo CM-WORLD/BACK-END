@@ -13,7 +13,6 @@ public class ReplyVo {
     private Long boardId;
     private Long parentId;
     private String content;
-    private String writer;
-    private String regDate;
+    private String nickName;
 
 }
