@@ -1,15 +1,19 @@
 package com.cms.world.service;
 
 
+import com.cms.world.domain.dto.BbsImgDto;
 import com.cms.world.domain.dto.BoardDto;
 import com.cms.world.domain.vo.BoardVo;
+import com.cms.world.repository.BbsImgRepository;
 import com.cms.world.repository.BoardRepository;
 import com.cms.world.utils.GlobalStatus;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 
 @Service
@@ -21,17 +25,36 @@ public class BoardService {
         this.repository = repository;
     }
 
+    @Autowired
+    private BbsImgRepository bbsImgRepository;
+
+    @Autowired
+    private S3UploadService s3UploadService;
+
     public int insert(BoardVo vo) {
-       BoardDto dto = new BoardDto();
-       dto.setTitle(vo.getTitle());
-       dto.setContent(vo.getContent());
-       dto.setBbsCode(vo.getBbsCode());
-       dto.setNickName(vo.getNickName());
+       try {
+           BoardDto dto = new BoardDto();
+           dto.setTitle(vo.getTitle());
+           dto.setContent(vo.getContent());
+           dto.setBbsCode(vo.getBbsCode());
+           dto.setNickName(vo.getNickName());
 
-        repository.save(dto);
-        return GlobalStatus.EXECUTE_SUCCESS.getStatus();
+           BoardDto createdDto = repository.save(dto);
+
+           // file upload....
+           for (MultipartFile imgFile : vo.getImgList()) {
+                String uploadUrl = s3UploadService.saveFile(imgFile, "board");
+                BbsImgDto imgDto = new BbsImgDto();
+                imgDto.setBoardDto(createdDto);
+                imgDto.setImgUrl(uploadUrl);
+                bbsImgRepository.save(imgDto);
+           }
+            return GlobalStatus.EXECUTE_SUCCESS.getStatus();
+        } catch (Exception e) {
+            return GlobalStatus.EXECUTE_SUCCESS.getStatus();
+        }
+
     }
-
 
     public Page<BoardDto> list (String type, int page, int size) {
         Pageable pageable = PageRequest.of(page, size,  Sort.by(Sort.Direction.DESC, "regDate"));

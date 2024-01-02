@@ -9,6 +9,9 @@ import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 @Entity
 @Table(name="board")
 @Getter
@@ -60,5 +63,7 @@ public class BoardDto {
         if(StringUtil.isEmpty(displayYn)) {
             this.setDisplayYn("Y");
         }
+
+        this.setRegDate(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy.MM.dd")));
     }
 }
