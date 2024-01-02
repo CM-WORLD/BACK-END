@@ -21,9 +21,9 @@ public class ReplyDto {
     @Column(name = "CONTENT", nullable = false)
     private String content;
 
-    @ManyToOne
-    @JoinColumn(name = "BBS_ID", referencedColumnName = "ID")
-    private BoardDto boardDto;
+//    @ManyToOne
+//    @JoinColumn(name = "BBS_ID", referencedColumnName = "ID")
+//    private BoardDto boardDto;
 
     @Column(name = "WRTR", nullable = false)
     private String writer;
