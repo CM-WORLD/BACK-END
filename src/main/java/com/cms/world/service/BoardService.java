@@ -13,7 +13,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 
 @Service
@@ -31,8 +34,11 @@ public class BoardService {
     @Autowired
     private S3UploadService s3UploadService;
 
-    public int insert(BoardVo vo) {
-       try {
+
+
+    @Transactional(rollbackFor= {Exception.class})
+    public int insert(BoardVo vo) throws IOException {
+
            BoardDto dto = new BoardDto();
            dto.setTitle(vo.getTitle());
            dto.setContent(vo.getContent());
@@ -41,19 +47,16 @@ public class BoardService {
 
            BoardDto createdDto = repository.save(dto);
 
-           // file upload....
            for (MultipartFile imgFile : vo.getImgList()) {
+               if(!imgFile.isEmpty()) {
                 String uploadUrl = s3UploadService.saveFile(imgFile, "board");
                 BbsImgDto imgDto = new BbsImgDto();
                 imgDto.setBoardDto(createdDto);
                 imgDto.setImgUrl(uploadUrl);
                 bbsImgRepository.save(imgDto);
+               }
            }
-            return GlobalStatus.EXECUTE_SUCCESS.getStatus();
-        } catch (Exception e) {
-            return GlobalStatus.EXECUTE_SUCCESS.getStatus();
-        }
-
+           return GlobalStatus.EXECUTE_SUCCESS.getStatus();
     }
 
     public Page<BoardDto> list (String type, int page, int size) {

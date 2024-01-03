@@ -6,6 +6,7 @@ import com.cms.world.domain.vo.BoardVo;
 import com.cms.world.service.BoardService;
 import com.cms.world.utils.CommonUtil;
 import com.cms.world.utils.GlobalCode;
+import com.cms.world.utils.GlobalStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,10 +21,14 @@ public class BoardController {
         this.service = service;
     }
 
-    /* 공통 게시판 추가 */
+    /* 공통 게시판 게시글 추가, X @RequestBody */
     @PostMapping("/form")
-    public Map<String, Object> form (@RequestBody BoardVo vo) {
-        return CommonUtil.resultMap(service.insert(vo));
+    public Map<String, Object> form (BoardVo vo) {
+        try {
+            return CommonUtil.resultMap(service.insert(vo));
+        } catch (Exception e) {
+            return CommonUtil.resultMap(GlobalStatus.EXECUTE_FAILED.getStatus());
+        }
     }
 
     /* 커미션 신청 공지 게시판 */

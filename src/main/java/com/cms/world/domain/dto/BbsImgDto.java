@@ -14,7 +14,7 @@ public class BbsImgDto {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "UUID", columnDefinition = "varchar(20)")
+    @Column(name = "UUID")
     private String uuid;
 
     @ManyToOne
