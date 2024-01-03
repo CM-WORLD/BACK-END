@@ -1,11 +1,16 @@
 package com.cms.world.domain.dto;
 
 
+import com.cms.world.utils.GlobalCode;
+import com.cms.world.utils.StringUtil;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 @Entity
 @Table(name="reply")
@@ -38,4 +43,9 @@ public class ReplyDto {
     @Column(name = "UPT_DT")
     @UpdateTimestamp
     private String uptDate;
+
+    @PrePersist
+    public void doPersist () {
+        this.setRegDate(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy.MM.dd")));
+    }
 }
