@@ -53,6 +53,12 @@ public class BoardController {
         return service.listByNickName(GlobalCode.BBS_INQUIRY.getCode(), nickName, page, size);
     }
 
+    /* 게시판 상세 조회 */
+    @GetMapping("/{bbsCode}/{id}")
+    public Map<String, Object> getById (@PathVariable String bbsCode, @PathVariable Long id) {
+        return CommonUtil.resultMap(service.detailById(bbsCode, id));
+    }
+
     public Page<BoardDto> getListByBbsCode (String type, int page, int size) {
         return service.list(type, page, size);
     }

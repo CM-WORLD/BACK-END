@@ -70,4 +70,8 @@ public class BoardService {
         Page<BoardDto> pageList = repository.findAllByBbsCodeAndNickNameContainingIgnoreCase(bbsCode, nickName, pageable);
         return pageList;
     }
+
+    public BoardDto detailById (String bbsCode, Long id) {
+        return repository.findBoardDtoByBbsCodeAndId(bbsCode, id);
+    }
 }
