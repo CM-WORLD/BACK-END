@@ -103,6 +103,21 @@ public class CmsApplyController {
         return map;
     }
 
+    /* 커미션 타입 변경 (관리자) */
+    @PutMapping("/type/{id}/{cmsType}")
+    public Map<String, Object> updateTp (@PathVariable String id, @PathVariable String cmsType) {
+        Map<String, Object> map = new HashMap<>();
+        try {
+            service.updateTp(id, cmsType);
+            map.put("status", GlobalStatus.SUCCESS.getStatus());
+            map.put("msg", GlobalStatus.SUCCESS.getMsg());
+        } catch (Exception e) {
+            map.put("status", GlobalStatus.INTERNAL_SERVER_ERR.getStatus());
+            map.put("msg", GlobalStatus.INTERNAL_SERVER_ERR.getMsg());
+        }
+        return map;
+    }
+
     /* 커미션 진행중 count 조회 */
     @GetMapping("/cnt/processing")
     public Map<String, Object> cntByProcessing() {

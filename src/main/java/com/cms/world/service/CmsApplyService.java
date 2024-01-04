@@ -75,18 +75,26 @@ public class CmsApplyService {
         return list;
     }
 
-    /* 커미션 상태 변경??? :: 가능?? */
+    // OK
     @Transactional
     public int updateStatus (String id, String status) {
         try {
             CmsApplyDto dto = repository.findById(id).get();
             dto.setStatus(status);
-//            timeLogService.recordLog(dto);
-
             return GlobalStatus.EXECUTE_SUCCESS.getStatus();
         } catch (Exception e) {
             return GlobalStatus.EXECUTE_FAILED.getStatus();
         }
+    }
+
+    /* 커미션 신청 타입 변경 (1인/단체) */
+    @Transactional
+    public int updateTp (String id, String cmsType) throws Exception{
+        Optional<CmsApplyDto> dto = repository.findById(id);
+        if(!dto.isPresent()) throw new Exception("updateTp error: applyDto not found");
+        dto.get().setCmsType(cmsType);
+
+        return GlobalStatus.EXECUTE_SUCCESS.getStatus();
     }
 
     /* 조건당 커미션 신청 수 조회 */
