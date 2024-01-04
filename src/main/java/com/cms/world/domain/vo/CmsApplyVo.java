@@ -13,6 +13,7 @@ import java.util.List;
 @ToString
 public class CmsApplyVo {
 
+    private String cmsId; //신청하려는 커미션 아이디
     private String status;
     private String content;
     private String nickName;

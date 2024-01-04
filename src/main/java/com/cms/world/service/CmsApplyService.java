@@ -45,22 +45,17 @@ public class CmsApplyService {
             dto.setContent(vo.getContent());
             dto.setNickName(vo.getNickName());
             dto.setBankOwner(vo.getBankOwner());
-            repository.save(dto);
+            CmsApplyDto newDto = repository.save(dto);
 
-            if(vo.getImgList().size() > 0) {
+            if (vo.getImgList().size() > 0) {
                 for (MultipartFile img : vo.getImgList()) {
-                    System.out.println("img.getOriginalFilename() = " + img.getOriginalFilename());
+                    String awsUrl = uploadService.saveFile(img, "apply");
+                    CmsApplyImgDto imgDto = new CmsApplyImgDto();
+                    imgDto.setImgUrl(awsUrl);
+                    imgDto.setApplyDto(newDto);
+                    imgRepository.save(imgDto);
                 }
             }
-
-//            for (MultipartFile img : vo.getImgList()) {
-//                String awsUrl = uploadService.saveFile(img, "apply");
-//                CmsApplyImgDto imgDto = new CmsApplyImgDto();
-////                        CmsApplyImgDto.builder().applyDto(dto).imgUrl(awsUrl).build();
-//                imgRepository.save(imgDto);
-//            }
-//            timeLogService.recordLog(dto);
-
             return GlobalStatus.EXECUTE_SUCCESS.getStatus();
     }
 
