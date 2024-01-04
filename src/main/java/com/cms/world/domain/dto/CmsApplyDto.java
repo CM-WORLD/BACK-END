@@ -43,9 +43,6 @@ public class CmsApplyDto {
     @Column(name = "ACC_NM", nullable = false)
     private String bankOwner;
 
-    @Column(name = "DPSIT_YN")
-    private String depositYn;
-
     @Column(name = "STATUS") // 커미션 프로세스  + 예약
     private String status ;
 
@@ -55,7 +52,6 @@ public class CmsApplyDto {
     @PrePersist
     public void doPersist () {
         this.setStatus(GlobalCode.PAY_PENDING.getCode());
-        this.setDepositYn("N");
         this.setRegDate(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy.MM.dd HH.mm")));
     }
 

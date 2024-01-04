@@ -20,9 +20,9 @@ public class CmsPayDto {
     @Column(name = "ID")
     private Long id;
 
-//    @OneToOne
-//    @JoinColumn(name = "APLY_ID", referencedColumnName = "ID") //name은 설정할 fk 이름이다.
-//    private CmsApplyDto applyDto;
+    @OneToOne
+    @JoinColumn(name = "APLY_ID", referencedColumnName = "ID") //name은 설정할 fk 이름이다.
+    private CmsApplyDto applyDto;
 
     //선택사항
     @Column(name = "PAY_AMT")
@@ -35,7 +35,6 @@ public class CmsPayDto {
     private LocalDateTime endDate;
 
     @Column(name = "RGTR_DT")
-    @CreationTimestamp
     private String regDate;
 
     @PrePersist
