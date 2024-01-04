@@ -7,6 +7,7 @@ import com.cms.world.domain.vo.CmsApplyVo;
 import com.cms.world.service.CmsApplyService;
 import com.cms.world.utils.GlobalCode;
 import com.cms.world.utils.GlobalStatus;
+import com.cms.world.utils.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,16 +30,21 @@ public class CmsApplyController {
 
     /* 커미션 신청 */
     @PostMapping("/form")
-    public Map<Integer, String> submit(CmsApplyVo vo) {
-        Map<Integer, String> map = new HashMap<>();
+    public Map<String, Object> submit(CmsApplyVo vo) {
+        Map<String, Object> map = new HashMap<>();
         try {
-            if (service.insert(vo) == GlobalStatus.EXECUTE_SUCCESS.getStatus()) {
-                map.put(GlobalStatus.SUCCESS.getStatus(), GlobalStatus.SUCCESS.getMsg());
+            String cmsId = service.insert(vo);
+            if (!StringUtil.isEmpty(service.insert(vo))) {
+                map.put("status", String.valueOf(GlobalStatus.SUCCESS.getStatus()));
+                map.put("msg", String.valueOf(GlobalStatus.SUCCESS.getMsg()));
+                map.put("cmsId", cmsId);
+
                 //TODO:: telegram alert 전송
             }
         } catch (Exception e) {
             e.printStackTrace();
-            map.put(GlobalStatus.INTERNAL_SERVER_ERR.getStatus(), GlobalStatus.INTERNAL_SERVER_ERR.getMsg());
+            map.put("status", String.valueOf(GlobalStatus.INTERNAL_SERVER_ERR.getStatus()));
+            map.put("msg", String.valueOf(GlobalStatus.INTERNAL_SERVER_ERR.getMsg()));
         }
         return map;
     }

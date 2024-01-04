@@ -39,7 +39,7 @@ public class CmsApplyService {
 
     /* 커미션 신청 */
     @Transactional
-    public int insert(CmsApplyVo vo) throws IOException{
+    public String insert(CmsApplyVo vo) throws IOException{
             CmsApplyDto dto = new CmsApplyDto();
             dto.setStatus(vo.getStatus());
             dto.setContent(vo.getContent());
@@ -47,7 +47,7 @@ public class CmsApplyService {
             dto.setBankOwner(vo.getBankOwner());
             CmsApplyDto newDto = repository.save(dto);
 
-            if (vo.getImgList().size() > 0) {
+            if (vo.getImgList() != null && !vo.getImgList().isEmpty()) {
                 for (MultipartFile img : vo.getImgList()) {
                     String awsUrl = uploadService.saveFile(img, "apply");
                     CmsApplyImgDto imgDto = new CmsApplyImgDto();
@@ -56,7 +56,7 @@ public class CmsApplyService {
                     imgRepository.save(imgDto);
                 }
             }
-            return GlobalStatus.EXECUTE_SUCCESS.getStatus();
+            return newDto.getId();
     }
 
     /* 커미션 전체 리스트 조회 (등록 최신순) */
