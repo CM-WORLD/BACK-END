@@ -1,46 +1,42 @@
 package com.cms.world.domain.dto;
 
-
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 @Entity
-@Table(name="bbs_reply")
+@Table(name = "cms_pay")
 @Getter
 @Setter
-public class ReplyDto {
+public class CmsPayDto {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private Long id;
 
-    @Column(name = "CONTENT", nullable = false)
-    private String content;
+//    @OneToOne
+//    @JoinColumn(name = "APLY_ID", referencedColumnName = "ID") //name은 설정할 fk 이름이다.
+//    private CmsApplyDto applyDto;
 
-    @ManyToOne
-    @JoinColumn(name = "BBS_ID", referencedColumnName = "ID")
-    private BoardDto boardDto;
+    //선택사항
+    @Column(name = "PAY_AMT")
+    private Double payAmt;
 
-    @Column(name = "NICK_NM", nullable = false)
-    private String nickName; // nickName
+    @Column(name = "CMMNT")
+    private String comment;
 
-    @Column(name = "PRNT_ID")
-    private Long parentId; // 대댓글 구현 : 부모 id
+    @Column(name = "END_DT")
+    private LocalDateTime endDate;
 
     @Column(name = "RGTR_DT")
     @CreationTimestamp
     private String regDate;
-
-    @Column(name = "UPT_DT")
-    @UpdateTimestamp
-    private String uptDate;
 
     @PrePersist
     public void doPersist () {

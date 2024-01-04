@@ -10,7 +10,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity
-@Table(name = "cms_list")
+@Table(name = "commission")
 @Getter
 @Setter
 public class CommissionDto {

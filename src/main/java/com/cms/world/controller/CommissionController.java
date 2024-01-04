@@ -31,6 +31,7 @@ public class CommissionController {
             service.insert(vo);
             map.put(GlobalStatus.SUCCESS.getStatus(), GlobalStatus.SUCCESS.getMsg());
         } catch (Exception e) {
+            e.printStackTrace();
             map.put(GlobalStatus.INTERNAL_SERVER_ERR.getStatus(), GlobalStatus.INTERNAL_SERVER_ERR.getMsg());
         }
         return map;

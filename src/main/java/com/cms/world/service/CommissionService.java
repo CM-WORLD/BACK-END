@@ -24,19 +24,17 @@ public class CommissionService {
     @Autowired
     private S3UploadService s3UploadService;
 
-    public void insert(CommissionVo vo) throws Exception {
-        try {
-            String imgUrl = s3UploadService.saveFile(vo.getProfileImg(), "cmsList");
+    @Transactional
+    public int insert(CommissionVo vo) throws Exception {
+        String imgUrl = s3UploadService.saveFile(vo.getProfileImg(), "cmsList");
 
-            CommissionDto dto = new CommissionDto();
-            dto.setName(vo.getName());
-            dto.setContent(vo.getContent());
-            dto.setProfileImg(imgUrl);
+        CommissionDto dto = new CommissionDto();
+        dto.setName(vo.getName());
+        dto.setContent(vo.getContent());
+        dto.setProfileImg(imgUrl);
 
-            repository.save(dto);
-        } catch (Exception e) {
-            throw new Exception("cms insert error");
-        }
+        repository.save(dto);
+        return GlobalStatus.EXECUTE_SUCCESS.getStatus();
     }
 
     public List<CommissionDto> list(String delYn) {

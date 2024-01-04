@@ -39,19 +39,21 @@ public class CmsApplyService {
     @Transactional
     public int insert(CmsApplyVo vo) {
         try {
-            CmsApplyDto dto = CmsApplyDto.builder()
-                    .cmsType(vo.getCmsType())
-                    .content(vo.getContent())
-                    .userName(vo.getUserName())
-                    .bankOwner(vo.getBnkOwner())
-                    .refundAccNo(vo.getRefundAccNo())
-                    .build();
+            CmsApplyDto dto = new CmsApplyDto();
+//                    CmsApplyDto.builder()
+//                    .cmsType(vo.getCmsType())
+//                    .content(vo.getContent())
+//                    .userName(vo.getUserName())
+//                    .bankOwner(vo.getBnkOwner())
+//                    .refundAccNo(vo.getRefundAccNo())
+//                    .build();
 
             repository.save(dto);
 
             for (MultipartFile img : vo.getImgList()) {
                 String awsUrl = uploadService.saveFile(img, "apply");
-                CmsApplyImgDto imgDto = CmsApplyImgDto.builder().applyDto(dto).imgUrl(awsUrl).build();
+                CmsApplyImgDto imgDto = new CmsApplyImgDto();
+//                        CmsApplyImgDto.builder().applyDto(dto).imgUrl(awsUrl).build();
                 imgRepository.save(imgDto);
             }
             timeLogService.recordLog(dto);
@@ -65,11 +67,10 @@ public class CmsApplyService {
     /* 커미션 전체 리스트 조회 (등록 최신순) */
     public List<CmsApplyDto> list () {
         List<CmsApplyDto> list = repository.findAll(Sort.by("regDate"));
-        //TODO:: regDate 하드코딩이라 바꾸고 싶다.
         return list;
     }
 
-    /* 커미션 상태 변경 */
+    /* 커미션 상태 변경??? :: 가능?? */
     @Transactional
     public int updateStatus (String id, String status) {
         try {
