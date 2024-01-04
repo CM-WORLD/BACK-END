@@ -3,9 +3,11 @@ package com.cms.world.service;
 
 import com.cms.world.domain.dto.CmsApplyDto;
 import com.cms.world.domain.dto.CmsApplyImgDto;
+import com.cms.world.domain.dto.CmsPayDto;
 import com.cms.world.domain.vo.CmsApplyVo;
 import com.cms.world.repository.CmsApplyImgRepository;
 import com.cms.world.repository.CmsApplyRepository;
+import com.cms.world.repository.CmsPayRepository;
 import com.cms.world.utils.GlobalStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -31,14 +33,18 @@ public class CmsApplyService {
 
     private final TimeLogService timeLogService;
 
+    private final CmsPayRepository payRepository;
+
     public CmsApplyService(CmsApplyRepository repository,
                            CmsApplyImgRepository imgRepository,
                            S3UploadService uploadService,
-                           TimeLogService timeLogService) {
+                           TimeLogService timeLogService,
+                           CmsPayRepository payRepository) {
         this.repository = repository;
         this.imgRepository = imgRepository;
         this.uploadService = uploadService;
         this.timeLogService = timeLogService;
+        this.payRepository = payRepository;
     }
 
     /* 커미션 신청 */
@@ -108,6 +114,14 @@ public class CmsApplyService {
     public List<CmsApplyImgDto> imgListById (String id) {
         CmsApplyDto applyDto = repository.findById(id).get();
         return imgRepository.findAllByApplyDto(applyDto);
+    }
+
+    /* 신청서당 영수증 1:1 조회 */
+    public CmsPayDto paymentDetail (String cmsApplyId) throws Exception {
+        Optional<CmsApplyDto> applyDto = repository.findById(cmsApplyId);
+        if(!applyDto.isPresent()) throw new Exception ("can not find applyDto");
+
+        return payRepository.findByApplyDto(applyDto.get());
     }
 
 }

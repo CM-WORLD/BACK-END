@@ -9,10 +9,8 @@ import com.cms.world.utils.GlobalCode;
 import com.cms.world.utils.GlobalStatus;
 import com.cms.world.utils.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -85,7 +83,7 @@ public class CmsApplyController {
             // 신청 이미지 리스트
             map.put("imgList", service.imgListById(cmsApplyId));
             // 결제 영수증
-            map.put("payment", new HashMap<>());
+            map.put("payment", service.paymentDetail(cmsApplyId));
         } catch (Exception e) {
             map.put("status", GlobalStatus.INTERNAL_SERVER_ERR.getStatus());
             map.put("msg", GlobalStatus.INTERNAL_SERVER_ERR.getMsg());
