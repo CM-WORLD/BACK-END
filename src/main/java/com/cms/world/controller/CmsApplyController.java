@@ -9,8 +9,10 @@ import com.cms.world.utils.GlobalCode;
 import com.cms.world.utils.GlobalStatus;
 import com.cms.world.utils.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -49,12 +51,46 @@ public class CmsApplyController {
         return map;
     }
 
-    /* 커미션 신청 리스트 */
+    /* 커미션 전체 신청 리스트 */
     @GetMapping("/list")
     public Map<String, List<CmsApplyDto>> list() {
         Map<String, List<CmsApplyDto>> listMap = new HashMap<>();
         listMap.put("list", service.list());
         return listMap;
+    }
+
+    /* 커미션 신청 리스트 by nickName */
+    @GetMapping("/list/{nickName}")
+    public Map<String, Object> listByNick (@PathVariable String nickName, Integer page, Integer size) {
+            Map<String, Object> pageMap = new HashMap<>();
+        try {
+            pageMap.put("status", GlobalStatus.SUCCESS.getStatus());
+            pageMap.put("msg", GlobalStatus.SUCCESS.getMsg());
+            pageMap.put("data", service.listByNick(nickName, page, size));
+        } catch (Exception e) {
+            pageMap.put("status", GlobalStatus.INTERNAL_SERVER_ERR.getStatus());
+            pageMap.put("msg", GlobalStatus.INTERNAL_SERVER_ERR.getMsg());
+        }
+        return pageMap;
+    }
+
+    /* 커미션 신청 상세 */
+    @GetMapping("/detail/{cmsApplyId}")
+    public Map<String, Object> detail (@PathVariable String cmsApplyId) {
+        Map<String, Object> map = new HashMap<>();
+        try {
+            map.put("status", GlobalStatus.SUCCESS.getStatus());
+            map.put("msg", GlobalStatus.SUCCESS.getMsg());
+            map.put("data", service.detail(cmsApplyId));
+            // 신청 이미지 리스트
+            map.put("imgList", service.imgListById(cmsApplyId));
+            // 결제 영수증
+            map.put("payment", new HashMap<>());
+        } catch (Exception e) {
+            map.put("status", GlobalStatus.INTERNAL_SERVER_ERR.getStatus());
+            map.put("msg", GlobalStatus.INTERNAL_SERVER_ERR.getMsg());
+        }
+        return map;
     }
 
     /* 커미션 상태 변경 */

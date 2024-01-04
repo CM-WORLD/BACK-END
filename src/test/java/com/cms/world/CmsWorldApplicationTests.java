@@ -1,10 +1,7 @@
 package com.cms.world;
 
-import com.cms.world.domain.dto.BoardDto;
-import com.cms.world.domain.dto.CmsApplyDto;
+import com.cms.world.domain.dto.*;
 import com.cms.world.domain.common.AlertMsg;
-import com.cms.world.domain.dto.MemberDto;
-import com.cms.world.domain.dto.ReplyDto;
 import com.cms.world.domain.social.TelegramChat;
 import com.cms.world.repository.*;
 import com.cms.world.utils.GlobalCode;
@@ -27,37 +24,15 @@ class CmsWorldApplicationTests {
     }
 
     @Autowired
-    private CmsApplyRepository repository;
+    private CmsApplyRepository cmsApplyRepository;
 
     @Autowired
-    private CmsApplyImgRepository imgRepository;
+    private CmsApplyImgRepository cmsApplyImgRepository;
 
 
     @Autowired
     BoardRepository boardRepository;
 
-//    @Test
-//    void cmsInsert () {
-//        CmsApplyDto input = CmsApplyDto.builder().content("메이플 2명 배경 신청합니다.")
-//                .cmsType(GlobalCode.TYPE_COUP_BG.getCode())
-//                .userName("류시아")
-//                .bankOwner("유시아")
-//                .build();
-//
-//        CmsApplyDto dto = repository.save(input);
-//
-//        CmsApplyImgDto inputImgs = CmsApplyImgDto.builder()
-//                .imgUrl("https://jvk-world.s3.ap-northeast-2.amazonaws.com/test_01.jpg")
-//                .applyDto(dto)
-//                .build();
-//
-//        imgRepository.save(inputImgs);
-//    }
-
-//    @Transactional //이걸로 가둬두어야 변경감지가 가능하다.
-//    @Transactional
-    //이걸 추가했더니 update가 동작을 안한다. ?? 왜 ??
-    
     @Autowired
     AlertMsg alertMsg;
 
@@ -69,14 +44,6 @@ class CmsWorldApplicationTests {
         msg.setText("test alert.. aply...test....... ");
         telegramChat.sendAlert(msg);
     }
-
-//    @Test
-//    public void replyList () {
-//        BoardDto dto = boardRepository.findById(1L).get();
-//        List<ReplyDto> list = replyRepository.findReplyDtoByBoardDto(dto);
-//        System.out.println("dto = " + list);
-//    }
-
     @Autowired
     MemberRepository memberRepository;
 
@@ -107,8 +74,6 @@ class CmsWorldApplicationTests {
     public void replyInsert () {
         //일단 게시글을 하나 가져와서
         BoardDto bbsDto = boardRepository.findById(1L).get(); //실존하는 2L
-
-
         ReplyDto replyDto = new ReplyDto();
         replyDto.setNickName("user_jinvicky");
         replyDto.setContent("안녕하세요. 관리자 걍진입니다. 해당 문의 주신 사항은.....");
@@ -132,5 +97,16 @@ class CmsWorldApplicationTests {
                 .findByBoardDto(dto);
 
         System.out.println("replyList = " + replyList.size());
+    }
+
+    @Test
+    public void applyImgList () {
+        String uuid = "1eadfe86-6a89-4d79-bde4-90487f075117";
+        CmsApplyDto applyDto = cmsApplyRepository.findById(uuid).get();
+        List<CmsApplyImgDto> list = cmsApplyImgRepository.findAllByApplyDto(applyDto);
+        
+        for(CmsApplyImgDto item : list) {
+            System.out.println("item.getImgUrl() = " + item.getImgUrl());
+        }
     }
 }

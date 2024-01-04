@@ -8,6 +8,9 @@ import com.cms.world.repository.CmsApplyImgRepository;
 import com.cms.world.repository.CmsApplyRepository;
 import com.cms.world.utils.GlobalStatus;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -82,6 +86,28 @@ public class CmsApplyService {
     /* 조건당 커미션 신청 수 조회 */
     public long cntByStatus (String status) {
         return repository.countByStatus(status);
+    }
+
+    /* 사용자별 신청 리스트 조회 */
+    public Page<CmsApplyDto> listByNick (String nickName, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size,  Sort.by(Sort.Direction.DESC, "regDate"));
+        return repository.findByNickName(nickName, pageable);
+    }
+
+    /* 커미션 신청 상세 */
+    public CmsApplyDto detail (String id) throws Exception{
+        Optional<CmsApplyDto> applyDto = repository.findById(id);
+        if(applyDto.isPresent()) {
+            return applyDto.get();
+        } else {
+            throw new Exception("applyDto not found");
+        }
+    }
+    
+    /* 커미션 신청 이미지 리스트 조회 */
+    public List<CmsApplyImgDto> imgListById (String id) {
+        CmsApplyDto applyDto = repository.findById(id).get();
+        return imgRepository.findAllByApplyDto(applyDto);
     }
 
 }

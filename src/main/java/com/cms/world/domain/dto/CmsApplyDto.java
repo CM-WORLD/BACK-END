@@ -2,14 +2,12 @@ package com.cms.world.domain.dto;
 
 import com.cms.world.utils.GlobalCode;
 import jakarta.persistence.*;
-import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.validator.constraints.Length;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 @Entity
 @Table(name="cms_aply")
@@ -30,6 +28,10 @@ public class CmsApplyDto {
     @Column(name = "TP_CD") // 1인이냐 2인이냐
     private String cmsType;
 
+    @Column(name = "TITLE", nullable = false)
+    @Length(min = 2, max = 2000)
+    private String title;
+
     @Column(name = "CONTENT", nullable = false)
     @Length(min = 5, max = 2000)
     private String content;
@@ -48,13 +50,13 @@ public class CmsApplyDto {
     private String status ;
 
     @Column(name = "RGTR_DT")
-    @CreationTimestamp
-    private LocalDateTime regDate;
+    private String regDate;
 
     @PrePersist
     public void doPersist () {
         this.setStatus(GlobalCode.PAY_PENDING.getCode());
         this.setDepositYn("N");
+        this.setRegDate(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy.MM.dd HH.mm")));
     }
 
 }
