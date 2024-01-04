@@ -53,8 +53,8 @@ public class CmsApplyDto {
 
     @PrePersist
     public void doPersist () {
-        this.cmsType = GlobalCode.TYPE_SINGLE.getCode();
-        this.status = GlobalCode.CMS_PENDING.getCode();
+        this.setStatus(GlobalCode.PAY_PENDING.getCode());
+        this.setDepositYn("N");
     }
 
 }

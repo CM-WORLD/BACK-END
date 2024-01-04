@@ -13,10 +13,9 @@ import java.util.List;
 @ToString
 public class CmsApplyVo {
 
-    private String cmsType;
+    private String status;
     private String content;
-    private String userName;
-    private String bnkOwner;
-    private String refundAccNo;
+    private String nickName;
+    private String bankOwner;
     private List<MultipartFile> imgList;
 }

@@ -7,6 +7,7 @@ import com.cms.world.domain.vo.CmsApplyVo;
 import com.cms.world.repository.CmsApplyImgRepository;
 import com.cms.world.repository.CmsApplyRepository;
 import com.cms.world.utils.GlobalStatus;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +17,7 @@ import java.io.IOException;
 import java.util.List;
 
 @Service
+@Slf4j
 public class CmsApplyService {
 
     private final CmsApplyRepository repository;
@@ -37,31 +39,29 @@ public class CmsApplyService {
 
     /* 커미션 신청 */
     @Transactional
-    public int insert(CmsApplyVo vo) {
-        try {
+    public int insert(CmsApplyVo vo) throws IOException{
             CmsApplyDto dto = new CmsApplyDto();
-//                    CmsApplyDto.builder()
-//                    .cmsType(vo.getCmsType())
-//                    .content(vo.getContent())
-//                    .userName(vo.getUserName())
-//                    .bankOwner(vo.getBnkOwner())
-//                    .refundAccNo(vo.getRefundAccNo())
-//                    .build();
-
+            dto.setStatus(vo.getStatus());
+            dto.setContent(vo.getContent());
+            dto.setNickName(vo.getNickName());
+            dto.setBankOwner(vo.getBankOwner());
             repository.save(dto);
 
-            for (MultipartFile img : vo.getImgList()) {
-                String awsUrl = uploadService.saveFile(img, "apply");
-                CmsApplyImgDto imgDto = new CmsApplyImgDto();
-//                        CmsApplyImgDto.builder().applyDto(dto).imgUrl(awsUrl).build();
-                imgRepository.save(imgDto);
+            if(vo.getImgList().size() > 0) {
+                for (MultipartFile img : vo.getImgList()) {
+                    System.out.println("img.getOriginalFilename() = " + img.getOriginalFilename());
+                }
             }
-            timeLogService.recordLog(dto);
+
+//            for (MultipartFile img : vo.getImgList()) {
+//                String awsUrl = uploadService.saveFile(img, "apply");
+//                CmsApplyImgDto imgDto = new CmsApplyImgDto();
+////                        CmsApplyImgDto.builder().applyDto(dto).imgUrl(awsUrl).build();
+//                imgRepository.save(imgDto);
+//            }
+//            timeLogService.recordLog(dto);
 
             return GlobalStatus.EXECUTE_SUCCESS.getStatus();
-        } catch (IOException e) {
-            return GlobalStatus.EXECUTE_FAILED.getStatus();
-        }
     }
 
     /* 커미션 전체 리스트 조회 (등록 최신순) */
@@ -76,7 +76,7 @@ public class CmsApplyService {
         try {
             CmsApplyDto dto = repository.findById(id).get();
             dto.setStatus(status);
-            timeLogService.recordLog(dto);
+//            timeLogService.recordLog(dto);
 
             return GlobalStatus.EXECUTE_SUCCESS.getStatus();
         } catch (Exception e) {

@@ -31,10 +31,13 @@ public class CmsApplyController {
     @PostMapping("/form")
     public Map<Integer, String> submit(CmsApplyVo vo) {
         Map<Integer, String> map = new HashMap<>();
-        if (service.insert(vo) == GlobalStatus.EXECUTE_SUCCESS.getStatus()) {
-            map.put(GlobalStatus.SUCCESS.getStatus(), GlobalStatus.SUCCESS.getMsg());
-            //telegram alert 전송
-        } else {
+        try {
+            if (service.insert(vo) == GlobalStatus.EXECUTE_SUCCESS.getStatus()) {
+                map.put(GlobalStatus.SUCCESS.getStatus(), GlobalStatus.SUCCESS.getMsg());
+                //TODO:: telegram alert 전송
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
             map.put(GlobalStatus.INTERNAL_SERVER_ERR.getStatus(), GlobalStatus.INTERNAL_SERVER_ERR.getMsg());
         }
         return map;
@@ -50,7 +53,7 @@ public class CmsApplyController {
 
     /* 커미션 상태 변경 */
     @PutMapping("/{id}")
-    public Map<Integer, String> updateStatus (@PathVariable String id, String status) {
+    public Map<Integer, String> updateStatus(@PathVariable String id, String status) {
         Map<Integer, String> map = new HashMap<>();
         if (service.updateStatus(id, status) == GlobalStatus.EXECUTE_SUCCESS.getStatus()) {
             map.put(GlobalStatus.SUCCESS.getStatus(), GlobalStatus.SUCCESS.getMsg());
@@ -62,7 +65,7 @@ public class CmsApplyController {
 
     /* 커미션 진행중 count 조회 */
     @GetMapping("/cnt/processing")
-    public Map<String, Object> cntByProcessing () {
+    public Map<String, Object> cntByProcessing() {
         Map<String, Object> map = new HashMap<>();
         map.put("cnt", service.cntByStatus(GlobalCode.CMS_PROCESS.getCode()));
         return map;
@@ -70,12 +73,11 @@ public class CmsApplyController {
 
     /* 커미션 예약중 count 조회 */
     @GetMapping("/cnt/reserved")
-    public Map<String, Object> cntByRsv () {
+    public Map<String, Object> cntByRsv() {
         Map<String, Object> map = new HashMap<>();
         map.put("cnt", service.cntByStatus(GlobalCode.CMS_RESERVE.getCode()));
         return map;
     }
-
 
 
 }

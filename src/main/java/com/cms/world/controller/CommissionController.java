@@ -24,8 +24,7 @@ public class CommissionController {
     }
 
     @PostMapping("/form")
-    public Map<Integer, String> submit(CommissionVo vo) throws Exception {
-        //postman으로 하느라 @RequestBody 임시 제외
+    public Map<Integer, String> submit(CommissionVo vo) {
         Map<Integer, String> map = new HashMap<>();
         try {
             service.insert(vo);

@@ -9,7 +9,7 @@ import lombok.Setter;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-@Table(name="cms_log")
+@Table(name="cms_tm_log")
 @Entity
 @Getter
 @Setter
@@ -19,20 +19,20 @@ public class TimeLogDto {
 
     }
 
-    @Builder
-    public TimeLogDto (String status, CmsApplyDto applyDto) {
-        this.status = status;
-        this.applyDto = applyDto;
-    }
+//    @Builder
+//    public TimeLogDto (String status, CmsApplyDto applyDto) {
+//        this.status = status;
+//        this.applyDto = applyDto;
+//    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "CMS_ID", referencedColumnName = "ID")
-    private CmsApplyDto applyDto;
+//    @ManyToOne
+//    @JoinColumn(name = "CMS_ID", referencedColumnName = "ID")
+//    private CmsApplyDto applyDto;
 
     @Column(name = "STATUS", nullable = false)
     private String status;

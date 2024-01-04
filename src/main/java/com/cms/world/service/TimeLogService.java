@@ -21,8 +21,8 @@ public class TimeLogService {
         return repository.findAll();
     }
 
-    public void recordLog (CmsApplyDto dto) {
-        TimeLogDto timeDto= TimeLogDto.builder().status(dto.getStatus()).applyDto(dto).build();
-        repository.save(timeDto);
-    }
+//    public void recordLog (CmsApplyDto dto) {
+//        TimeLogDto timeDto= TimeLogDto.builder().status(dto.getStatus()).applyDto(dto).build();
+//        repository.save(timeDto);
+//    }
 }

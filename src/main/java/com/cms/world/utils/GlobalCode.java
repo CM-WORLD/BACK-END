@@ -17,14 +17,14 @@ public enum GlobalCode { //타입 등의 코드
 
     //커미션 프로세스
     CMS_RESERVE("CM00", "예약중"),
-    CMS_PENDING("CM01", "신청 대기중"),
-//    PAY_PENDING("CM02", "결제 대기중"),
+//    CMS_PENDING("CM01", "신청 대기중"),
+    PAY_PENDING("CM02", "결제 대기중"), //신청 완료, 결제 대기
     PAY_COMPLETE("CM03", "결제 완료"),
 //    CMS_START("CM04", "작업 시작"),
     CMS_PROCESS("CM05", "작업중"),
 //    CMS_COMPLETE("CM06", "작업물 제출"),
-//    CMS_REQ_EDITING("CM07", "요청사항 수정중"),
-    CMS_CONFIRM("CM08", "최종 완료"),
+    CMS_REQ_EDITING("CM07", "요청사항 수정중"),
+    CMS_CONFIRM("CM08", "작업 완료"),
     CMS_REVIEW("CM09", "리뷰 작성 완료"),
 
     //커미션 열/닫
