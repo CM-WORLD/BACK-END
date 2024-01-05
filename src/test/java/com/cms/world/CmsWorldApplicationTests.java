@@ -1,5 +1,7 @@
 package com.cms.world;
 
+import com.cms.world.auth.jwt.AuthTokensGenerator;
+import com.cms.world.auth.jwt.JwtTokenProvider;
 import com.cms.world.domain.dto.*;
 import com.cms.world.domain.common.AlertMsg;
 import com.cms.world.domain.social.TelegramChat;
@@ -103,11 +105,21 @@ class CmsWorldApplicationTests {
         }
     }
     
+//    too short.... 
+//    @Test
+//    public void jwtSecretKey () {
+//        //jwt Secret key create
+//        SecretKey key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+//        String secretString = Encoders.BASE64.encode(key.getEncoded());
+//        System.out.println("key = " + secretString);
+//    }
+    
+    @Autowired
+    JwtTokenProvider authTokensGenerator;
     @Test
-    public void jwtSecretKey () {
-        //jwt Secret key create
-        SecretKey key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
-        String secretString = Encoders.BASE64.encode(key.getEncoded());
-        System.out.println("key = " + secretString);
+    public void jwtExpireTest () {
+        String accessToken = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiZXhwIjoxNzA0NDQxNjk1fQ.QrzrNRXdXOKg7e4IL6_KISEi0Ckzk7Bj670kxeW2RMij0_cifynK9ca3JCxTOjtNbW0cCWE_0_O3u52PkA0nFw"; //만료된 토큰
+        accessToken ="eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiZXhwIjoxNzA0NDQzODAyfQ.TmijjdRZ2Gj-HuzujfLg7fYYcLOZsXqcNDxBPPWATmlzuwv-KWlzqLaHxrHXO1SczUuA0qPOCVe2tZlV7_k4zg"; //유효한 토큰
+        System.out.println("authTokensGenerator.validateToken(accessToken) = " + authTokensGenerator.validateToken(accessToken));
     }
 }

@@ -26,7 +26,7 @@ public class AuthController {
 
         /* 로그인은 성공했으나 이후 redirect에 관한 프론트와의 처리가 안됨.... TODO */
         Cookie cookie = new Cookie("cmsUser", jwtToken.getAccessToken());
-        System.out.println("cookie = " + cookie);
+        System.out.println("jwtToken = " + jwtToken.getAccessToken());
         cookie.setMaxAge(3600); // 쿠키의 유효 시간 (초 단위)
         response.addCookie(cookie);
 
