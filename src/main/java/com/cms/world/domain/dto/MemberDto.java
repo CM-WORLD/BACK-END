@@ -7,10 +7,9 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity
-@Table(name="user")
+@Table(name="member")
 @Getter
 @Setter
 public class MemberDto {
@@ -20,28 +19,29 @@ public class MemberDto {
     @Column(name = "ID")
     private Long id;
 
-    @Column(name = "EMAIL", unique = true, nullable = false)
+    @Column(name = "EMAIL", nullable = false, unique = true)
     private String email;
 
-    @Column(name = "NICK_NM", nullable = false)
+    @Column(name = "NICK_NM", nullable = false, unique = true)
     private String nickName;
 
     @Column(name = "STATUS")
     private String status;
 
+    @Column(name ="LOG_IN_DT")
+    private String lastLoginTime;
+
     @Column(name = "RGTR_DT")
     @CreationTimestamp
     private String regDate;
 
-    @Column(name = "LOG_IN_DT")
-    @UpdateTimestamp
-    private String lastLoginTime;
-
     @PrePersist
     public void doPersist () {
-        if(StringUtil.isEmpty(status)) {
+        if (StringUtil.isEmpty(this.status)) {
             this.setStatus(GlobalCode.USER_ACTIVE.getCode());
         }
     }
+
+
 
 }
