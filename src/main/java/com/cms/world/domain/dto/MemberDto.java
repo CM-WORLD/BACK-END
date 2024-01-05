@@ -4,6 +4,7 @@ package com.cms.world.domain.dto;
 import com.cms.world.utils.GlobalCode;
 import com.cms.world.utils.StringUtil;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
@@ -13,7 +14,6 @@ import org.hibernate.annotations.CreationTimestamp;
 @Getter
 @Setter
 public class MemberDto {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
@@ -41,7 +41,4 @@ public class MemberDto {
             this.setStatus(GlobalCode.USER_ACTIVE.getCode());
         }
     }
-
-
-
 }
