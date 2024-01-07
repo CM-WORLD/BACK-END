@@ -43,7 +43,6 @@ public class BoardService {
            dto.setTitle(vo.getTitle());
            dto.setContent(vo.getContent());
            dto.setBbsCode(vo.getBbsCode());
-           dto.setNickName(vo.getNickName());
 
            BoardDto createdDto = repository.save(dto);
 
@@ -65,11 +64,11 @@ public class BoardService {
         return pageList;
     }
 
-    public Page<BoardDto> listByNickName (String bbsCode, String nickName, int page, int size) {
-        Pageable pageable = PageRequest.of(page, size,  Sort.by(Sort.Direction.DESC, "regDate"));
-        Page<BoardDto> pageList = repository.findAllByBbsCodeAndNickNameContainingIgnoreCase(bbsCode, nickName, pageable);
-        return pageList;
-    }
+//    public Page<BoardDto> listByNickName (String bbsCode, String nickName, int page, int size) {
+//        Pageable pageable = PageRequest.of(page, size,  Sort.by(Sort.Direction.DESC, "regDate"));
+//        Page<BoardDto> pageList = repository.findAllByBbsCodeAndNickNameContainingIgnoreCase(bbsCode, nickName, pageable);
+//        return pageList;
+//    }
 
     public BoardDto detailById (String bbsCode, Long id) {
         return repository.findBoardDtoByBbsCodeAndId(bbsCode, id);

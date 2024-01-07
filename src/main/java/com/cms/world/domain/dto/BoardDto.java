@@ -23,6 +23,10 @@ public class BoardDto {
     @Column(name = "ID")
     private Long id;
 
+    @ManyToOne
+    @JoinColumn(name = "MEM_ID", referencedColumnName = "ID")
+    private MemberDto memberDto;
+
     @Column(name = "BBS_CD")
     private String bbsCode;
 
@@ -31,9 +35,6 @@ public class BoardDto {
 
     @Column(name = "CONTENT", nullable = false)
     private String content;
-
-    @Column(name = "NICK_NM", nullable = false)
-    private String nickName; // 사용자 닉네임
 
     @Column(name = "VW_CNT")
     private int viewCnt;

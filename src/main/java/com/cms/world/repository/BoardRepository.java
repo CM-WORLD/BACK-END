@@ -11,7 +11,7 @@ public interface BoardRepository extends JpaRepository<BoardDto, Long> {
                                         Pageable pageable);
 
     /* 게시판 코드 + 닉네임(대소문자 구분 X) */
-    Page<BoardDto> findAllByBbsCodeAndNickNameContainingIgnoreCase(String bbsCode, String nickName, Pageable pageable);
+//    Page<BoardDto> findAllByBbsCodeAndNickNameContainingIgnoreCase(String bbsCode, String nickName, Pageable pageable);
 
     BoardDto findBoardDtoByBbsCodeAndId(String bbsCode, Long id);
 }

@@ -46,12 +46,12 @@ public class BoardController {
     }
 
     /*회원별로 문의 조회 */
-    @GetMapping("/inquiry/{nickName}")
-    public Page<BoardDto> inquiryListByNick (@PathVariable String nickName,
-                                             @RequestParam(defaultValue = "0") Integer page,
-                                             @RequestParam(defaultValue = "10") Integer size) {
-        return service.listByNickName(GlobalCode.BBS_INQUIRY.getCode(), nickName, page, size);
-    }
+//    @GetMapping("/inquiry/{nickName}")
+//    public Page<BoardDto> inquiryListByNick (@PathVariable String nickName,
+//                                             @RequestParam(defaultValue = "0") Integer page,
+//                                             @RequestParam(defaultValue = "10") Integer size) {
+//        return service.listByNickName(GlobalCode.BBS_INQUIRY.getCode(), nickName, page, size);
+//    }
 
     /* 게시판 상세 조회 */
     @GetMapping("/{bbsCode}/{id}")

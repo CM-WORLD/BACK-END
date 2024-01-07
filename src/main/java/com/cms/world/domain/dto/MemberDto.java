@@ -31,6 +31,9 @@ public class MemberDto {
     @Column(name ="LOG_IN_DT")
     private String lastLoginTime;
 
+    @Column(name ="RTK_VAL")
+    private String refreshToken;
+
     @Column(name = "RGTR_DT")
     @CreationTimestamp
     private String regDate;
