@@ -61,14 +61,14 @@ public class CmsApplyController {
 
     /* 커미션 신청 리스트 by nickName */
     @GetMapping("/auth/list")
-    public Map<String, Object> listByNick (HttpServletRequest request, Integer page, Integer size) {
+    public Map<String, Object> listByNick (HttpServletRequest request, Map<String, Object> map)  {
             Map<String, Object> pageMap = new HashMap<>();
         try {
             pageMap.put("status", GlobalStatus.SUCCESS.getStatus());
             pageMap.put("msg", GlobalStatus.SUCCESS.getMsg());
 
             Long id = Long.valueOf((String) request.getAttribute("memberId"));
-            pageMap.put("data", service.listByMemberID(id, page, size));
+            pageMap.put("data", service.listByMemberID(id, (Integer) map.get("page"), (Integer) map.get("size")));
         } catch (Exception e) {
             pageMap.put("status", GlobalStatus.INTERNAL_SERVER_ERR.getStatus());
             pageMap.put("msg", GlobalStatus.INTERNAL_SERVER_ERR.getMsg());
