@@ -26,7 +26,10 @@ public class AuthInterceptor implements HandlerInterceptor {
         log.info("==================로그인============");
 
         String authHeader = request.getHeader("Authorization");
-        String rtkValue = request.getHeader("refreshToken");
+        String rtkValue = request.getHeader("RefreshToken");
+
+        System.out.println("authHeader = " + authHeader);
+        System.out.println("rtkValue = " + rtkValue);
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             //필수 정보가 없으므로 무효

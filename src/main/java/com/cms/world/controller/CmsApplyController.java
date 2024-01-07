@@ -59,16 +59,16 @@ public class CmsApplyController {
         return listMap;
     }
 
-    /* 커미션 신청 리스트 by nickName */
+    /* 커미션 신청 리스트 by */
     @GetMapping("/auth/list")
-    public Map<String, Object> listByNick (HttpServletRequest request, Map<String, Object> map)  {
+    public Map<String, Object> listByNick (HttpServletRequest request, @RequestParam(name= "page", defaultValue = "0") Integer page, @RequestParam(name = "size", defaultValue = "10") Integer size)  {
             Map<String, Object> pageMap = new HashMap<>();
         try {
             pageMap.put("status", GlobalStatus.SUCCESS.getStatus());
             pageMap.put("msg", GlobalStatus.SUCCESS.getMsg());
 
             Long id = Long.valueOf((String) request.getAttribute("memberId"));
-            pageMap.put("data", service.listByMemberID(id, (Integer) map.get("page"), (Integer) map.get("size")));
+            pageMap.put("data", service.listByMemberID(id, page, size));
         } catch (Exception e) {
             pageMap.put("status", GlobalStatus.INTERNAL_SERVER_ERR.getStatus());
             pageMap.put("msg", GlobalStatus.INTERNAL_SERVER_ERR.getMsg());
@@ -77,8 +77,8 @@ public class CmsApplyController {
     }
 
     /* 커미션 신청 상세 */
-    @GetMapping("/auth/detail/{cmsApplyId}")
-    public Map<String, Object> detail (@PathVariable String cmsApplyId) {
+    @GetMapping("/auth/detail")
+    public Map<String, Object> detail (@RequestParam(name = "cmsApplyId") String cmsApplyId) {
         Map<String, Object> map = new HashMap<>();
         try {
             map.put("status", GlobalStatus.SUCCESS.getStatus());
