@@ -21,7 +21,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
 
-        List<String> URL_PATTERNS = Arrays.asList("/apply/auth/**");
+        List<String> URL_PATTERNS = Arrays.asList("/apply/auth/**", "/bbs/auth/**");
 //        registry.addInterceptor(new AuthInterceptor()) // 이거 대신 위 주입 사용
         registry.addInterceptor(authInterceptor)
                 .addPathPatterns(URL_PATTERNS)

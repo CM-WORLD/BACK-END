@@ -7,6 +7,7 @@ import com.cms.world.service.BoardService;
 import com.cms.world.utils.CommonUtil;
 import com.cms.world.utils.GlobalCode;
 import com.cms.world.utils.GlobalStatus;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
@@ -46,12 +47,13 @@ public class BoardController {
     }
 
     /*회원별로 문의 조회 */
-//    @GetMapping("/inquiry/{nickName}")
-//    public Page<BoardDto> inquiryListByNick (@PathVariable String nickName,
-//                                             @RequestParam(defaultValue = "0") Integer page,
-//                                             @RequestParam(defaultValue = "10") Integer size) {
-//        return service.listByNickName(GlobalCode.BBS_INQUIRY.getCode(), nickName, page, size);
-//    }
+    @GetMapping("/auth/inquiry/by/member")
+    public Page<BoardDto> inquiryByMemberId (@RequestParam(name= "page", defaultValue = "0") Integer page,
+                                             @RequestParam(name ="size", defaultValue = "10") Integer size,
+                                             HttpServletRequest request) {
+        Long memberId = Long.valueOf((String) request.getAttribute("memberId"));
+        return service.listByMemberId(memberId, GlobalCode.BBS_INQUIRY.getCode(), page, size);
+    }
 
     /* 게시판 상세 조회 */
     @GetMapping("/{bbsCode}/{id}")

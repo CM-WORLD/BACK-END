@@ -64,11 +64,11 @@ public class BoardService {
         return pageList;
     }
 
-//    public Page<BoardDto> listByNickName (String bbsCode, String nickName, int page, int size) {
-//        Pageable pageable = PageRequest.of(page, size,  Sort.by(Sort.Direction.DESC, "regDate"));
-//        Page<BoardDto> pageList = repository.findAllByBbsCodeAndNickNameContainingIgnoreCase(bbsCode, nickName, pageable);
-//        return pageList;
-//    }
+    public Page<BoardDto> listByMemberId (Long memberId, String bbsCode, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size,  Sort.by(Sort.Direction.DESC, "regDate"));
+        Page<BoardDto> pageList = repository.findByMemberDto_IdAndBbsCode(memberId, bbsCode, pageable);
+        return pageList;
+    }
 
     public BoardDto detailById (String bbsCode, Long id) {
         return repository.findBoardDtoByBbsCodeAndId(bbsCode, id);
