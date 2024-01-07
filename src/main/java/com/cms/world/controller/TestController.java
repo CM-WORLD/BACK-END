@@ -5,6 +5,8 @@ import com.cms.world.service.KakaoAuthService;
 import com.cms.world.service.KakaoMsgService;
 import com.cms.world.service.S3UploadService;
 import com.cms.world.utils.GlobalStatus;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,6 +34,12 @@ public class TestController {
 //        System.out.println("vo.toString()2 = " + imgList.size());
         return new HashMap<>();
 //        return CommonUtil.resultMap(service.insert(vo));
+    }
+    
+    @PostMapping("/apply/test")
+    public void test (HttpServletRequest request) {
+        System.out.println("request.getAttribute(\"test\") = " + request.getAttribute("test"));
+        
     }
 
 }

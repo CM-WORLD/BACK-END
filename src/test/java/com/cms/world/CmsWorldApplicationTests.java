@@ -115,11 +115,23 @@ class CmsWorldApplicationTests {
 //    }
     
     @Autowired
-    JwtTokenProvider authTokensGenerator;
+    JwtTokenProvider jwtTokenProvider;
     @Test
     public void jwtExpireTest () {
         String accessToken = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiZXhwIjoxNzA0NDQxNjk1fQ.QrzrNRXdXOKg7e4IL6_KISEi0Ckzk7Bj670kxeW2RMij0_cifynK9ca3JCxTOjtNbW0cCWE_0_O3u52PkA0nFw"; //만료된 토큰
         accessToken ="eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiZXhwIjoxNzA0NDQzODAyfQ.TmijjdRZ2Gj-HuzujfLg7fYYcLOZsXqcNDxBPPWATmlzuwv-KWlzqLaHxrHXO1SczUuA0qPOCVe2tZlV7_k4zg"; //유효한 토큰
-        System.out.println("authTokensGenerator.validateToken(accessToken) = " + authTokensGenerator.validateToken(accessToken));
+        System.out.println("authTokensGenerator.validateToken(accessToken) = " + jwtTokenProvider.validateToken(accessToken));
     }
+    
+    @Autowired
+    AuthTokensGenerator tokensGenerator;
+    
+    @Test
+    public void claimsTest () {
+        String accessToken = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiZXhwIjoxNzA0NjI0ODU2fQ.oS5o16xs0Z6Y5YiOBy1eq7xGSXWw0SK3W-7rvEFHVB-brSgYqLU5I8iQdtOFp50s4FZXanaSWWlzAu5PNMhOmw";
+        Object obj = jwtTokenProvider.extractSubject(accessToken);
+        System.out.println("obj.toString() = " + obj.toString());
+
+    }
+
 }
