@@ -7,6 +7,7 @@ import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 @Entity
@@ -15,15 +16,18 @@ import java.time.format.DateTimeFormatter;
 @Setter
 public class CmsApplyDto {
 
-    //필수사항
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "ID")
     private String id;
 
-//    @ManyToOne
-//    @JoinColumn(name = "CMS_ID", referencedColumnName = "ID")
-//    private CommissionDto cmsDto;
+    @ManyToOne
+    @JoinColumn(name = "CMS_ID", referencedColumnName = "ID")
+    private CommissionDto cmsDto;
+
+    @ManyToOne
+    @JoinColumn(name = "MEM_ID", referencedColumnName = "ID")
+    private MemberDto memberDto;
 
     @Column(name = "TP_CD") // 1인이냐 2인이냐
     private String cmsType;
@@ -35,10 +39,6 @@ public class CmsApplyDto {
     @Column(name = "CONTENT", nullable = false)
     @Length(min = 5, max = 2000)
     private String content;
-
-    /* 비회원/회원을 어떻게 처리하지...? */
-    @Column(name = "NICK_NM", nullable = false)
-    private String nickName; //사용자 이름
 
     @Column(name = "ACC_NM", nullable = false)
     private String bankOwner;
@@ -52,7 +52,7 @@ public class CmsApplyDto {
     @PrePersist
     public void doPersist () {
         this.setStatus(GlobalCode.PAY_PENDING.getCode());
-        this.setRegDate(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy.MM.dd HH.mm")));
+        this.setRegDate(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy.MM.dd HH.mm")));
     }
 
 }

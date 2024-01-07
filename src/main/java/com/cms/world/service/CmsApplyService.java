@@ -1,15 +1,18 @@
 package com.cms.world.service;
 
 
+import com.cms.world.auth.MemberRepository;
 import com.cms.world.domain.dto.CmsApplyDto;
 import com.cms.world.domain.dto.CmsApplyImgDto;
 import com.cms.world.domain.dto.CmsPayDto;
+import com.cms.world.domain.dto.MemberDto;
 import com.cms.world.domain.vo.CmsApplyVo;
 import com.cms.world.repository.CmsApplyImgRepository;
 import com.cms.world.repository.CmsApplyRepository;
 import com.cms.world.repository.CmsPayRepository;
 import com.cms.world.utils.GlobalStatus;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -47,14 +50,22 @@ public class CmsApplyService {
         this.payRepository = payRepository;
     }
 
+    @Autowired
+    private MemberRepository memberRepository;
+
     /* 커미션 신청 */
     @Transactional
-    public String insert(CmsApplyVo vo) throws IOException{
+    public String insert(CmsApplyVo vo) throws Exception{
             CmsApplyDto dto = new CmsApplyDto();
             dto.setStatus(vo.getStatus());
+            dto.setTitle(vo.getTitle());
             dto.setContent(vo.getContent());
-            dto.setNickName(vo.getNickName());
             dto.setBankOwner(vo.getBankOwner());
+
+            Optional<MemberDto> memberDto = memberRepository.findById(vo.getUserId());
+            if (memberDto.isPresent()) dto.setMemberDto(memberDto.get());
+            else throw new Exception("apply.insert :: user not found");
+
             CmsApplyDto newDto = repository.save(dto);
 
             if (vo.getImgList() != null && !vo.getImgList().isEmpty()) {
@@ -103,9 +114,9 @@ public class CmsApplyService {
     }
 
     /* 사용자별 신청 리스트 조회 */
-    public Page<CmsApplyDto> listByNick (String nickName, int page, int size) {
+    public Page<CmsApplyDto> listByMemberID (Long id, int page, int size) {
         Pageable pageable = PageRequest.of(page, size,  Sort.by(Sort.Direction.DESC, "regDate"));
-        return repository.findByNickName(nickName, pageable);
+        return repository.findByMemberDto_Id(id, pageable);
     }
 
     /* 커미션 신청 상세 */

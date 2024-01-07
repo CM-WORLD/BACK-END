@@ -1,6 +1,8 @@
 package com.cms.world.aop;
 
+import com.cms.world.auth.jwt.AuthTokensGenerator;
 import com.cms.world.auth.jwt.JwtTokenProvider;
+import com.cms.world.utils.GlobalStatus;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -11,11 +13,13 @@ import org.springframework.web.servlet.HandlerInterceptor;
 
 @Slf4j
 @Component
-//@RequiredArgsConstructor // 안됨.
 public class AuthInterceptor implements HandlerInterceptor {
 
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
+
+    @Autowired
+    AuthTokensGenerator authTokensGenerator;
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
@@ -27,14 +31,15 @@ public class AuthInterceptor implements HandlerInterceptor {
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             //필수 정보가 없으므로 무효
             request.setAttribute("status", "500: auth unavailable");
-            return false;
+//            return false;
         }
         String atkValue = authHeader.substring(7); // atk 추출
         // atk, rtk 값 로그 확인 완료.
 
         // atk 멀쩡하면 걍 true하고 넘어가라 !
         if(jwtTokenProvider.validateToken(atkValue)) {
-            request.setAttribute("status", "200: ok");
+            Long memberId = authTokensGenerator.extractMemberId(atkValue);
+            request.setAttribute("memberId", String.valueOf(memberId));
             return true;
         }
 

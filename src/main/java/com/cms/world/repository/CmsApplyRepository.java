@@ -12,5 +12,5 @@ public interface CmsApplyRepository extends JpaRepository<CmsApplyDto, String> {
 
     Long countByStatus(String status);
 
-    Page<CmsApplyDto> findByNickName(String nickName, Pageable pageable);
+    Page<CmsApplyDto> findByMemberDto_Id(Long id, Pageable pageable);
 }

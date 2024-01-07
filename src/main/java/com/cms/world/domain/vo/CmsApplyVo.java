@@ -14,10 +14,10 @@ import java.util.List;
 public class CmsApplyVo {
 
     private String cmsId; //신청하려는 커미션 아이디
+    private Long userId; // 사용자 아이디
     private String status;
     private String title;
     private String content;
-    private String nickName;
     private String bankOwner;
     private List<MultipartFile> imgList;
 }

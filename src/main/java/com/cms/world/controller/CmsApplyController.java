@@ -8,6 +8,7 @@ import com.cms.world.service.CmsApplyService;
 import com.cms.world.utils.GlobalCode;
 import com.cms.world.utils.GlobalStatus;
 import com.cms.world.utils.StringUtil;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,9 +31,10 @@ public class CmsApplyController {
 
     /* 커미션 신청 */
     @PostMapping("/auth/form")
-    public Map<String, Object> submit(CmsApplyVo vo) {
+    public Map<String, Object> submit(HttpServletRequest request, CmsApplyVo vo) {
         Map<String, Object> map = new HashMap<>();
         try {
+            vo.setUserId(Long.valueOf((String) request.getAttribute("memberId")));
             String cmsId = service.insert(vo);
             if (!StringUtil.isEmpty(service.insert(vo))) {
                 map.put("status", String.valueOf(GlobalStatus.SUCCESS.getStatus()));
@@ -50,7 +52,7 @@ public class CmsApplyController {
     }
 
     /* 커미션 전체 신청 리스트 */
-    @GetMapping("/auth/list")
+    @GetMapping("/auth/list/all")
     public Map<String, List<CmsApplyDto>> list() {
         Map<String, List<CmsApplyDto>> listMap = new HashMap<>();
         listMap.put("list", service.list());
@@ -58,13 +60,15 @@ public class CmsApplyController {
     }
 
     /* 커미션 신청 리스트 by nickName */
-    @GetMapping("/auth/list/{nickName}")
-    public Map<String, Object> listByNick (@PathVariable String nickName, Integer page, Integer size) {
+    @GetMapping("/auth/list")
+    public Map<String, Object> listByNick (HttpServletRequest request, Integer page, Integer size) {
             Map<String, Object> pageMap = new HashMap<>();
         try {
             pageMap.put("status", GlobalStatus.SUCCESS.getStatus());
             pageMap.put("msg", GlobalStatus.SUCCESS.getMsg());
-            pageMap.put("data", service.listByNick(nickName, page, size));
+
+            Long id = Long.valueOf((String) request.getAttribute("memberId"));
+            pageMap.put("data", service.listByMemberID(id, page, size));
         } catch (Exception e) {
             pageMap.put("status", GlobalStatus.INTERNAL_SERVER_ERR.getStatus());
             pageMap.put("msg", GlobalStatus.INTERNAL_SERVER_ERR.getMsg());
