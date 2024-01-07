@@ -29,7 +29,7 @@ public class CmsApplyController {
     TelegramChat telegramChat;
 
     /* 커미션 신청 */
-    @PostMapping("/form")
+    @PostMapping("/auth/form")
     public Map<String, Object> submit(CmsApplyVo vo) {
         Map<String, Object> map = new HashMap<>();
         try {
@@ -50,7 +50,7 @@ public class CmsApplyController {
     }
 
     /* 커미션 전체 신청 리스트 */
-    @GetMapping("/list")
+    @GetMapping("/auth/list")
     public Map<String, List<CmsApplyDto>> list() {
         Map<String, List<CmsApplyDto>> listMap = new HashMap<>();
         listMap.put("list", service.list());
@@ -58,7 +58,7 @@ public class CmsApplyController {
     }
 
     /* 커미션 신청 리스트 by nickName */
-    @GetMapping("/list/{nickName}")
+    @GetMapping("/auth/list/{nickName}")
     public Map<String, Object> listByNick (@PathVariable String nickName, Integer page, Integer size) {
             Map<String, Object> pageMap = new HashMap<>();
         try {
@@ -73,7 +73,7 @@ public class CmsApplyController {
     }
 
     /* 커미션 신청 상세 */
-    @GetMapping("/detail/{cmsApplyId}")
+    @GetMapping("/auth/detail/{cmsApplyId}")
     public Map<String, Object> detail (@PathVariable String cmsApplyId) {
         Map<String, Object> map = new HashMap<>();
         try {
@@ -92,7 +92,7 @@ public class CmsApplyController {
     }
 
     /* 커미션 상태 변경 */
-    @PutMapping("/{id}")
+    @PutMapping("/auth/{id}")
     public Map<Integer, String> updateStatus(@PathVariable String id, String status) {
         Map<Integer, String> map = new HashMap<>();
         if (service.updateStatus(id, status) == GlobalStatus.EXECUTE_SUCCESS.getStatus()) {
@@ -104,7 +104,7 @@ public class CmsApplyController {
     }
 
     /* 커미션 타입 변경 (관리자) */
-    @PutMapping("/type/{id}/{cmsType}")
+    @PutMapping("/auth/type/{id}/{cmsType}")
     public Map<String, Object> updateTp (@PathVariable String id, @PathVariable String cmsType) {
         Map<String, Object> map = new HashMap<>();
         try {
