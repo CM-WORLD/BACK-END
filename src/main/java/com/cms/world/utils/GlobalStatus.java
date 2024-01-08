@@ -20,7 +20,10 @@ public enum GlobalStatus {
 
 
     EXECUTE_SUCCESS(1, "실행 성공"),
-    EXECUTE_FAILED(0, "실행 실패");
+    EXECUTE_FAILED(0, "실행 실패"),
+
+    // jwt
+    ATK_REISSUED (205, "액세스 토큰 재발급");
 
 
     private final int status;

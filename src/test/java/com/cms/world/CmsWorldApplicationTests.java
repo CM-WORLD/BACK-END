@@ -1,5 +1,6 @@
 package com.cms.world;
 
+import com.cms.world.auth.MemberService;
 import com.cms.world.auth.jwt.AuthTokensGenerator;
 import com.cms.world.auth.jwt.JwtTokenProvider;
 import com.cms.world.domain.dto.*;
@@ -7,18 +8,10 @@ import com.cms.world.domain.common.AlertMsg;
 import com.cms.world.domain.social.TelegramChat;
 import com.cms.world.repository.*;
 import com.cms.world.utils.GlobalCode;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.io.Encoders;
-import io.jsonwebtoken.security.Keys;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-
-import javax.crypto.SecretKey;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 
@@ -121,5 +114,4 @@ class CmsWorldApplicationTests {
         System.out.println("obj.toString() = " + obj.toString());
 
     }
-
 }
