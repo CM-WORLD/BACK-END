@@ -21,12 +21,11 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
 
-        List<String> URL_PATTERNS = Arrays.asList("/apply/auth/**", "/bbs/auth/**");
-//        registry.addInterceptor(new AuthInterceptor()) // 이거 대신 위 주입 사용
+//        List<String> URL_PATTERNS = Arrays.asList("/apply/auth/**", "/bbs/auth/**");
+        List<String> URL_PATTERNS = Arrays.asList("/auth/**");
         registry.addInterceptor(authInterceptor)
                 .addPathPatterns(URL_PATTERNS)
                 .excludePathPatterns("/css/**", "/images/**", "/js/**");
-
     }
 
     @Override
