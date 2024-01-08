@@ -51,18 +51,6 @@ class CmsWorldApplicationTests {
         telegramChat.sendAlert(msg);
     }
 
-
-    @Test
-    public void findBbsByNick () {
-        Pageable pageable = PageRequest.of(0, 10,  Sort.by(Sort.Direction.DESC, "regDate"));
-        Page<BoardDto> dtoList = boardRepository.findAllByBbsCodeAndNickNameContainingIgnoreCase(GlobalCode.BBS_INQUIRY.getCode(), "user_011007", pageable);
-        System.out.println("pageable = " + dtoList);
-        
-        for(BoardDto item: dtoList) {
-            System.out.println("item.getContent() = " + item.getContent());
-        }
-    }
-
     @Autowired
     ReplyRepository replyRepository;
     @Test
