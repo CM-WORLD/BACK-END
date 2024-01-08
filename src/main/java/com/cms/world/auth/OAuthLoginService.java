@@ -7,6 +7,8 @@ import com.cms.world.domain.dto.MemberDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 @Service
@@ -20,6 +22,16 @@ public class OAuthLoginService {
         OAuthInfoResponse oAuthInfoResponse = requestOAuthInfoService.request(params);
         Long memberId = findOrCreateMember(oAuthInfoResponse);
         return authTokensGenerator.generate(memberId);
+    }
+
+    public Map<String, Object> getMemberAndTokens(OAuthLoginParams params) {
+        Map<String, Object> map = new HashMap<>();
+        OAuthInfoResponse oAuthInfoResponse = requestOAuthInfoService.request(params);
+        Long memberId = findOrCreateMember(oAuthInfoResponse);
+
+        map.put("tokens", authTokensGenerator.generate(memberId));
+        map.put("memberId", memberId);
+        return map;
     }
 
     private Long findOrCreateMember(OAuthInfoResponse oAuthInfoResponse) {
