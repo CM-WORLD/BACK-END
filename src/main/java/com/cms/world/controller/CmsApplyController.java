@@ -17,7 +17,6 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/apply")
 public class CmsApplyController {
 
     private CmsApplyService service;
@@ -30,7 +29,7 @@ public class CmsApplyController {
     TelegramChat telegramChat;
 
     /* 커미션 신청 */
-    @PostMapping("/auth/form")
+    @PostMapping("/auth/apply/form")
     public Map<String, Object> submit(HttpServletRequest request, CmsApplyVo vo) {
         Map<String, Object> map = new HashMap<>();
         try {
@@ -52,7 +51,7 @@ public class CmsApplyController {
     }
 
     /* 커미션 전체 신청 리스트 */
-    @GetMapping("/auth/list/all")
+    @GetMapping("/auth/apply/list/all")
     public Map<String, List<CmsApplyDto>> list() {
         Map<String, List<CmsApplyDto>> listMap = new HashMap<>();
         listMap.put("list", service.list());
@@ -60,7 +59,7 @@ public class CmsApplyController {
     }
 
     /* 커미션 신청 리스트 by */
-    @GetMapping("/auth/list")
+    @GetMapping("/auth/apply/list")
     public Map<String, Object> listByNick (HttpServletRequest request, @RequestParam(name= "page", defaultValue = "0") Integer page, @RequestParam(name = "size", defaultValue = "10") Integer size)  {
             Map<String, Object> pageMap = new HashMap<>();
         try {
@@ -77,7 +76,7 @@ public class CmsApplyController {
     }
 
     /* 커미션 신청 상세 */
-    @GetMapping("/auth/detail")
+    @GetMapping("/auth/apply/detail")
     public Map<String, Object> detail (@RequestParam(name = "cmsApplyId") String cmsApplyId) {
         Map<String, Object> map = new HashMap<>();
         try {
@@ -96,7 +95,7 @@ public class CmsApplyController {
     }
 
     /* 커미션 상태 변경 */
-    @PutMapping("/auth/{id}")
+    @PutMapping("/auth/apply/{id}")
     public Map<Integer, String> updateStatus(@PathVariable String id, String status) {
         Map<Integer, String> map = new HashMap<>();
         if (service.updateStatus(id, status) == GlobalStatus.EXECUTE_SUCCESS.getStatus()) {
@@ -108,7 +107,7 @@ public class CmsApplyController {
     }
 
     /* 커미션 타입 변경 (관리자) */
-    @PutMapping("/auth/type/{id}/{cmsType}")
+    @PutMapping("/auth/apply/type/{id}/{cmsType}")
     public Map<String, Object> updateTp (@PathVariable String id, @PathVariable String cmsType) {
         Map<String, Object> map = new HashMap<>();
         try {
@@ -123,7 +122,7 @@ public class CmsApplyController {
     }
 
     /* 커미션 진행중 count 조회 */
-    @GetMapping("/cnt/processing")
+    @GetMapping("/apply/cnt/processing")
     public Map<String, Object> cntByProcessing() {
         Map<String, Object> map = new HashMap<>();
         map.put("cnt", service.cntByStatus(GlobalCode.CMS_PROCESS.getCode()));
@@ -131,7 +130,7 @@ public class CmsApplyController {
     }
 
     /* 커미션 예약중 count 조회 */
-    @GetMapping("/cnt/reserved")
+    @GetMapping("/apply/cnt/reserved")
     public Map<String, Object> cntByRsv() {
         Map<String, Object> map = new HashMap<>();
         map.put("cnt", service.cntByStatus(GlobalCode.CMS_RESERVE.getCode()));
