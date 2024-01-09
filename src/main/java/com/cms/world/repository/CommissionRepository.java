@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface CommissionRepository extends JpaRepository<CommissionDto, Long> {
+public interface CommissionRepository extends JpaRepository<CommissionDto, String> {
 
     List<CommissionDto> findByDelYnContaining(String delYn);
 }

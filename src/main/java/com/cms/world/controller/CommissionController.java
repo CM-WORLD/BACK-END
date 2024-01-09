@@ -42,6 +42,21 @@ public class CommissionController {
         return list;
     }
 
+    /* 커미션 신청 id 존재 여부 확인 */
+    @GetMapping("/check/id")
+    public Map<String, Object> isIdExisting (String id) {
+        Map<String, Object> map = new HashMap<>();
+
+        if (service.getById(id).isPresent()) {
+            map.put("status", GlobalStatus.SUCCESS.getStatus());
+            map.put("msg", "존재하는 커미션 아이디");
+        } else {
+            map.put("status", GlobalStatus.NOT_FOUND.getStatus());
+            map.put("msg", GlobalStatus.NOT_FOUND.getMsg());
+        }
+        return map;
+    }
+
     @PutMapping("/close/all")
     public Map<String, Object> closeAll() {
         Map<String, Object> resultMap = CommonUtil.resultMap(service.toggleAllStatus(GlobalCode.CMS_CLOSED.getCode()));
@@ -55,7 +70,7 @@ public class CommissionController {
     }
 
     @PutMapping("/toggle")
-    public Map<String, Object> toggleStatus (@RequestBody Map<String, Long> data) {
+    public Map<String, Object> toggleStatus (@RequestBody Map<String, String> data) {
         Map<String, Object> resultMap = CommonUtil.resultMap(service.toggleStatus(data.get("id")));
         return resultMap;
     }

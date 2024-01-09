@@ -11,6 +11,7 @@ public enum GlobalStatus {
 
     SUCCESS(200, "성공"),
     INVALID_PARAMETER(400, "잘못된 요청"),
+    NOT_FOUND(404, "찾을 수 없음"),
     INTERNAL_SERVER_ERR(500, "서버 에러"),
 
     //카카오

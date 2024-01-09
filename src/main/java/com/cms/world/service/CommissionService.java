@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CommissionService {
@@ -56,8 +57,7 @@ public class CommissionService {
     }
 
     @Transactional
-
-    public int toggleStatus (Long id) {
+    public int toggleStatus (String id) {
         try {
             CommissionDto dto = repository.findById(id).get();
             dto.setStatus(dto.getStatus().equals(GlobalCode.CMS_CLOSED.getCode())
@@ -68,5 +68,10 @@ public class CommissionService {
         } catch (Exception e) {
             return GlobalStatus.EXECUTE_FAILED.getStatus();
         }
+    }
+
+    // 커미션 아이디 조회
+    public Optional<CommissionDto> getById (String id){
+        return repository.findById(id);
     }
 }
