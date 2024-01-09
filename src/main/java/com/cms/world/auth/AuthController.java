@@ -9,6 +9,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -18,8 +20,6 @@ import java.util.Optional;
 public class AuthController {
 
     private final OAuthLoginService oAuthLoginService;
-
-    private final RequestOAuthInfoService requestOAuthInfoService;
 
     private final  MemberRepository memberRepository;
 
@@ -58,8 +58,12 @@ public class AuthController {
                 return map;
             } else {
                 //atk 재발급
-                Long memberId = dto.get().getId();
+                MemberDto member = dto.get();
+                Long memberId = member.getId();
                 String newAtk = authTokensGenerator.generateAtk(memberId);
+                member.setRefreshToken(newAtk);
+                memberService.save(member);
+
                 map.put("status", GlobalStatus.ATK_REISSUED.getStatus());
                 map.put("msg", GlobalStatus.ATK_REISSUED.getMsg());
                 map.put("newAtk", newAtk);
@@ -88,6 +92,7 @@ public class AuthController {
 
             MemberDto dto = memberRepository.findById(memberId).get();
             dto.setRefreshToken(jwtTokens.getRefreshToken()); // 리프레시 토큰 저장
+            dto.setLastLoginTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy.MM.dd HH.mm")));
             memberRepository.save(dto);
 
             respMap.put("status", GlobalStatus.SUCCESS.getStatus());

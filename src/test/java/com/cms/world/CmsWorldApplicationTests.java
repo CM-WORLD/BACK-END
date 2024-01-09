@@ -114,4 +114,19 @@ class CmsWorldApplicationTests {
         System.out.println("obj.toString() = " + obj.toString());
 
     }
+
+    @Autowired
+    ReviewRepository reviewRepository;
+
+    @Test
+    public void insertReview () {
+        String applyId = "8f52ce89-d814-4b3d-ba59-12b1338db24b";
+        ReviewDto dto = new ReviewDto();
+        CmsApplyDto applyDto = cmsApplyRepository.findById(applyId).get();
+        dto.setContent("너무 귀여운 그림입니다.");
+        dto.setDisplayYn("Y");
+        dto.setNickName(applyDto.getMemberDto().getNickName());
+        dto.setApplyDto(applyDto);
+        reviewRepository.save(dto);
+    }
 }
