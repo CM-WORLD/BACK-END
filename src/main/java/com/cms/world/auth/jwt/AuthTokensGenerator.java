@@ -1,5 +1,6 @@
 package com.cms.world.auth.jwt;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -48,5 +49,10 @@ public class AuthTokensGenerator {
 
     public Long extractMemberId(String accessToken) {
         return Long.valueOf(jwtTokenProvider.extractSubject(accessToken));
+    }
+
+    public Long extractMemberIdFromReq(HttpServletRequest request) {
+        String atk = request.getHeader("Authorization").substring(7);
+        return extractMemberId(atk);
     }
 }

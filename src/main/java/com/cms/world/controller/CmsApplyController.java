@@ -1,15 +1,15 @@
 package com.cms.world.controller;
 
+import com.cms.world.auth.jwt.AuthTokensGenerator;
 
 import com.cms.world.domain.dto.CmsApplyDto;
-import com.cms.world.domain.social.TelegramChat;
 import com.cms.world.domain.vo.CmsApplyVo;
 import com.cms.world.service.CmsApplyService;
 import com.cms.world.utils.GlobalCode;
 import com.cms.world.utils.GlobalStatus;
 import com.cms.world.utils.StringUtil;
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -17,16 +17,12 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
+@RequiredArgsConstructor
 public class CmsApplyController {
 
-    private CmsApplyService service;
+    private final CmsApplyService service;
 
-    public CmsApplyController(CmsApplyService service) {
-        this.service = service;
-    }
-
-    @Autowired
-    TelegramChat telegramChat;
+    private final AuthTokensGenerator authTokensGenerator;
 
     /* 커미션 신청 */
     @PostMapping("/auth/apply/form")
@@ -58,15 +54,18 @@ public class CmsApplyController {
         return listMap;
     }
 
-    /* 커미션 신청 리스트 by */
-    @GetMapping("/auth/apply/list")
-    public Map<String, Object> listByNick (HttpServletRequest request, @RequestParam(name= "page", defaultValue = "0") Integer page, @RequestParam(name = "size", defaultValue = "10") Integer size)  {
-            Map<String, Object> pageMap = new HashMap<>();
+    /* 커미션 신청 이력 by */
+    @GetMapping("/apply/history")
+    public Map<String, Object> applyHistoryByMemberId (HttpServletRequest request,
+                                                     @RequestParam(name= "page", defaultValue = "0") Integer page,
+                                                     @RequestParam(name = "size", defaultValue = "10") Integer size)  {
+        Map<String, Object> pageMap = new HashMap<>();
         try {
             pageMap.put("status", GlobalStatus.SUCCESS.getStatus());
             pageMap.put("msg", GlobalStatus.SUCCESS.getMsg());
 
-            Long id = Long.valueOf((String) request.getAttribute("memberId"));
+            Long id = authTokensGenerator.extractMemberIdFromReq(request); // req로부터 id 추출
+            
             pageMap.put("data", service.listByMemberID(id, page, size));
         } catch (Exception e) {
             pageMap.put("status", GlobalStatus.INTERNAL_SERVER_ERR.getStatus());
