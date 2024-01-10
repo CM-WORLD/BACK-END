@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/bnr")
+@RequestMapping("/api/bnr")
 public class BannerController {
 
     private final BannerService service;

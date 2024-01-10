@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/bbs")
+@RequestMapping("/api/bbs")
 public class BoardController {
 
     private final BoardService service;

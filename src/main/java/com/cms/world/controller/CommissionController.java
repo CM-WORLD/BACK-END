@@ -14,7 +14,7 @@ import java.util.Map;
 
 
 @RestController
-@RequestMapping("/cms")
+@RequestMapping("/api/cms")
 public class CommissionController {
 
     private final CommissionService service;

@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/review")
+@RequestMapping("/api/review")
 @RequiredArgsConstructor
 public class ReviewController {
 
@@ -20,6 +20,7 @@ public class ReviewController {
 
     @GetMapping("/list")
     public Map<String, Object> list () {
+        System.out.println(".... review......");
         Map<String, Object> map = new HashMap<>();
         try {
             map.put("data", service.list());

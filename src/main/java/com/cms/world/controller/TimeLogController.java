@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/log")
+@RequestMapping("/api/log")
 public class TimeLogController {
 
     private final TimeLogService service;
