@@ -28,6 +28,10 @@ public class CmsApplyDto {
     @JoinColumn(name = "MEM_ID", referencedColumnName = "ID")
     private MemberDto memberDto;
 
+    @OneToOne(mappedBy = "applyDto")
+    private CmsPayDto cmsPayDto;
+
+
     @Column(name = "TP_CD")
     private String cmsType;
 

@@ -1,9 +1,9 @@
 package com.cms.world.domain.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -21,6 +21,7 @@ public class CmsPayDto {
     private Long id;
 
     @OneToOne
+    @JsonIgnore
     @JoinColumn(name = "APLY_ID", referencedColumnName = "ID") //name은 설정할 fk 이름이다.
     private CmsApplyDto applyDto;
 
