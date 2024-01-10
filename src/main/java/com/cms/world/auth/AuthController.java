@@ -92,7 +92,7 @@ public class AuthController {
 
             MemberDto dto = memberRepository.findById(memberId).get();
             dto.setRefreshToken(jwtTokens.getRefreshToken()); // 리프레시 토큰 저장
-            dto.setLastLoginTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy.MM.dd HH.mm")));
+            dto.setLastLoginTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm")));
             memberRepository.save(dto);
 
             respMap.put("status", GlobalStatus.SUCCESS.getStatus());

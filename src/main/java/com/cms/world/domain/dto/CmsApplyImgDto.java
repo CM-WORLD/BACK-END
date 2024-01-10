@@ -26,6 +26,9 @@ public class CmsApplyImgDto {
 
     @Column(name = "IMG_URL", nullable = false, columnDefinition = "varchar(100)")
     private String imgUrl;
+    
+    @Column(name = "TP_CD")
+    private String type; // 신청이미지 / 완료 이미지
 
     @Column(name = "RGTR_DT")
     private String regDate = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy.MM.dd"));

@@ -75,7 +75,7 @@ public class CmsApplyController {
     }
 
     /* 커미션 신청 상세 */
-    @GetMapping("/auth/apply/detail")
+    @GetMapping("/apply/detail")
     public Map<String, Object> detail (@RequestParam(name = "cmsApplyId") String cmsApplyId) {
         Map<String, Object> map = new HashMap<>();
         try {

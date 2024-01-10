@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -29,8 +28,11 @@ public class CmsApplyDto {
     @JoinColumn(name = "MEM_ID", referencedColumnName = "ID")
     private MemberDto memberDto;
 
-    @Column(name = "TP_CD") // 1인이냐 2인이냐
+    @Column(name = "TP_CD")
     private String cmsType;
+
+    @Transient
+    private String cmsTypeNm;
 
     @Column(name = "TITLE", nullable = false)
     @Length(min = 2, max = 2000)
@@ -56,12 +58,13 @@ public class CmsApplyDto {
     public void doPersist () {
         this.setStatus(GlobalCode.PAY_PENDING.getCode());
         this.setStatusNm(GlobalCode.PAY_PENDING.getDesc());
-        this.setRegDate(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy.MM.dd HH.mm")));
+        this.setRegDate(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm")));
     }
 
     @PostLoad
     public void doLoad () {
         this.setStatusNm(GlobalCode.getDescByCode(this.getStatus()));
+        this.setCmsTypeNm(GlobalCode.getDescByCode(this.getCmsType()));
     }
 
 }
