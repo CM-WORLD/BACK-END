@@ -43,8 +43,11 @@ public class CmsApplyDto {
     @Column(name = "ACC_NM", nullable = false)
     private String bankOwner;
 
-    @Column(name = "STATUS") // 커미션 프로세스  + 예약
-    private String status ;
+    @Column(name = "STATUS")
+    private String status;
+
+    @Transient
+    private String statusNm;
 
     @Column(name = "RGTR_DT")
     private String regDate;
@@ -52,7 +55,13 @@ public class CmsApplyDto {
     @PrePersist
     public void doPersist () {
         this.setStatus(GlobalCode.PAY_PENDING.getCode());
+        this.setStatusNm(GlobalCode.PAY_PENDING.getDesc());
         this.setRegDate(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy.MM.dd HH.mm")));
+    }
+
+    @PostLoad
+    public void doLoad () {
+        this.setStatusNm(GlobalCode.getDescByCode(this.getStatus()));
     }
 
 }

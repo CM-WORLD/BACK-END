@@ -16,9 +16,9 @@ public enum GlobalCode { //타입 등의 코드
     TYPE_MULTI("TY05", "단체 (3인 이상)"),
 
     //커미션 프로세스
-    CMS_RESERVE("CM00", "예약중"),
-//    CMS_PENDING("CM01", "신청 대기중"),
-    PAY_PENDING("CM02", "결제 대기중"), //신청 완료, 결제 대기
+    CMS_RESERVE("CM00", "예약 접수"),
+    CMS_PENDING("CM01", "신청 접수"),
+    PAY_PENDING("CM02", "결제 요청"), //신청 완료, 결제 대기
     PAY_COMPLETE("CM03", "결제 완료"),
 //    CMS_START("CM04", "작업 시작"),
     CMS_PROCESS("CM05", "작업중"),
@@ -42,4 +42,13 @@ public enum GlobalCode { //타입 등의 코드
 
     private final String code;
     private final String desc;
+
+    public static String getDescByCode(String status) {
+        for (GlobalCode code : GlobalCode.values()) {
+            if (code.getCode().equals(status)) {
+                return code.getDesc();
+            }
+        }
+        return null;
+    }
 }
