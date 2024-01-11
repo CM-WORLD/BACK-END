@@ -41,7 +41,7 @@ public class ReplyService {
 
     public List<ReplyDto> listByBbsId (Long bbsId) {
         BoardDto bbsDto = boardRepository.findById(bbsId).get();
-        return repository.findByBoardDto(bbsDto);
+        return repository.findRepliesByBbsId(bbsDto);
     }
 
 
