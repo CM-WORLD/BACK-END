@@ -66,8 +66,6 @@ public class AuthController {
                 MemberDto member = dto.get();
                 Long memberId = member.getId();
                 String newAtk = authTokensGenerator.generateAtk(memberId);
-                member.setRefreshToken(newAtk);
-                memberService.save(member);
 
                 map.put("status", GlobalStatus.ATK_REISSUED.getStatus());
                 map.put("msg", GlobalStatus.ATK_REISSUED.getMsg());
