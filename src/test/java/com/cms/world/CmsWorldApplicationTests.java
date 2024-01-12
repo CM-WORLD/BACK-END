@@ -65,15 +65,15 @@ class CmsWorldApplicationTests {
         System.out.println("dto.toString() = " + dto.getContent());
     }
 
-    @Test
-    public void replyList () {
-        //게시물 1L 당 댓글리스트 다 가져오기.
-        BoardDto dto = boardRepository.findById(1L).get();
-        List<ReplyDto> replyList = replyRepository
-                .findByBoardDto(dto);
-
-        System.out.println("replyList = " + replyList.size());
-    }
+//    @Test
+//    public void replyList () {
+//        //게시물 1L 당 댓글리스트 다 가져오기.
+//        BoardDto dto = boardRepository.findById(1L).get();
+//        List<ReplyDto> replyList = replyRepository
+//                .findByBoardDto(dto);
+//
+//        System.out.println("replyList = " + replyList.size());
+//    }
 
     @Test
     public void applyImgList () {
