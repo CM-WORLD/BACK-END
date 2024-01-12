@@ -2,17 +2,15 @@ package com.cms.world.service;
 
 
 import com.cms.world.auth.MemberRepository;
-import com.cms.world.domain.dto.CmsApplyDto;
-import com.cms.world.domain.dto.CmsApplyImgDto;
-import com.cms.world.domain.dto.CmsPayDto;
-import com.cms.world.domain.dto.MemberDto;
+import com.cms.world.domain.dto.*;
 import com.cms.world.domain.vo.CmsApplyVo;
 import com.cms.world.repository.CmsApplyImgRepository;
 import com.cms.world.repository.CmsApplyRepository;
 import com.cms.world.repository.CmsPayRepository;
+import com.cms.world.repository.CommissionRepository;
 import com.cms.world.utils.GlobalStatus;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -21,12 +19,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class CmsApplyService {
 
     private final CmsApplyRepository repository;
@@ -38,19 +36,8 @@ public class CmsApplyService {
 
     private final CmsPayRepository payRepository;
 
-    public CmsApplyService(CmsApplyRepository repository,
-                           CmsApplyImgRepository imgRepository,
-                           S3UploadService uploadService,
-                           TimeLogService timeLogService,
-                           CmsPayRepository payRepository) {
-        this.repository = repository;
-        this.imgRepository = imgRepository;
-        this.uploadService = uploadService;
-        this.timeLogService = timeLogService;
-        this.payRepository = payRepository;
-    }
+    private final CommissionRepository commissionRepository;
 
-    @Autowired
     private MemberRepository memberRepository;
 
     /* 커미션 신청 */
@@ -62,9 +49,13 @@ public class CmsApplyService {
             dto.setContent(vo.getContent());
             dto.setBankOwner(vo.getBankOwner());
 
+            Optional<CommissionDto> cmsDto = commissionRepository.findById(vo.getCmsId());
+            if (cmsDto.isPresent()) dto.setCmsDto(cmsDto.get());
+            else throw new Exception("apply.insert :: cmsDto not found");
+
             Optional<MemberDto> memberDto = memberRepository.findById(vo.getUserId());
             if (memberDto.isPresent()) dto.setMemberDto(memberDto.get());
-            else throw new Exception("apply.insert :: user not found");
+            else throw new Exception("apply.insert :: memberDto not found");
 
             CmsApplyDto newDto = repository.save(dto);
 

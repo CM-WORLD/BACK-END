@@ -26,11 +26,11 @@ public class CmsApplyController {
     private final AuthTokensGenerator authTokensGenerator;
 
     /* 커미션 신청 */
-    @PostMapping("/auth/apply/form")
+    @PostMapping("/apply/form")
     public Map<String, Object> submit(HttpServletRequest request, CmsApplyVo vo) {
         Map<String, Object> map = new HashMap<>();
         try {
-            vo.setUserId(Long.valueOf((String) request.getAttribute("memberId")));
+            vo.setUserId(authTokensGenerator.extractMemberIdFromReq(request)); // req로부터 id 추출);
             String cmsId = service.insert(vo);
             if (!StringUtil.isEmpty(service.insert(vo))) {
                 map.put("status", String.valueOf(GlobalStatus.SUCCESS.getStatus()));
