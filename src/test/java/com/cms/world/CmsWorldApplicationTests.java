@@ -1,5 +1,6 @@
 package com.cms.world;
 
+import com.cms.world.auth.MemberRepository;
 import com.cms.world.auth.MemberService;
 import com.cms.world.auth.jwt.AuthTokensGenerator;
 import com.cms.world.auth.jwt.JwtTokenProvider;
@@ -11,6 +12,11 @@ import com.cms.world.utils.GlobalCode;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 
@@ -128,5 +134,17 @@ class CmsWorldApplicationTests {
         dto.setNickName(applyDto.getMemberDto().getNickName());
         dto.setApplyDto(applyDto);
         reviewRepository.save(dto);
+    }
+
+    @Autowired
+    MemberRepository memberRepository;
+
+    @Test
+    public void test () {
+        Pageable pageable = PageRequest.of(0, 10,  Sort.by(Sort.Direction.DESC, "regDate"));
+
+        Page<BoardDto> dto = boardRepository.findByMemberDto_IdAndBbsCode(2L, "BS02", pageable);
+
+        System.out.println("dto.toString() = " + dto.toString());
     }
 }

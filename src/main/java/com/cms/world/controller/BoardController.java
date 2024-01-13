@@ -1,6 +1,7 @@
 package com.cms.world.controller;
 
 
+import com.cms.world.auth.jwt.AuthTokensGenerator;
 import com.cms.world.domain.dto.BoardDto;
 import com.cms.world.domain.vo.BoardVo;
 import com.cms.world.service.BoardService;
@@ -8,19 +9,21 @@ import com.cms.world.utils.CommonUtil;
 import com.cms.world.utils.GlobalCode;
 import com.cms.world.utils.GlobalStatus;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @RestController
 @RequestMapping("/api/bbs")
+@RequiredArgsConstructor
 public class BoardController {
 
     private final BoardService service;
-    public BoardController (BoardService service) {
-        this.service = service;
-    }
+
+    private final AuthTokensGenerator authTokensGenerator;
 
     /* 공통 게시판 게시글 추가, X @RequestBody */
     @PostMapping("/form")
@@ -47,12 +50,23 @@ public class BoardController {
     }
 
     /*회원별로 문의 조회 */
-    @GetMapping("/auth/inquiry/by/member")
-    public Page<BoardDto> inquiryByMemberId (@RequestParam(name= "page", defaultValue = "0") Integer page,
+    @GetMapping("/inquiry/member")
+    public Map<String, Object> inquiryByMemberId (@RequestParam(name= "page", defaultValue = "0") Integer page,
                                              @RequestParam(name ="size", defaultValue = "10") Integer size,
                                              HttpServletRequest request) {
-        Long memberId = Long.valueOf((String) request.getAttribute("memberId"));
-        return service.listByMemberId(memberId, GlobalCode.BBS_INQUIRY.getCode(), page, size);
+        Map<String, Object> map = new HashMap<>();
+
+        try {
+            Long memberId = authTokensGenerator.extractMemberIdFromReq(request); // req로부터 id 추출
+            map.put("data", service.listByMemId(memberId, GlobalCode.BBS_INQUIRY.getCode(), page, size));
+            map.put("status", GlobalStatus.SUCCESS.getStatus());
+            map.put("msg", GlobalStatus.SUCCESS.getMsg());
+
+        } catch (Exception e) {
+            map.put("status", GlobalStatus.INTERNAL_SERVER_ERR.getStatus());
+            map.put("msg", GlobalStatus.INTERNAL_SERVER_ERR.getMsg());
+        }
+        return map;
     }
 
     /* 게시판 상세 조회 */
