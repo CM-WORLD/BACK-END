@@ -34,6 +34,9 @@ public class ReplyDto {
     @Column(name = "PRNT_ID")
     private Long parentId; // 대댓글 구현 : 부모 id
 
+    @Column(name = "DEPTH")
+    private Long depth;
+
     @Column(name = "RGTR_DT")
     @CreationTimestamp
     private String regDate;

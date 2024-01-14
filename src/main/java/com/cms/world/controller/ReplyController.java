@@ -20,7 +20,7 @@ public class ReplyController {
 
     /* 게시글당 댓글 조회 */
     @GetMapping("/list/{bbsId}")
-    public Map<String, Object> list (@PathVariable Long bbsId) {
+    public Map<String, Object> list (@PathVariable("bbsId") Long bbsId) {
         return CommonUtil.resultMap(service.listByBbsId(bbsId));
     }
 

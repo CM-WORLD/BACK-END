@@ -139,12 +139,12 @@ class CmsWorldApplicationTests {
     @Autowired
     MemberRepository memberRepository;
 
-    @Test
-    public void test () {
-        Pageable pageable = PageRequest.of(0, 10,  Sort.by(Sort.Direction.DESC, "regDate"));
-
-        Page<BoardDto> dto = boardRepository.findByMemberDto_IdAndBbsCode(2L, "BS02", pageable);
-
-        System.out.println("dto.toString() = " + dto.toString());
-    }
+//    @Test
+//    public void test () {
+//        Pageable pageable = PageRequest.of(0, 10,  Sort.by(Sort.Direction.DESC, "regDate"));
+//
+//        Page<BoardDto> dto = boardRepository.findByMemberDto_IdAndBbsCode(2L, "BS02", pageable);
+//
+//        System.out.println("dto.toString() = " + dto.toString());
+//    }
 }
