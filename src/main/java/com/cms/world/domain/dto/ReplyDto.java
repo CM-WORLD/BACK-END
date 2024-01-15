@@ -28,14 +28,11 @@ public class ReplyDto {
     @JoinColumn(name = "BBS_ID", referencedColumnName = "ID")
     private BoardDto boardDto;
 
-    @Column(name = "NICK_NM", nullable = false)
-    private String nickName; // nickName
-
     @Column(name = "PRNT_ID")
-    private Long parentId; // 대댓글 구현 : 부모 id
-
+    private Long parentId; 
+    
     @Column(name = "DEPTH")
-    private Long depth;
+    private String depthPath; //대댓글 경로
 
     @Column(name = "RGTR_DT")
     @CreationTimestamp

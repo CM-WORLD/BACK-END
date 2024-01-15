@@ -26,13 +26,20 @@ public class ReplyService {
     }
 
     @Transactional
-    public int insert (ReplyVo vo) throws Exception{
+    public int insert (ReplyVo vo) throws Exception {
+
         ReplyDto dto = new ReplyDto();
         dto.setContent(vo.getContent());
-        dto.setNickName(vo.getNickName());
+
+        if(vo.getParentId() == null) {
+            dto.setDepthPath("0");
+        } else {
+            ReplyDto parentDto = repository.findById(vo.getParentId()).get();
+            dto.setDepthPath(parentDto.getDepthPath() + "/" + parentDto.getId());
+        }
         dto.setParentId(vo.getParentId());
 
-        BoardDto bbsDto = boardRepository.findById(vo.getBoardId()).get();
+        BoardDto bbsDto = boardRepository.findById(vo.getBbsId()).get();
         dto.setBoardDto(bbsDto);
 
         repository.save(dto);
@@ -40,9 +47,12 @@ public class ReplyService {
     }
 
     public List<ReplyDto> listByBbsId (Long bbsId) {
-        BoardDto bbsDto = boardRepository.findById(bbsId).get();
-        return repository.findRepliesByBbsId(bbsDto);
+        return repository.findRepliesByBbsId(bbsId);
     }
 
+    public int delete (Long id) {
+        repository.deleteById(id);
+        return GlobalStatus.EXECUTE_SUCCESS.getStatus();
+    }
 
 }

@@ -1,13 +1,11 @@
 package com.cms.world.controller;
 
 
+import com.cms.world.domain.vo.ReplyVo;
 import com.cms.world.service.ReplyService;
 import com.cms.world.utils.CommonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
@@ -22,6 +20,17 @@ public class ReplyController {
     @GetMapping("/list/{bbsId}")
     public Map<String, Object> list (@PathVariable("bbsId") Long bbsId) {
         return CommonUtil.resultMap(service.listByBbsId(bbsId));
+    }
+
+    @PostMapping("/")
+    public Map<String,Object> insert (@RequestBody ReplyVo vo) throws Exception {
+        return CommonUtil.resultMap(service.insert(vo));
+    }
+
+    @DeleteMapping("/{id}")
+    public Map<String,Object> delete (@PathVariable("id") Long id) throws Exception {
+        System.out.println("id = " + id);
+        return CommonUtil.resultMap(service.delete(id));
     }
 
 }

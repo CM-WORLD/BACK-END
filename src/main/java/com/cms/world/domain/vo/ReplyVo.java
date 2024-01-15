@@ -10,9 +10,8 @@ import lombok.ToString;
 @ToString
 public class ReplyVo {
 
-    private Long boardId;
+    private Long bbsId;
     private Long parentId;
     private String content;
-    private String nickName;
 
 }
