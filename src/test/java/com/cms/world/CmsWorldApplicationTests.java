@@ -52,18 +52,6 @@ class CmsWorldApplicationTests {
 
     @Autowired
     ReplyRepository replyRepository;
-    @Test
-    public void replyInsert () {
-        //일단 게시글을 하나 가져와서
-        BoardDto bbsDto = boardRepository.findById(1L).get(); //실존하는 2L
-        ReplyDto replyDto = new ReplyDto();
-        replyDto.setNickName("user_jinvicky");
-        replyDto.setContent("안녕하세요. 관리자 걍진입니다. 해당 문의 주신 사항은.....");
-        replyDto.setBoardDto(bbsDto);
-
-        replyRepository.save(replyDto);
-
-    }
 
     @Test
     public void bbsDetail () {
@@ -71,15 +59,17 @@ class CmsWorldApplicationTests {
         System.out.println("dto.toString() = " + dto.getContent());
     }
 
-//    @Test
-//    public void replyList () {
-//        //게시물 1L 당 댓글리스트 다 가져오기.
-//        BoardDto dto = boardRepository.findById(1L).get();
-//        List<ReplyDto> replyList = replyRepository
-//                .findByBoardDto(dto);
-//
-//        System.out.println("replyList = " + replyList.size());
-//    }
+    @Test
+    public void replyList () {
+        //게시물 1L 당 댓글리스트 다 가져오기.
+        BoardDto dto = boardRepository.findById(1L).get();
+        List<ReplyDto> replyList = replyRepository
+                .findByBoardDto(dto);
+
+        for(ReplyDto item : replyList) {
+            System.out.println("item.toString() = " + item.getContent());
+        }
+    }
 
     @Test
     public void applyImgList () {

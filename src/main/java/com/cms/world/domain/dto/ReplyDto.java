@@ -2,14 +2,11 @@ package com.cms.world.domain.dto;
 
 
 import com.cms.world.utils.DateUtil;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
-
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 @Entity
 @Table(name="bbs_reply")
@@ -29,12 +26,14 @@ public class ReplyDto {
     @JoinColumn(name = "BBS_ID", referencedColumnName = "ID")
     private BoardDto boardDto;
 
-    @Column(name = "")
-    private Long parentId; 
-    
-    @Column(name = "DEPTH")
-    private String depthPath; //대댓글 경로
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "PRNT_ID", referencedColumnName = "ID")
+    private ReplyDto parent;
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "parent")
+    private List<ReplyDto> children;
+    
     @Column(name = "RGTR_DT")
     private String regDate;
 

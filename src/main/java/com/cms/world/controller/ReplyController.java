@@ -4,9 +4,11 @@ package com.cms.world.controller;
 import com.cms.world.domain.vo.ReplyVo;
 import com.cms.world.service.ReplyService;
 import com.cms.world.utils.CommonUtil;
+import com.cms.world.utils.GlobalStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @RestController
@@ -19,7 +21,17 @@ public class ReplyController {
     /* 게시글당 댓글 조회 */
     @GetMapping("/list/{bbsId}")
     public Map<String, Object> list (@PathVariable("bbsId") Long bbsId) {
-        return CommonUtil.resultMap(service.listByBbsId(bbsId));
+        Map<String, Object> map = new HashMap<>();
+        try {
+            map.put("data", service.listByBbsId(bbsId));
+            map.put("status", GlobalStatus.SUCCESS.getStatus());
+            map.put("msg", GlobalStatus.SUCCESS.getMsg());
+            return map;
+        } catch(Exception e) {
+            map.put("status", GlobalStatus.INTERNAL_SERVER_ERR.getStatus());
+            map.put("msg", GlobalStatus.INTERNAL_SERVER_ERR.getMsg());
+            return CommonUtil.resultMap(e.getMessage());
+        }
     }
 
     @PostMapping("/")

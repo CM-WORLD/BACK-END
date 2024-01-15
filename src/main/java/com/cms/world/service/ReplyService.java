@@ -13,7 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ReplyService {
@@ -35,20 +37,20 @@ public class ReplyService {
         BoardDto bbsDto = boardRepository.findById(vo.getBbsId()).get();
         dto.setBoardDto(bbsDto);
 
+        // parentId로 replyDto를 가져와서 신규 dto의 parent로 넣는다.
         if(vo.getParentId() != 0) {
-            dto.setParentId(vo.getParentId());
+        ReplyDto parent = repository.findById(vo.getParentId()).get();
+        dto.setParent(parent);
         }
-        ReplyDto newReply = repository.save(dto);
-
-        newReply.setDepthPath(StringUtil.isEmpty(vo.getParentPath())
-                        ? String.valueOf(newReply.getId())
-                        : vo.getParentPath() + "/" + newReply.getId());
+        repository.save(dto);
 
         return GlobalStatus.EXECUTE_SUCCESS.getStatus();
     }
 
-    public List<ReplyDto> listByBbsId (Long bbsId) {
-        return repository.findRepliesByBbsId(bbsId);
+    public List<ReplyDto> listByBbsId (Long bbsId) throws Exception {
+        Optional<BoardDto> bbsDto = boardRepository.findById(bbsId);
+        if(!bbsDto.isPresent()) throw new Exception("listByBbsId() : 게시글이 존재하지 않습니다.");
+        return  repository.findByBoardDto(bbsDto.get());
     }
 
     public int delete (Long id) {
