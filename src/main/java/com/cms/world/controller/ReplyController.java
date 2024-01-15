@@ -23,7 +23,8 @@ public class ReplyController {
     }
 
     @PostMapping("/")
-    public Map<String,Object> insert (@RequestBody ReplyVo vo) throws Exception {
+    public Map<String,Object> insert (ReplyVo vo) throws Exception {
+        System.out.println("vo.toString() = " + vo.toString());
         return CommonUtil.resultMap(service.insert(vo));
     }
 
@@ -33,4 +34,8 @@ public class ReplyController {
         return CommonUtil.resultMap(service.delete(id));
     }
 
+    @PutMapping("/")
+    public Map<String, Object> update (@RequestBody ReplyVo vo) {
+        return CommonUtil.resultMap(service.update(vo));
+    }
 }

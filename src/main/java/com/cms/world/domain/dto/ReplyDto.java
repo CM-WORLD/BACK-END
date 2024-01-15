@@ -1,6 +1,7 @@
 package com.cms.world.domain.dto;
 
 
+import com.cms.world.utils.DateUtil;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -28,22 +29,20 @@ public class ReplyDto {
     @JoinColumn(name = "BBS_ID", referencedColumnName = "ID")
     private BoardDto boardDto;
 
-    @Column(name = "PRNT_ID")
+    @Column(name = "")
     private Long parentId; 
     
     @Column(name = "DEPTH")
     private String depthPath; //대댓글 경로
 
     @Column(name = "RGTR_DT")
-    @CreationTimestamp
     private String regDate;
 
     @Column(name = "UPT_DT")
-    @UpdateTimestamp
     private String uptDate;
 
     @PrePersist
     public void doPersist () {
-        this.setRegDate(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy.MM.dd")));
+        this.setRegDate(DateUtil.currentDateTime());
     }
 }

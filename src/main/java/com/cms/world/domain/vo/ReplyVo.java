@@ -10,8 +10,10 @@ import lombok.ToString;
 @ToString
 public class ReplyVo {
 
+    private Long id; //replyId
     private Long bbsId;
-    private Long parentId;
+    private Long parentId; // 부모 대댓글 id
+    private String parentPath; // 부모 대댓글 경로
     private String content;
 
 }
