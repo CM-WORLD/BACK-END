@@ -39,7 +39,8 @@ public class CommissionService {
     }
 
     public List<CommissionDto> list(String delYn) {
-        return repository.findByDelYnContaining(delYn);
+        return repository.selectList();
+//        return repository.findByDelYnContaining(delYn);
     }
 
     /* 커미션 전체 열기/닫기 */

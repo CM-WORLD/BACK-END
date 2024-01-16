@@ -37,9 +37,12 @@ public class CommissionController {
     }
 
     @GetMapping("/list")
-    public List<CommissionDto> list () {
-        List<CommissionDto> list = service.list("N");
-        return list;
+    public Map<String, Object> list () {
+        Map<String, Object> map = new HashMap<>();
+        map.put("data", service.list("N"));
+        map.put("status", GlobalStatus.SUCCESS.getStatus());
+        map.put("msg", GlobalStatus.SUCCESS.getMsg());
+        return map;
     }
 
     /* 커미션 신청 id 존재 여부 확인 */
@@ -74,5 +77,4 @@ public class CommissionController {
         Map<String, Object> resultMap = CommonUtil.resultMap(service.toggleStatus(data.get("id")));
         return resultMap;
     }
-
 }

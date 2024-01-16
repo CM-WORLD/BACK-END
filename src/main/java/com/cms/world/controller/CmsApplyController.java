@@ -121,21 +121,4 @@ public class CmsApplyController {
         return map;
     }
 
-    /* 커미션 진행중 count 조회 */
-    @GetMapping("/apply/cnt/processing")
-    public Map<String, Object> cntByProcessing() {
-        Map<String, Object> map = new HashMap<>();
-        map.put("cnt", service.cntByStatus(GlobalCode.CMS_PROCESS.getCode()));
-        return map;
-    }
-
-    /* 커미션 예약중 count 조회 */
-    @GetMapping("/apply/cnt/reserved")
-    public Map<String, Object> cntByRsv() {
-        Map<String, Object> map = new HashMap<>();
-        map.put("cnt", service.cntByStatus(GlobalCode.CMS_RESERVE.getCode()));
-        return map;
-    }
-
-
 }

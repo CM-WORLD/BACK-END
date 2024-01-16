@@ -29,7 +29,7 @@ public class CommissionDto {
 
     @Column(name = "PPOFILE_IMG", nullable = false)
     private String profileImg;
-    
+
     @Column(name = "STATUS", nullable = false) // 신청 닫힘/열림
     private String status;
 
@@ -43,6 +43,12 @@ public class CommissionDto {
     @Column(name = "UPT_DT")
     @UpdateTimestamp
     private String uptDate;
+
+    @Transient
+    private Long prsCnt;
+
+    @Transient
+    private Long rsvCnt;
 
     @PrePersist
     public void doBefore() {

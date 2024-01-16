@@ -1,6 +1,7 @@
 package com.cms.world.domain.dto;
 
 import com.cms.world.utils.GlobalCode;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,11 +21,12 @@ public class CmsApplyDto {
     @Column(name = "ID")
     private String id;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JsonIgnore
     @JoinColumn(name = "CMS_ID", referencedColumnName = "ID")
     private CommissionDto cmsDto;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "MEM_ID", referencedColumnName = "ID")
     private MemberDto memberDto;
 
