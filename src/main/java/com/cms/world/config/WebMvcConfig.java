@@ -2,6 +2,8 @@ package com.cms.world.config;
 
 
 import com.cms.world.aop.AuthInterceptor;
+import com.cms.world.aop.TestInterceptor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -11,21 +13,18 @@ import java.util.Arrays;
 import java.util.List;
 
 @Configuration
+@RequiredArgsConstructor
 public class WebMvcConfig implements WebMvcConfigurer {
 
-    private final AuthInterceptor authInterceptor;
-    public WebMvcConfig (AuthInterceptor authInterceptor) {
-        this.authInterceptor = authInterceptor;
-    }
+    private final TestInterceptor testInterceptor;
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
 
-//        List<String> URL_PATTERNS = Arrays.asList("/apply/auth/**", "/bbs/auth/**");
-//        List<String> URL_PATTERNS = Arrays.asList("/auth/**");
-//        registry.addInterceptor(authInterceptor)
-//                .addPathPatterns(URL_PATTERNS)
-//                .excludePathPatterns("/css/**", "/images/**", "/js/**");
+        List<String> URL_PATTERNS = Arrays.asList("/api/test/**");
+        registry.addInterceptor(testInterceptor)
+                .addPathPatterns(URL_PATTERNS)
+                .excludePathPatterns("/css/**", "/images/**", "/js/**");
     }
 
     @Override

@@ -26,20 +26,17 @@ import java.util.Map;
 public class TestController {
 
 
-    @PostMapping("/test")
-    public Map<String, Object> form200 (BoardVo vo) {
-        System.out.println("title = " + vo.getTitle());
-        System.out.println("content = " + vo.getContent());
-        System.out.println("vo.getImgList().size() = " + vo.getImgList().size());
-//        System.out.println("vo.toString()2 = " + imgList.size());
-        return new HashMap<>();
-//        return CommonUtil.resultMap(service.insert(vo));
-    }
-    
-    @PostMapping("/apply/test")
-    public void test (HttpServletRequest request) {
-        System.out.println("request.getAttribute(\"test\") = " + request.getAttribute("test"));
-        
+    @GetMapping("/api/test/token")
+    public Map<String, Object> test (HttpServletRequest request, HttpServletResponse response) {
+        Map<String, Object> map = new HashMap<>();
+        try {
+            map.put("status", 200);
+            return map;
+            }
+        catch (Exception e) {
+            map.put("status", 500);
+            return map;
+        }
     }
 
 }
