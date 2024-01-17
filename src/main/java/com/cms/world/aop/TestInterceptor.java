@@ -18,6 +18,10 @@ public class TestInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        if(request.getHeader("type").equals("public")) {
+            log.info("모두에게 퍼블릭");
+            return true;
+        }
 
         String authHeader = request.getHeader("Authorization");
         String rtkValue = request.getHeader("RefreshToken");
@@ -25,17 +29,11 @@ public class TestInterceptor implements HandlerInterceptor {
         log.info("authHeader: {}", authHeader);
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            log.info("jinvicky???");
-//            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "인증 정보가 존재하지 않음");
-//            throw new Exception("인증 정보가 존재하지 않음");
-
             ObjectMapper objectMapper = new ObjectMapper();
             Map<String, Object> map = new HashMap<>();
             map.put("status", 200);
 
-            // JSON 객체를 문자열로 변환
             String jsonString = objectMapper.writeValueAsString(map);
-
             response.setStatus(HttpServletResponse.SC_OK); // 상태 코드 설정 (예: 400 Bad Request)
             response.getWriter().write(jsonString); // 응답에 메시지 작성
 
