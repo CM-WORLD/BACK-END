@@ -21,7 +21,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
 
-        List<String> URL_PATTERNS = Arrays.asList("/api/test/**");
+        List<String> URL_PATTERNS = Arrays.asList("/api/**");
         registry.addInterceptor(testInterceptor)
                 .addPathPatterns(URL_PATTERNS)
                 .excludePathPatterns("/css/**", "/images/**", "/js/**");

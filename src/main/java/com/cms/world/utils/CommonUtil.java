@@ -1,7 +1,5 @@
 package com.cms.world.utils;
 
-import jakarta.servlet.http.HttpServletRequest;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,12 +19,13 @@ public class CommonUtil {
         return map;
     }
 
+    /* service 데이터를 map에 담기 */
     public static Map<String, Object> renderResultByMap(Object obj) {
         Map<String, Object> map = new HashMap<>();
         try {
             if(obj == null) throw new Exception("renderResultByMap: data not found");
             map.put("status" , GlobalStatus.SUCCESS.getStatus());
-            map.put("msg", GlobalStatus.INTERNAL_SERVER_ERR.getMsg());
+            map.put("msg", GlobalStatus.SUCCESS.getMsg());
             map.put("data", obj);
 
         } catch (Exception e) {
@@ -35,6 +34,7 @@ public class CommonUtil {
         }
         return map;
     }
+
 
     public static Map<String, Object> resultMap(List list) {
         Map<String, Object> map = new HashMap<>();

@@ -34,6 +34,7 @@ public class PostController { // 블로그 이미지 리스트
         }
     }
 
+    /* 타입별 일러스트 조회 */
     @GetMapping("/list")
     public Map<String, Object> list(@RequestParam(name = "type") String type) {
         return CommonUtil.renderResultByMap(service.list(type));

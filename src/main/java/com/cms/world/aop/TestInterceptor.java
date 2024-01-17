@@ -1,68 +1,83 @@
 package com.cms.world.aop;
 
 
+import com.cms.world.auth.MemberService;
+import com.cms.world.auth.jwt.AuthTokensGenerator;
+import com.cms.world.auth.jwt.JwtTokenProvider;
+import com.cms.world.domain.dto.MemberDto;
+import com.cms.world.utils.GlobalStatus;
+import com.cms.world.utils.StringUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.servlet.HandlerInterceptor;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @Slf4j
 @Component
 @CrossOrigin
+@RequiredArgsConstructor
 public class TestInterceptor implements HandlerInterceptor {
+
+    private final JwtTokenProvider jwtTokenProvider;
+
+    private final MemberService memberService;
+
+    private final AuthTokensGenerator authTokensGenerator;
+
+
+    private boolean isLoginRequired (String authorizationHeader, String refreshToken) {
+        if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) return true;
+        String accessToken = authorizationHeader.substring(7); // atk 추출
+        if (!jwtTokenProvider.validateToken(accessToken) && !jwtTokenProvider.validateToken(refreshToken)) return true;
+        return false;
+    }
+
+    private void sendObjMappingData (HttpServletResponse response, GlobalStatus status) throws Exception{
+        ObjectMapper objectMapper = new ObjectMapper();
+        Map<String, Object> map = new HashMap<>();
+        map.put("status", status.getStatus());
+        map.put("msg", status.getMsg());
+
+        String jsonString = objectMapper.writeValueAsString(map);
+        response.addHeader("Content-Type", "application/json; charset=UTF-8");
+
+        response.getWriter().write(jsonString);
+
+    }
 
     @Override
     public boolean preHandle(HttpServletRequest request , HttpServletResponse response, Object handler) throws Exception {
-            if (request.getHeader("type").equals("public")) {
-//                request.setAttribute("newAtk", "thisispulibc");
-                log.info("모두에게 퍼블릭");
-                return true;
-            } else {
-                request.setAttribute("newAtk", "thisisprivate");
+        if(!StringUtil.isEmpty(request.getHeader("type")) && request.getHeader("type").equals("public") ) return true;
+
+        String authHeader = request.getHeader("Authorization");
+        String rtkValue = request.getHeader("RefreshToken");
+
+        if (isLoginRequired(authHeader, rtkValue)) { //로그인 필요한 경우
+            sendObjMappingData(response, GlobalStatus.LOGIN_REQUIRED);
+            return false;
+        }
+
+        if(!jwtTokenProvider.validateToken(authHeader.substring(7))) {
+            Optional<MemberDto> dto = memberService.getByRtk(rtkValue);
+
+            if (!dto.isPresent()) {
+                sendObjMappingData(response, GlobalStatus.NOT_FOUND_USER);
+                return false;
+            } else { // 액세스 토큰 재발급
+                Long memberId = dto.get().getId();
+                String newAccessToken = authTokensGenerator.generateAtk(memberId);
+                request.setAttribute("newAtk", newAccessToken);
                 return true;
             }
-//return false;
-//        String authHeader = request.getHeader("Authorization");
-//        String rtkValue = request.getHeader("RefreshToken");
-//
-//
-//
-//        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-////            ObjectMapper objectMapper = new ObjectMapper();
-////            Map<String, Object> map = new HashMap<>();
-////            map.put("status", 205);
-////            map.put("newAtk", "this is new atk....");
-//
-//            //지금 여기가 재발급이라고 그냥 가정할게
-//
-////            String jsonString = objectMapper.writeValueAsString(map);
-////            response.setStatus(HttpServletResponse.SC_OK); // 상태 코드 설정 (예: 400 Bad Request)
-////            response.getWriter().write(jsonString); // 응답에 메시지 작성
-//
-//            // 지금 1번방법 사용중( 틀린 방법은 없음)
-//            // 2번: response.setStatus를 200코드 주고 response.getWriter().write여기에 커스텀 코드값과 data값을 Json형식으로 프론트로 전달
-//            return true;
-//        }
-//        return HandlerInterceptor.super.preHandle(request, response, handler);
-    }
-
-    @Override
-    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
-        log.info("-===================== post ===================");
-        //
-        HandlerInterceptor.super.postHandle(request, response, handler, modelAndView);
-    }
-
-    @Override
-    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
-//        log.info("[{}] afterCompletion... interceptor 실행");
+        }
+        return HandlerInterceptor.super.preHandle(request, response, handler);
     }
 }
