@@ -30,7 +30,7 @@ public class ReplyController {
         } catch(Exception e) {
             map.put("status", GlobalStatus.INTERNAL_SERVER_ERR.getStatus());
             map.put("msg", GlobalStatus.INTERNAL_SERVER_ERR.getMsg());
-            return CommonUtil.resultMap(e.getMessage());
+            return CommonUtil.renderResultByMap(e.getMessage());
         }
     }
 

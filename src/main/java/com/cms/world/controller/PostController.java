@@ -4,12 +4,15 @@ package com.cms.world.controller;
 import com.cms.world.domain.dto.PostDto;
 import com.cms.world.domain.vo.PostVo;
 import com.cms.world.service.PostService;
+import com.cms.world.utils.CommonUtil;
 import com.cms.world.utils.GlobalStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/post")
@@ -32,7 +35,7 @@ public class PostController { // 블로그 이미지 리스트
     }
 
     @GetMapping("/list")
-    public List<PostDto> list(@RequestParam(name = "type") String type) {
-        return service.list(type);
+    public Map<String, Object> list(@RequestParam(name = "type") String type) {
+        return CommonUtil.renderResultByMap(service.list(type));
     }
 }

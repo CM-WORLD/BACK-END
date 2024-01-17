@@ -72,7 +72,7 @@ public class BoardController {
     /* 게시판 상세 조회 */
     @GetMapping("/{bbsCode}/{id}")
     public Map<String, Object> getById (@PathVariable("bbsCode") String bbsCode, @PathVariable("id") Long id) {
-        return CommonUtil.resultMap(service.detailById(bbsCode, id));
+        return CommonUtil.renderResultByMap(service.detailById(bbsCode, id));
     }
 
     public Page<BoardDto> getListByBbsCode (String type, int page, int size) {
