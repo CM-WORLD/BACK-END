@@ -2,7 +2,7 @@ package com.cms.world.domain.dto;
 
 
 import com.cms.world.utils.DateUtil;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,6 +12,8 @@ import java.util.List;
 @Table(name="bbs_reply")
 @Getter
 @Setter
+//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+//@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ReplyDto {
 
     @Id

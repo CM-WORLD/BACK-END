@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ReplyService {
@@ -47,11 +48,18 @@ public class ReplyService {
         return GlobalStatus.EXECUTE_SUCCESS.getStatus();
     }
 
-    public List<ReplyDto> listByBbsId (Long bbsId) throws Exception {
-        Optional<BoardDto> bbsDto = boardRepository.findById(bbsId);
-        if(!bbsDto.isPresent()) throw new Exception("listByBbsId() : 게시글이 존재하지 않습니다.");
-        return  repository.findByBoardDto(bbsDto.get());
-    }
+//    public List<ReplyDto> listByBbsId (Long bbsId) throws Exception {
+//        Optional<BoardDto> bbsDto = boardRepository.findById(bbsId);
+//        if(!bbsDto.isPresent()) throw new Exception("listByBbsId() : 게시글이 존재하지 않습니다.");
+//        else {
+//            List<ReplyDto> list = repository.findByBoardDto(bbsDto.get());
+//            list = list.stream()
+//                    .filter(ReplyDto.class::isInstance)
+//                    .map(ReplyDto.class::cast)
+//                    .collect(Collectors.toList());
+//        return list;
+//        }
+//    }
 
     public int delete (Long id) {
         repository.deleteById(id);
