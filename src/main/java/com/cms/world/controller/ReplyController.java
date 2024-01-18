@@ -19,7 +19,7 @@ public class ReplyController {
     private ReplyService service;
 
     /* 게시글당 댓글 조회 */
-    @GetMapping("/list/{bbsId}")
+    @GetMapping("/{bbsId}")
     public Map<String, Object> list (@PathVariable("bbsId") Long bbsId) {
         Map<String, Object> map = new HashMap<>();
         try {

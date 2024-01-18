@@ -21,7 +21,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
 
         List<String> URL_PATTERNS = Arrays.asList("/api/**");
-        List<String> URL_EXCLUDE_PATTERNS = Arrays.asList("/api/process/kakao", "/css/**", "/images/**", "/js/**");
+        List<String> URL_EXCLUDE_PATTERNS = Arrays.asList("/api/process/kakao","/invalidate/token", "/css/**", "/images/**", "/js/**");
 
         registry.addInterceptor(authInterceptor)
                 .addPathPatterns(URL_PATTERNS)
