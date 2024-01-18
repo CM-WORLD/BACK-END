@@ -9,6 +9,7 @@ import org.hibernate.validator.constraints.Length;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 @Entity
 @Table(name="cms_aply")
@@ -22,7 +23,6 @@ public class CmsApplyDto {
     private String id;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JsonIgnore
     @JoinColumn(name = "CMS_ID", referencedColumnName = "ID")
     private CommissionDto cmsDto;
 
@@ -33,6 +33,8 @@ public class CmsApplyDto {
     @OneToOne(mappedBy = "applyDto")
     private CmsPayDto cmsPayDto;
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "applyDto")
+    private List<CmsApplyImgDto> cmsApplyImgDto;
 
     @Column(name = "TP_CD")
     private String cmsType;

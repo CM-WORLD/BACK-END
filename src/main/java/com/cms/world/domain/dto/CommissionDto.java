@@ -45,11 +45,13 @@ public class CommissionDto {
     @UpdateTimestamp
     private String uptDate;
 
-    @Formula("select count(*) from cms_aply where cms_id = id and status = 'CM02'")
-    private Long prsCnt;
 
-    @Formula("select count(*) from cms_aply where cms_id = id and status = 'CM08'")
-    private Long rsvCnt;
+
+//    @Formula("select count(*) from cms_aply where cms_id = id and status = 'CM02'")
+    private Long prsCnt = 0L;
+
+//    @Formula("select count(*) from cms_aply where cms_id = id and status = 'CM08'")
+    private Long rsvCnt = 0L;
 
     @PrePersist
     public void doBefore() {

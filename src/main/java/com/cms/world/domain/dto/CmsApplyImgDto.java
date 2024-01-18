@@ -1,13 +1,13 @@
 package com.cms.world.domain.dto;
 
 
+import com.cms.world.utils.DateUtil;
+import com.cms.world.utils.GlobalCode;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
 @Entity
 @Table(name = "cms_img")
@@ -21,16 +21,27 @@ public class CmsApplyImgDto {
     private String uuid;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "APLY_ID", referencedColumnName = "ID") //name은 설정할 fk 이름이다.
     private CmsApplyDto applyDto;
 
     @Column(name = "IMG_URL", nullable = false, columnDefinition = "varchar(100)")
     private String imgUrl;
     
-    @Column(name = "TP_CD")
-    private String type; // 신청이미지 / 완료 이미지
+    @Column(name = "STATUS")
+    private String status; // 신청이미지 / 완료 이미지
+
+    @Column(name = "DEL_YN")
+    private String delYn; //삭제 여부
 
     @Column(name = "RGTR_DT")
-    private String regDate = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy.MM.dd"));
+    private String regDate;
+
+    @PrePersist
+    public void doPrePersist () {
+        this.setStatus(GlobalCode.APPLIED_IMG.getCode());
+        this.setDelYn("N");
+        this.setRegDate(DateUtil.currentDateTime());
+    }
 
 }

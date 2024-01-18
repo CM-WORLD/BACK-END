@@ -15,6 +15,12 @@ public enum GlobalCode { //타입 등의 코드
 //    TYPE_COUP_BG("TY04", "2인 배경"),
     TYPE_MULTI("TY05", "단체 (3인 이상)"),
 
+
+    /* 커미션 신청 이미지 상태 */
+    APPLIED_IMG("CG01", "신청 이미지"),
+    COMPLETE_IMG("CG02", "완성 이미지"),
+
+
     //커미션 프로세스
     CMS_RESERVE("CM00", "예약 접수"),
     CMS_PENDING("CM01", "신청 접수"),

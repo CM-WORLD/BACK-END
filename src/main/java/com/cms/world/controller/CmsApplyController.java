@@ -6,6 +6,7 @@ import com.cms.world.domain.dto.CmsApplyDto;
 import com.cms.world.domain.vo.CmsApplyVo;
 import com.cms.world.service.CmsApplyService;
 import com.cms.world.utils.CommonUtil;
+import com.cms.world.utils.GlobalCode;
 import com.cms.world.utils.GlobalStatus;
 import com.cms.world.utils.StringUtil;
 import jakarta.servlet.http.HttpServletRequest;
@@ -72,10 +73,9 @@ public class CmsApplyController {
             map.put("status", GlobalStatus.SUCCESS.getStatus());
             map.put("msg", GlobalStatus.SUCCESS.getMsg());
             map.put("data", service.detail(cmsApplyId));
-            // 신청 이미지 리스트
-            map.put("imgList", service.imgListById(cmsApplyId));
-            // 결제 영수증
-            map.put("payment", service.paymentDetail(cmsApplyId));
+            map.put("applyImgList", service.imgListByStatus(cmsApplyId, GlobalCode.APPLIED_IMG.getCode()));
+            map.put("completeImgList", service.imgListByStatus(cmsApplyId, GlobalCode.COMPLETE_IMG.getCode()));
+
         } catch (Exception e) {
             map.put("status", GlobalStatus.INTERNAL_SERVER_ERR.getStatus());
             map.put("msg", GlobalStatus.INTERNAL_SERVER_ERR.getMsg());

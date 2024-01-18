@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -120,10 +121,16 @@ public class CmsApplyService {
         }
     }
     
-    /* 커미션 신청 이미지 리스트 조회 */
-    public List<CmsApplyImgDto> imgListById (String id) {
-        CmsApplyDto applyDto = repository.findById(id).get();
-        return imgRepository.findAllByApplyDto(applyDto);
+    /* 커미션 신청 이미지 리스트 상태별 조회 */
+    public List<CmsApplyImgDto> imgListByStatus (String id, String status) {
+        Optional<CmsApplyDto> applyDto = repository.findById(id);
+        List<CmsApplyImgDto> imgList = new ArrayList<>();
+        if (applyDto.isPresent()) {
+            imgList = applyDto.get().getCmsApplyImgDto().stream()
+                   .filter(img -> img.getStatus().equals(status))
+                   .toList();
+        }
+        return imgList;
     }
 
     /* 신청서당 영수증 1:1 조회 */
