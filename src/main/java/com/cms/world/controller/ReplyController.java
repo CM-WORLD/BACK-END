@@ -23,7 +23,7 @@ public class ReplyController {
     public Map<String, Object> list (@PathVariable("bbsId") Long bbsId) {
         Map<String, Object> map = new HashMap<>();
         try {
-            map.put("data", service.listByBbsId(bbsId));
+//            map.put("data", service.listByBbsId(bbsId));
             map.put("status", GlobalStatus.SUCCESS.getStatus());
             map.put("msg", GlobalStatus.SUCCESS.getMsg());
             return map;
