@@ -1,7 +1,7 @@
 package com.cms.world.controller;
 
 
-import com.cms.world.auth.jwt.AuthTokensGenerator;
+import com.cms.world.security.jwt.JwtTokensGenerator;
 import com.cms.world.domain.dto.BoardDto;
 import com.cms.world.domain.vo.BoardVo;
 import com.cms.world.service.BoardService;
@@ -23,7 +23,7 @@ public class BoardController {
 
     private final BoardService service;
 
-    private final AuthTokensGenerator authTokensGenerator;
+    private final JwtTokensGenerator jwtTokensGenerator;
 
     /* 공통 게시판 게시글 추가, X @RequestBody */
     @PostMapping("/form")
@@ -37,10 +37,11 @@ public class BoardController {
 
     /* 커미션 신청 공지 게시판 */
     @GetMapping("/aply/cms")
-    public Page<BoardDto> aplyCmsList (@RequestParam(name="page", defaultValue = "0") Integer page,
+    public Map<String, Object> notice (@RequestParam(name="page", defaultValue = "0") Integer page,
                                        @RequestParam(name="size", defaultValue = "10") Integer size) {
-        return getListByBbsCode(GlobalCode.BBS_APLY.getCode(), page, size);
+        return CommonUtil.renderResultByMap(getListByBbsCode(GlobalCode.BBS_APLY.getCode(), page, size));
     }
+
 
     /* 문의 리스트 전체 (어드민 조회용) */
     @GetMapping("/inquiry")
@@ -57,7 +58,7 @@ public class BoardController {
         Map<String, Object> map = new HashMap<>();
 
         try {
-            Long memberId = authTokensGenerator.extractMemberIdFromReq(request); // req로부터 id 추출
+            Long memberId = jwtTokensGenerator.extractMemberIdFromReq(request); // req로부터 id 추출
             map.put("data", service.listByMemId(memberId, GlobalCode.BBS_INQUIRY.getCode(), page, size));
             map.put("status", GlobalStatus.SUCCESS.getStatus());
             map.put("msg", GlobalStatus.SUCCESS.getMsg());

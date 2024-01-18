@@ -1,23 +1,17 @@
 package com.cms.world;
 
 import com.cms.world.auth.MemberRepository;
-import com.cms.world.auth.MemberService;
-import com.cms.world.auth.jwt.AuthTokensGenerator;
-import com.cms.world.auth.jwt.JwtTokenProvider;
+import com.cms.world.security.jwt.JwtTokensGenerator;
+import com.cms.world.security.jwt.JwtTokenProvider;
 import com.cms.world.domain.dto.*;
-import com.cms.world.domain.common.AlertMsg;
+import com.cms.world.domain.vo.AlertMsg;
 import com.cms.world.domain.social.TelegramChat;
 import com.cms.world.repository.*;
 import com.cms.world.utils.GlobalCode;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 
-import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 
@@ -101,7 +95,7 @@ class CmsWorldApplicationTests {
     }
     
     @Autowired
-    AuthTokensGenerator tokensGenerator;
+    JwtTokensGenerator tokensGenerator;
     
     @Test
     public void claimsTest () {

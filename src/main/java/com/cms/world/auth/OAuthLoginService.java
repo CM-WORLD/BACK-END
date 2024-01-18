@@ -1,8 +1,8 @@
 package com.cms.world.auth;
 
 
-import com.cms.world.auth.jwt.AuthTokens;
-import com.cms.world.auth.jwt.AuthTokensGenerator;
+import com.cms.world.security.jwt.JwtTokens;
+import com.cms.world.security.jwt.JwtTokensGenerator;
 import com.cms.world.domain.dto.MemberDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,13 +15,13 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class OAuthLoginService {
     private final MemberRepository memberRepository;
-    private final AuthTokensGenerator authTokensGenerator;
+    private final JwtTokensGenerator jwtTokensGenerator;
     private final RequestOAuthInfoService requestOAuthInfoService;
 
-    public AuthTokens login(OAuthLoginParams params) {
+    public JwtTokens login(OAuthLoginParams params) {
         OAuthInfoResponse oAuthInfoResponse = requestOAuthInfoService.request(params);
         Long memberId = findOrCreateMember(oAuthInfoResponse);
-        return authTokensGenerator.generate(memberId);
+        return jwtTokensGenerator.generate(memberId);
     }
 
     public Map<String, Object> getMemberAndTokens(OAuthLoginParams params) {
@@ -29,7 +29,7 @@ public class OAuthLoginService {
         OAuthInfoResponse oAuthInfoResponse = requestOAuthInfoService.request(params);
         Long memberId = findOrCreateMember(oAuthInfoResponse);
 
-        map.put("tokens", authTokensGenerator.generate(memberId));
+        map.put("tokens", jwtTokensGenerator.generate(memberId));
         map.put("memberId", memberId);
         return map;
     }

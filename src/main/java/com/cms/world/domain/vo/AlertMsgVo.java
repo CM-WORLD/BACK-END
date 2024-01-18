@@ -1,4 +1,4 @@
-package com.cms.world.domain.common;
+package com.cms.world.domain.vo;
 
 
 import com.cms.world.utils.GlobalCode;

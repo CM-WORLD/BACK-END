@@ -2,7 +2,6 @@ package com.cms.world.config;
 
 
 import com.cms.world.aop.AuthInterceptor;
-import com.cms.world.aop.TestInterceptor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -16,15 +15,17 @@ import java.util.List;
 @RequiredArgsConstructor
 public class WebMvcConfig implements WebMvcConfigurer {
 
-    private final TestInterceptor testInterceptor;
+    private final AuthInterceptor authInterceptor;
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
 
         List<String> URL_PATTERNS = Arrays.asList("/api/**");
-        registry.addInterceptor(testInterceptor)
+        List<String> URL_EXCLUDE_PATTERNS = Arrays.asList("/api/process/kakao", "/css/**", "/images/**", "/js/**");
+
+        registry.addInterceptor(authInterceptor)
                 .addPathPatterns(URL_PATTERNS)
-                .excludePathPatterns("/css/**", "/images/**", "/js/**");
+                .excludePathPatterns(URL_EXCLUDE_PATTERNS);
     }
 
     @Override

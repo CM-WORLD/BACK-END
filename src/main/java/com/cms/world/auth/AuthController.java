@@ -1,8 +1,8 @@
 package com.cms.world.auth;
 
-import com.cms.world.auth.jwt.AuthTokens;
-import com.cms.world.auth.jwt.AuthTokensGenerator;
-import com.cms.world.auth.jwt.JwtTokenProvider;
+import com.cms.world.security.jwt.JwtTokens;
+import com.cms.world.security.jwt.JwtTokensGenerator;
+import com.cms.world.security.jwt.JwtTokenProvider;
 import com.cms.world.domain.dto.MemberDto;
 import com.cms.world.utils.GlobalStatus;
 import jakarta.servlet.http.HttpServletRequest;
@@ -15,8 +15,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 
 
 @RestController
@@ -32,8 +30,17 @@ public class AuthController {
 
     private final MemberService memberService;
 
-    private final AuthTokensGenerator authTokensGenerator;
+    private final JwtTokensGenerator jwtTokensGenerator;
 
+    /* 로그인 여부 체크 */
+    @GetMapping("/login/check")
+    public Map<String, Object> isLogined () {
+        Map<String, Object> map = new HashMap<>();
+        map.put("status", GlobalStatus.SUCCESS.getStatus());
+        map.put("msg", GlobalStatus.SUCCESS.getMsg());
+        
+        return map;
+    }
 
     /* interceptor 외 인증 여부 확인 */
     @GetMapping("/validate/token")
@@ -65,7 +72,7 @@ public class AuthController {
                 //atk 재발급
                 MemberDto member = dto.get();
                 Long memberId = member.getId();
-                String newAtk = authTokensGenerator.generateAtk(memberId);
+                String newAtk = jwtTokensGenerator.generateAtk(memberId);
 
                 map.put("status", GlobalStatus.ATK_REISSUED.getStatus());
                 map.put("msg", GlobalStatus.ATK_REISSUED.getMsg());
@@ -90,7 +97,7 @@ public class AuthController {
 
             Map<String, Object> resultMap = oAuthLoginService.getMemberAndTokens(params);
 
-            AuthTokens jwtTokens = (AuthTokens) resultMap.get("tokens");
+            JwtTokens jwtTokens = (JwtTokens) resultMap.get("tokens");
             Long memberId = (Long) resultMap.get("memberId");
 
             MemberDto dto = memberRepository.findById(memberId).get();

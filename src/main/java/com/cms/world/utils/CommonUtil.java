@@ -35,18 +35,4 @@ public class CommonUtil {
         return map;
     }
 
-
-    public static Map<String, Object> resultMap(List list) {
-        Map<String, Object> map = new HashMap<>();
-        if (list != null) {
-            map.put("status" , GlobalStatus.SUCCESS.getStatus());
-            map.put("data", list);
-        } else {
-            map.put("status" , GlobalStatus.INTERNAL_SERVER_ERR.getStatus());
-            map.put("data", list);
-        }
-        return map;
-    }
-
-
 }

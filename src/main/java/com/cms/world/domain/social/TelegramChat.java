@@ -1,8 +1,7 @@
 package com.cms.world.domain.social;
 
 
-import com.cms.world.domain.common.AlertMsg;
-import com.cms.world.domain.vo.CmsApplyVo;
+import com.cms.world.domain.vo.AlertMsg;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;

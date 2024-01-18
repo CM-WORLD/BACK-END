@@ -1,11 +1,10 @@
 package com.cms.world.controller;
 
-import com.cms.world.auth.jwt.AuthTokensGenerator;
+import com.cms.world.security.jwt.JwtTokensGenerator;
 
 import com.cms.world.domain.dto.CmsApplyDto;
 import com.cms.world.domain.vo.CmsApplyVo;
 import com.cms.world.service.CmsApplyService;
-import com.cms.world.utils.GlobalCode;
 import com.cms.world.utils.GlobalStatus;
 import com.cms.world.utils.StringUtil;
 import jakarta.servlet.http.HttpServletRequest;
@@ -23,14 +22,14 @@ public class CmsApplyController {
 
     private final CmsApplyService service;
 
-    private final AuthTokensGenerator authTokensGenerator;
+    private final JwtTokensGenerator jwtTokensGenerator;
 
     /* 커미션 신청 */
     @PostMapping("/apply/form")
     public Map<String, Object> submit(HttpServletRequest request, CmsApplyVo vo) {
         Map<String, Object> map = new HashMap<>();
         try {
-            vo.setUserId(authTokensGenerator.extractMemberIdFromReq(request)); // req로부터 id 추출);
+            vo.setUserId(jwtTokensGenerator.extractMemberIdFromReq(request)); // req로부터 id 추출);
             String cmsId = service.insert(vo);
             if (!StringUtil.isEmpty(service.insert(vo))) {
                 map.put("status", String.valueOf(GlobalStatus.SUCCESS.getStatus()));
@@ -65,7 +64,7 @@ public class CmsApplyController {
             pageMap.put("status", GlobalStatus.SUCCESS.getStatus());
             pageMap.put("msg", GlobalStatus.SUCCESS.getMsg());
 
-            Long id = authTokensGenerator.extractMemberIdFromReq(request); // req로부터 id 추출
+            Long id = jwtTokensGenerator.extractMemberIdFromReq(request); // req로부터 id 추출
             
             pageMap.put("data", service.listByMemberID(id, page, size));
         } catch (Exception e) {
