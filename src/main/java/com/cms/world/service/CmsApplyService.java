@@ -115,6 +115,9 @@ public class CmsApplyService {
     public CmsApplyDto detail (String id) throws Exception{
         Optional<CmsApplyDto> applyDto = repository.findById(id);
         if(applyDto.isPresent()) {
+            // 신청아이디가 속한 커미션 정보 찾기
+            Optional<CommissionDto> cmsDto = commissionRepository.findById(applyDto.get().getCmsDto().getId());
+            applyDto.get().setCmsName(cmsDto.get().getName());
             return applyDto.get();
         } else {
             throw new Exception("applyDto not found");
@@ -131,6 +134,14 @@ public class CmsApplyService {
                    .toList();
         }
         return imgList;
+    }
+
+    /* 해당 커미션에 속한 신청중/예약 신청 건 cnt 조회 */
+    public Long applyCntByStatus (String status, String cmsId) throws Exception{
+        Optional<CommissionDto> cmsDto = commissionRepository.findById(cmsId);
+        if (cmsDto.isPresent()) {
+           return Long.valueOf(repository.countByStatusAndCmsDto_Id(status, cmsDto.get().getId()));
+        } else throw new Exception("applyCntByStatus error: cmsDto not found");
     }
 
     /* 신청서당 영수증 1:1 조회 */

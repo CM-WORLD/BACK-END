@@ -2,10 +2,12 @@ package com.cms.world.controller;
 
 import com.cms.world.domain.dto.CommissionDto;
 import com.cms.world.domain.vo.CommissionVo;
+import com.cms.world.service.CmsApplyService;
 import com.cms.world.service.CommissionService;
 import com.cms.world.utils.CommonUtil;
 import com.cms.world.utils.GlobalCode;
 import com.cms.world.utils.GlobalStatus;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -15,13 +17,13 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/cms")
+@RequiredArgsConstructor
 public class CommissionController {
 
     private final CommissionService service;
 
-    public CommissionController (CommissionService service) {
-        this.service = service;
-    }
+    private final CmsApplyService cmsApplyService;
+
 
     @PostMapping("/form")
     public Map<Integer, String> submit(CommissionVo vo) {
@@ -39,9 +41,23 @@ public class CommissionController {
     @GetMapping("/list")
     public Map<String, Object> list () {
         Map<String, Object> map = new HashMap<>();
-        map.put("data", service.list("N"));
-        map.put("status", GlobalStatus.SUCCESS.getStatus());
-        map.put("msg", GlobalStatus.SUCCESS.getMsg());
+        try {
+            List<CommissionDto> list = service.list("N");
+            for(CommissionDto dto : list) {
+
+                dto.setPrsCnt(cmsApplyService.applyCntByStatus( GlobalCode.CMS_PROCESS.getCode(), dto.getId()));
+                dto.setRsvCnt(cmsApplyService.applyCntByStatus( GlobalCode.CMS_RESERVE.getCode(), dto.getId()));
+
+                System.out.println("dto.getPrsCnt() = " + dto.getPrsCnt());
+                System.out.println("dto.getPrsCnt() = " + dto.getRsvCnt());
+            }
+            map.put("status" , GlobalStatus.SUCCESS.getStatus());
+            map.put("msg", GlobalStatus.SUCCESS.getMsg());
+            map.put("data", list);
+        } catch (Exception e) {
+            map.put("status" , GlobalStatus.INTERNAL_SERVER_ERR.getStatus());
+            map.put("msg", GlobalStatus.INTERNAL_SERVER_ERR.getMsg());
+        }
         return map;
     }
 

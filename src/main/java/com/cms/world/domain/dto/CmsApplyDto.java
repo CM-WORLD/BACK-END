@@ -1,14 +1,12 @@
 package com.cms.world.domain.dto;
 
+import com.cms.world.utils.DateUtil;
 import com.cms.world.utils.GlobalCode;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Entity
@@ -62,11 +60,14 @@ public class CmsApplyDto {
     @Column(name = "RGTR_DT")
     private String regDate;
 
+    @Transient
+    private String cmsName;
+
     @PrePersist
     public void doPersist () {
         this.setStatus(GlobalCode.PAY_PENDING.getCode());
         this.setStatusNm(GlobalCode.PAY_PENDING.getDesc());
-        this.setRegDate(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm")));
+        this.setRegDate(DateUtil.currentDateTime());
     }
 
     @PostLoad

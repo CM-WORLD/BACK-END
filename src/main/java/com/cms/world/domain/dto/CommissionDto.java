@@ -7,7 +7,6 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.Formula;
 import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity
@@ -45,13 +44,11 @@ public class CommissionDto {
     @UpdateTimestamp
     private String uptDate;
 
+    @Transient
+    private Long prsCnt;
 
-
-//    @Formula("select count(*) from cms_aply where cms_id = id and status = 'CM02'")
-    private Long prsCnt = 0L;
-
-//    @Formula("select count(*) from cms_aply where cms_id = id and status = 'CM08'")
-    private Long rsvCnt = 0L;
+    @Transient
+    private Long rsvCnt;
 
     @PrePersist
     public void doBefore() {
