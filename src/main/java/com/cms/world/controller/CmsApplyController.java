@@ -5,6 +5,7 @@ import com.cms.world.security.jwt.JwtTokensGenerator;
 import com.cms.world.domain.dto.CmsApplyDto;
 import com.cms.world.domain.vo.CmsApplyVo;
 import com.cms.world.service.CmsApplyService;
+import com.cms.world.utils.CommonUtil;
 import com.cms.world.utils.GlobalStatus;
 import com.cms.world.utils.StringUtil;
 import jakarta.servlet.http.HttpServletRequest;
@@ -54,24 +55,13 @@ public class CmsApplyController {
         return listMap;
     }
 
-    /* 커미션 신청 이력 by */
+    /* 사용자별 신청 내역 */
     @GetMapping("/apply/history")
     public Map<String, Object> applyHistoryByMemberId (HttpServletRequest request,
                                                      @RequestParam(name= "page", defaultValue = "0") Integer page,
                                                      @RequestParam(name = "size", defaultValue = "10") Integer size)  {
-        Map<String, Object> pageMap = new HashMap<>();
-        try {
-            pageMap.put("status", GlobalStatus.SUCCESS.getStatus());
-            pageMap.put("msg", GlobalStatus.SUCCESS.getMsg());
-
-            Long id = jwtTokensGenerator.extractMemberIdFromReq(request); // req로부터 id 추출
-            
-            pageMap.put("data", service.listByMemberID(id, page, size));
-        } catch (Exception e) {
-            pageMap.put("status", GlobalStatus.INTERNAL_SERVER_ERR.getStatus());
-            pageMap.put("msg", GlobalStatus.INTERNAL_SERVER_ERR.getMsg());
-        }
-        return pageMap;
+        Long id = jwtTokensGenerator.extractMemberIdFromReq(request);
+        return CommonUtil.renderResultByMap(service.listByMemberID(id, page, size));
     }
 
     /* 커미션 신청 상세 */
