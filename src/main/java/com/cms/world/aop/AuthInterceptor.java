@@ -1,6 +1,5 @@
 package com.cms.world.aop;
 
-
 import com.cms.world.auth.MemberService;
 import com.cms.world.security.jwt.JwtTokensGenerator;
 import com.cms.world.security.jwt.JwtTokenProvider;
@@ -8,13 +7,20 @@ import com.cms.world.domain.dto.MemberDto;
 import com.cms.world.utils.GlobalStatus;
 import com.cms.world.utils.StringUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
+import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.servlet.HandlerInterceptor;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -55,6 +61,7 @@ public class AuthInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request , HttpServletResponse response, Object handler) throws Exception {
+        request.setAttribute("test", "please get my cookie");
         if(!StringUtil.isEmpty(request.getHeader("type")) && request.getHeader("type").equals("public") ) return true;
 
         String authHeader = request.getHeader("Authorization");
@@ -79,5 +86,15 @@ public class AuthInterceptor implements HandlerInterceptor {
             }
         }
         return HandlerInterceptor.super.preHandle(request, response, handler);
+    }
+
+    @Override
+    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
+
+
+
+//        log.info("-===================== END ===================");
+//        log.info("액세스 토큰 값 " + request.getAttribute("test")); //ok
+        HandlerInterceptor.super.postHandle(request, response, handler, modelAndView);
     }
 }

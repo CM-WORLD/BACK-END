@@ -37,6 +37,12 @@ dependencies {
     implementation ("io.jsonwebtoken:jjwt-impl:0.11.5")
     implementation ("io.jsonwebtoken:jjwt-jackson:0.11.5")
 
+    //
+    implementation ("org.springframework.boot:spring-boot-starter-webflux")
+
+    // 기본적인 Project Reactor 의존성
+    implementation ("io.projectreactor:reactor-core:3.5.4") // 원하는 버전으로 변경
+
     testImplementation("org.mybatis.spring.boot:mybatis-spring-boot-starter-test:3.0.3")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     annotationProcessor("org.projectlombok:lombok")

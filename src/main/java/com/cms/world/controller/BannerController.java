@@ -5,6 +5,7 @@ import com.cms.world.domain.dto.BannerDto;
 import com.cms.world.domain.vo.BannerVo;
 import com.cms.world.service.BannerService;
 import com.cms.world.utils.CommonUtil;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,8 +22,8 @@ public class BannerController {
     }
 
     @GetMapping("/list")
-    public List<BannerDto> list () {
-        return service.list();
+    public Map<String, Object> list () {
+        return CommonUtil.renderResultByMap(service.list());
     }
 
     @PostMapping("/form")
