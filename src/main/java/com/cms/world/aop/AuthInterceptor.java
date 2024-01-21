@@ -26,75 +26,75 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-@Slf4j
-@Component
-@CrossOrigin
-@RequiredArgsConstructor
-public class AuthInterceptor implements HandlerInterceptor {
-
-    private final JwtTokenProvider jwtTokenProvider;
-
-    private final MemberService memberService;
-
-    private final JwtTokensGenerator jwtTokensGenerator;
-
-
-    private boolean isLoginRequired (String authorizationHeader, String refreshToken) {
-        if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) return true;
-        String accessToken = authorizationHeader.substring(7); // atk 추출
-        if (!jwtTokenProvider.validateToken(accessToken) && !jwtTokenProvider.validateToken(refreshToken)) return true;
-        return false;
-    }
-
-    private void sendObjMappingData (HttpServletResponse response, GlobalStatus status) throws Exception{
-        ObjectMapper objectMapper = new ObjectMapper();
-        Map<String, Object> map = new HashMap<>();
-        map.put("status", status.getStatus());
-        map.put("msg", status.getMsg());
-
-        String jsonString = objectMapper.writeValueAsString(map);
-        response.addHeader("Content-Type", "application/json; charset=UTF-8");
-
-        response.getWriter().write(jsonString);
-
-    }
-
-    @Override
-    public boolean preHandle(HttpServletRequest request , HttpServletResponse response, Object handler) throws Exception {
-        request.setAttribute("test", "please get my cookie");
-        if(!StringUtil.isEmpty(request.getHeader("type")) && request.getHeader("type").equals("public") ) return true;
-
-        String authHeader = request.getHeader("Authorization");
-        String rtkValue = request.getHeader("RefreshToken");
-
-        if (isLoginRequired(authHeader, rtkValue)) { //로그인 필요한 경우
-            sendObjMappingData(response, GlobalStatus.LOGIN_REQUIRED);
-            return false;
-        }
-
-        if(!jwtTokenProvider.validateToken(authHeader.substring(7))) {
-            Optional<MemberDto> dto = memberService.getByRtk(rtkValue);
-
-            if (!dto.isPresent()) {
-                sendObjMappingData(response, GlobalStatus.NOT_FOUND_USER);
-                return false;
-            } else { // 액세스 토큰 재발급
-                Long memberId = dto.get().getId();
-                String newAccessToken = jwtTokensGenerator.generateAtk(memberId);
-                request.setAttribute("newAtk", newAccessToken);
-                return true;
-            }
-        }
-        return HandlerInterceptor.super.preHandle(request, response, handler);
-    }
-
-    @Override
-    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
-
-
-
-//        log.info("-===================== END ===================");
-//        log.info("액세스 토큰 값 " + request.getAttribute("test")); //ok
-        HandlerInterceptor.super.postHandle(request, response, handler, modelAndView);
-    }
-}
+//@Slf4j
+//@Component
+//@CrossOrigin
+//@RequiredArgsConstructor
+//public class AuthInterceptor implements HandlerInterceptor {
+//
+//    private final JwtTokenProvider jwtTokenProvider;
+//
+//    private final MemberService memberService;
+//
+//    private final JwtTokensGenerator jwtTokensGenerator;
+//
+//
+//    private boolean isLoginRequired (String authorizationHeader, String refreshToken) {
+//        if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) return true;
+//        String accessToken = authorizationHeader.substring(7); // atk 추출
+//        if (!jwtTokenProvider.validateToken(accessToken) && !jwtTokenProvider.validateToken(refreshToken)) return true;
+//        return false;
+//    }
+//
+//    private void sendObjMappingData (HttpServletResponse response, GlobalStatus status) throws Exception{
+//        ObjectMapper objectMapper = new ObjectMapper();
+//        Map<String, Object> map = new HashMap<>();
+//        map.put("status", status.getStatus());
+//        map.put("msg", status.getMsg());
+//
+//        String jsonString = objectMapper.writeValueAsString(map);
+//        response.addHeader("Content-Type", "application/json; charset=UTF-8");
+//
+//        response.getWriter().write(jsonString);
+//
+//    }
+//
+//    @Override
+//    public boolean preHandle(HttpServletRequest request , HttpServletResponse response, Object handler) throws Exception {
+//        request.setAttribute("test", "please get my cookie");
+//        if(!StringUtil.isEmpty(request.getHeader("type")) && request.getHeader("type").equals("public") ) return true;
+//
+//        String authHeader = request.getHeader("Authorization");
+//        String rtkValue = request.getHeader("RefreshToken");
+//
+//        if (isLoginRequired(authHeader, rtkValue)) { //로그인 필요한 경우
+//            sendObjMappingData(response, GlobalStatus.LOGIN_REQUIRED);
+//            return false;
+//        }
+//
+//        if(!jwtTokenProvider.validateToken(authHeader.substring(7))) {
+//            Optional<MemberDto> dto = memberService.getByRtk(rtkValue);
+//
+//            if (!dto.isPresent()) {
+//                sendObjMappingData(response, GlobalStatus.NOT_FOUND_USER);
+//                return false;
+//            } else { // 액세스 토큰 재발급
+//                Long memberId = dto.get().getId();
+//                String newAccessToken = jwtTokensGenerator.generateAtk(memberId);
+//                request.setAttribute("newAtk", newAccessToken);
+//                return true;
+//            }
+//        }
+//        return HandlerInterceptor.super.preHandle(request, response, handler);
+//    }
+//
+//    @Override
+//    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
+//
+//
+//
+////        log.info("-===================== END ===================");
+////        log.info("액세스 토큰 값 " + request.getAttribute("test")); //ok
+//        HandlerInterceptor.super.postHandle(request, response, handler, modelAndView);
+//    }
+//}
