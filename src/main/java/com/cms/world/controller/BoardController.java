@@ -41,13 +41,13 @@ public class BoardController {
             Map<String, Object> resultMap = new HashMap<>();
             if (bindingResult.hasErrors()) {
                 List<FieldError> errors = bindingResult.getFieldErrors();
-                Map<String, Object> errorMap = new HashMap<>();
 
-                for (FieldError error : errors) {
-                    errorMap.put(error.getField(), error.getDefaultMessage());
+                if (!errors.isEmpty()) {
+                    FieldError firstError = errors.get(0);
+                    resultMap.put("message", firstError.getDefaultMessage());
                 }
+
                 resultMap.put("status", GlobalStatus.BAD_REQUEST.getStatus());
-                resultMap.put("error", errorMap);
                 return resultMap;
             }
 

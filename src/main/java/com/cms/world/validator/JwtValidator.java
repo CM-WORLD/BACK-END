@@ -38,7 +38,7 @@ public class JwtValidator {
 
         if (request.getHeader("type") != null && request.getHeader("type").equals("public")) {
             map.put("status", GlobalStatus.ATK_VALID.getStatus());
-            map.put("msg", GlobalStatus.ATK_VALID.getMsg());
+            map.put("message", GlobalStatus.ATK_VALID.getMsg());
             return map;
         }
 
@@ -47,7 +47,7 @@ public class JwtValidator {
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             map.put("status", GlobalStatus.INVALID_AUTH.getStatus());
-            map.put("msg", GlobalStatus.INVALID_AUTH.getMsg());
+            map.put("message", GlobalStatus.INVALID_AUTH.getMsg());
             return map;
         }
         String atkValue = authHeader.substring(7); // atk 추출
@@ -55,14 +55,14 @@ public class JwtValidator {
         if (!jwtTokenProvider.validateToken(atkValue)) {
             if (!jwtTokenProvider.validateToken(rtkValue)) {
                 map.put("status", GlobalStatus.LOGIN_REQUIRED.getStatus());
-                map.put("msg", GlobalStatus.LOGIN_REQUIRED.getMsg());
+                map.put("message", GlobalStatus.LOGIN_REQUIRED.getMsg());
                 return map;
             }
 
             Optional<MemberDto> dto = memberService.getByRtk(rtkValue);
             if (!dto.isPresent()) {
                 map.put("status", 505);
-                map.put("msg", "존재하지 않는 사용자");
+                map.put("message", "존재하지 않는 사용자");
                 return map;
             } else {
                 //atk 재발급
@@ -71,12 +71,12 @@ public class JwtValidator {
                 String newAtk = jwtTokensGenerator.generateAtk(memberId);
 
                 map.put("status", GlobalStatus.ATK_REISSUED.getStatus());
-                map.put("msg", GlobalStatus.ATK_REISSUED.getMsg());
+                map.put("message", GlobalStatus.ATK_REISSUED.getMsg());
                 map.put("newAtk", newAtk);
             }
         } else {
             map.put("status", GlobalStatus.ATK_VALID.getStatus());
-            map.put("msg", GlobalStatus.ATK_VALID.getMsg());
+            map.put("message", GlobalStatus.ATK_VALID.getMsg());
         }
         return map;
     }
