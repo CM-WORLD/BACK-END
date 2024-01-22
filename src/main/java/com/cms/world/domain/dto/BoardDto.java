@@ -1,6 +1,7 @@
 package com.cms.world.domain.dto;
 
 
+import com.cms.world.utils.DateUtil;
 import com.cms.world.utils.GlobalCode;
 import com.cms.world.utils.StringUtil;
 import jakarta.persistence.*;
@@ -8,9 +9,6 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
 @Entity
 @Table(name="board")
@@ -64,7 +62,6 @@ public class BoardDto {
         if(StringUtil.isEmpty(displayYn)) {
             this.setDisplayYn("Y");
         }
-
-        this.setRegDate(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy.MM.dd")));
+        this.setRegDate(DateUtil.currentDateTime());
     }
 }

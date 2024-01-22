@@ -1,26 +1,16 @@
-package com.cms.world.aaa;
+package com.cms.world.controller;
 
 import com.cms.world.auth.MemberRepository;
 import com.cms.world.domain.dto.MemberDto;
-import com.cms.world.domain.vo.BoardVo;
-import com.cms.world.service.KakaoAuthService;
-import com.cms.world.service.KakaoMsgService;
-import com.cms.world.service.S3UploadService;
-import com.cms.world.utils.GlobalStatus;
-import com.cms.world.utils.StringUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import reactor.core.publisher.Mono;
 
-import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 

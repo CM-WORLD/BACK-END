@@ -8,6 +8,7 @@ import com.cms.world.service.BoardService;
 import com.cms.world.utils.CommonUtil;
 import com.cms.world.utils.GlobalCode;
 import com.cms.world.utils.GlobalStatus;
+import com.cms.world.validator.JwtValidator;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -25,12 +26,25 @@ public class BoardController {
 
     private final JwtTokensGenerator jwtTokensGenerator;
 
+    private final JwtValidator jwtValidator;
+
     /* 공통 게시판 게시글 추가, X @RequestBody */
     @PostMapping("/form")
-    public Map<String, Object> form (BoardVo vo) {
+    public Map<String, Object> form (HttpServletRequest request, BoardVo vo) {
         try {
-            return CommonUtil.resultMap(service.insert(vo));
+            Map<String, Object> jwtMap = jwtValidator.validate(request);
+            if(!jwtValidator.isAuthValid(String.valueOf(jwtMap.get("status")))) {
+                return jwtMap;
+            }
+
+            Long memberId = jwtTokensGenerator.extractMemberIdFromReq(request); // req로부터 id 추출
+            vo.setMemberId(memberId);
+            Map<String, Object> map = CommonUtil.renderResultByMap(service.insert(vo));
+
+            jwtValidator.checkAndAddRefreshToken(jwtMap, map);
+            return map;
         } catch (Exception e) {
+            e.printStackTrace();
             return CommonUtil.resultMap(GlobalStatus.EXECUTE_FAILED.getStatus());
         }
     }

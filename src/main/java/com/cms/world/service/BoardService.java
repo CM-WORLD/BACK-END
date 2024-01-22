@@ -37,24 +37,32 @@ public class BoardService {
 
 
     @Transactional(rollbackFor= {Exception.class})
-    public int insert(BoardVo vo) throws IOException {
+    public int insert(BoardVo vo) throws Exception {
 
-           BoardDto dto = new BoardDto();
-           dto.setTitle(vo.getTitle());
-           dto.setContent(vo.getContent());
-           dto.setBbsCode(vo.getBbsCode());
+       BoardDto dto = new BoardDto();
+       dto.setTitle(vo.getTitle());
+       dto.setContent(vo.getContent());
+       dto.setBbsCode(vo.getBbsCode());
 
-           BoardDto createdDto = repository.save(dto);
+       if (memberRepository.findById(vo.getMemberId()).isPresent()) {
+         dto.setMemberDto(memberRepository.findById(vo.getMemberId()).get());
+       } else {
+         throw new Exception("boardService.insert: member not found");
+       }
 
-           for (MultipartFile imgFile : vo.getImgList()) {
-               if(!imgFile.isEmpty()) {
-                String uploadUrl = s3UploadService.saveFile(imgFile, "board");
-                BbsImgDto imgDto = new BbsImgDto();
-                imgDto.setBoardDto(createdDto);
-                imgDto.setImgUrl(uploadUrl);
-                bbsImgRepository.save(imgDto);
-               }
-           }
+       BoardDto createdDto = repository.save(dto);
+
+        if (vo.getImgList() != null && !vo.getImgList().isEmpty()) {
+            for (MultipartFile imgFile : vo.getImgList()) {
+                if (!imgFile.isEmpty()) {
+                    String uploadUrl = s3UploadService.saveFile(imgFile, "board");
+                    BbsImgDto imgDto = new BbsImgDto();
+                    imgDto.setBoardDto(createdDto);
+                    imgDto.setImgUrl(uploadUrl);
+                    bbsImgRepository.save(imgDto);
+                }
+            }
+        }
            return GlobalStatus.EXECUTE_SUCCESS.getStatus();
     }
 

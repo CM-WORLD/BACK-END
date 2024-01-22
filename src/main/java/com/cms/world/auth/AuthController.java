@@ -5,6 +5,7 @@ import com.cms.world.security.jwt.JwtTokensGenerator;
 import com.cms.world.security.jwt.JwtTokenProvider;
 import com.cms.world.domain.dto.MemberDto;
 import com.cms.world.utils.GlobalStatus;
+import com.cms.world.validator.JwtValidator;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -32,57 +33,12 @@ public class AuthController {
 
     private final JwtTokensGenerator jwtTokensGenerator;
 
+    private final JwtValidator jwtValidator;
+
     /* 로그인 여부 체크 */
     @GetMapping("/login/check")
-    public Map<String, Object> isLogined () {
-        Map<String, Object> map = new HashMap<>();
-        map.put("status", GlobalStatus.SUCCESS.getStatus());
-        map.put("msg", GlobalStatus.SUCCESS.getMsg());
-        
-        return map;
-    }
-
-    /* interceptor 외 인증 여부 확인 */
-    @GetMapping("/validate/token")
-    public Map<String, Object> validateTk (HttpServletRequest request) {
-        Map<String, Object> map = new HashMap<>();
-        String authHeader = request.getHeader("Authorization");
-        String rtkValue = request.getHeader("RefreshToken");
-
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            map.put("status", 500);
-            map.put("msg", "인가 정보 없음");
-            return map;
-        }
-        String atkValue = authHeader.substring(7); // atk 추출
-
-        if(!jwtTokenProvider.validateToken(atkValue)) {
-            if(!jwtTokenProvider.validateToken(rtkValue)) {
-                map.put("status", 415);
-                map.put("msg", "로그인 필요");
-                return map;
-            }
-
-            Optional<MemberDto> dto = memberService.getByRtk(rtkValue);
-            if (!dto.isPresent()) {
-                map.put("status", 505);
-                map.put("msg", "존재하지 않는 사용자");
-                return map;
-            } else {
-                //atk 재발급
-                MemberDto member = dto.get();
-                Long memberId = member.getId();
-                String newAtk = jwtTokensGenerator.generateAtk(memberId);
-
-                map.put("status", GlobalStatus.ATK_REISSUED.getStatus());
-                map.put("msg", GlobalStatus.ATK_REISSUED.getMsg());
-                map.put("newAtk", newAtk);
-            }
-        } else {
-            map.put("status", 200);
-            map.put("msg", "유효한 atk");
-        }
-        return map;
+    public Map<String, Object> isLogined (HttpServletRequest request) {
+        return jwtValidator.validate(request);
     }
 
     /* 프론트로부터 카카오 인가 코드를 받아서 처리한다. */

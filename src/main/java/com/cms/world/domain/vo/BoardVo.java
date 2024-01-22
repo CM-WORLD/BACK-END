@@ -16,7 +16,7 @@ public class BoardVo {
     private String title;
     private String content;
     private String bbsCode;
-    private String nickName;
+    private Long memberId;
 
     private List<MultipartFile> imgList; //게시물 이미지 리스트
 }
