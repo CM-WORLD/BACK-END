@@ -89,7 +89,7 @@ public class JwtValidator {
     /* access token 발급 */
     public Map<String, Object> checkAndAddRefreshToken(Map<String, Object> jwtMap, Map<String, Object> resultMap) {
         if (jwtMap.get("status").equals(GlobalStatus.ATK_REISSUED.getStatus())) {
-            resultMap.put("atk", jwtMap.get("newAtk"));
+            resultMap.put("newAtk", jwtMap.get("newAtk"));
         }
         return resultMap;
     }

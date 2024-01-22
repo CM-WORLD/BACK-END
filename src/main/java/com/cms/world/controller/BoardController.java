@@ -39,27 +39,32 @@ public class BoardController {
     public Map<String, Object> form (HttpServletRequest request, @Valid BoardVo vo, BindingResult bindingResult) {
         try {
             Map<String, Object> resultMap = new HashMap<>();
+            Map<String, Object> jwtMap = jwtValidator.validate(request);
+
+            jwtValidator.checkAndAddRefreshToken(jwtMap, resultMap);
+            if(!jwtValidator.isAuthValid((int)(jwtMap.get("status")))) {
+                return jwtMap;
+            }
+
+            // -----
             if (bindingResult.hasErrors()) {
                 List<FieldError> errors = bindingResult.getFieldErrors();
                 Map<String, Object> errorMap = new HashMap<>();
 
                 for (FieldError error : errors) {
-                    errorMap.put(error.getField(), error.getDefaultMessage());
+                log.info("bindingResult has errors"+ error.getDefaultMessage());
+
+                errorMap.put(error.getField(), error.getDefaultMessage());
                 }
                 resultMap.put("status", GlobalStatus.BAD_REQUEST.getStatus());
                 resultMap.put("error", errorMap);
                 return resultMap;
             }
+            // -----
 
-            Map<String, Object> jwtMap = jwtValidator.validate(request);
-            if(!jwtValidator.isAuthValid((int)(jwtMap.get("status")))) {
-                return jwtMap;
-            }
-
-            Long memberId = jwtTokensGenerator.extractMemberIdFromReq(request); // req로부터 id 추출
+            Long memberId = jwtTokensGenerator.extractMemberIdFromReq(request);
             vo.setMemberId(memberId);
             resultMap = CommonUtil.renderResultByMap(service.insert(vo));
-            jwtValidator.checkAndAddRefreshToken(jwtMap, resultMap);
 
             return resultMap;
         } catch (Exception e) {

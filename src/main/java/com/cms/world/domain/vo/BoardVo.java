@@ -24,7 +24,6 @@ public class BoardVo {
     private String bbsCode;
     private Long memberId;
 
-//    @Size(min = 1, message = "이미지를 1개 이상 등록해주세요.")
     @NotEmpty(message = "이미지를 1개 이상 등록해주세요.")
-    private List<MultipartFile> imgList; //게시물 이미지 리스트
+    private List<MultipartFile> imgList;
 }
