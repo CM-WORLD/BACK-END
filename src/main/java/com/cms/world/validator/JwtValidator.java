@@ -35,6 +35,13 @@ public class JwtValidator {
     /* jwt 인증여부 확인 */
     public Map<String, Object> validate(HttpServletRequest request) {
         Map<String, Object> map = new HashMap<>();
+
+        if (request.getHeader("type") != null && request.getHeader("type").equals("public")) {
+            map.put("status", GlobalStatus.ATK_VALID.getStatus());
+            map.put("msg", GlobalStatus.ATK_VALID.getMsg());
+            return map;
+        }
+
         String authHeader = request.getHeader("Authorization");
         String rtkValue = request.getHeader("RefreshToken");
 
@@ -68,15 +75,15 @@ public class JwtValidator {
                 map.put("newAtk", newAtk);
             }
         } else {
-            map.put("status", 200);
-            map.put("msg", "유효한 atk");
+            map.put("status", GlobalStatus.ATK_VALID.getStatus());
+            map.put("msg", GlobalStatus.ATK_VALID.getMsg());
         }
         return map;
     }
 
     /* jwt 인증 체크 */
-    public boolean isAuthValid(String status) {
-        return status.equals(GlobalStatus.SUCCESS.getStatus()) || status.equals(GlobalStatus.ATK_REISSUED.getStatus());
+    public boolean isAuthValid (int status) {
+        return status == GlobalStatus.ATK_VALID.getStatus() || status == GlobalStatus.ATK_REISSUED.getStatus();
     }
 
     /* access token 발급 */

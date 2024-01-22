@@ -10,9 +10,10 @@ public enum GlobalStatus {
 
 
     SUCCESS(200, "성공"),
-    // jwt
+    BAD_REQUEST(400, "잘못된 요청"),
+    // jwt,
+    ATK_VALID(201, "액세스 토큰 유효"),
     ATK_REISSUED (205, "액세스 토큰 재발급"),
-    INVALID_PARAMETER(400, "잘못된 요청"),
     NOT_FOUND(404, "찾을 수 없음"),
     INVALID_AUTH(410, "인가 정보 없음"),
     LOGIN_REQUIRED(415, "토큰 만료, 로그인 필요"),
