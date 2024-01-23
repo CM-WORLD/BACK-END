@@ -34,6 +34,6 @@ public class BoardVo {
     private String bbsCode;
     private Long memberId;
 
-    @NotEmpty(message = "이미지를 1개 이상 등록해주세요.", groups = ImgListCheck.class)
+    @NotEmpty(message = "{empty.img}", groups = ImgListCheck.class)
     private List<MultipartFile> imgList;
 }
