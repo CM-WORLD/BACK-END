@@ -11,10 +11,10 @@ public class CommonUtil {
         Map<String, Object> map = new HashMap<>();
         if (statusCode == GlobalStatus.EXECUTE_SUCCESS.getStatus()) {
             map.put("status" , GlobalStatus.SUCCESS.getStatus());
-            map.put("msg", GlobalStatus.SUCCESS.getMsg());
+            map.put("message", GlobalStatus.SUCCESS.getMsg());
         } else {
             map.put("status" , GlobalStatus.INTERNAL_SERVER_ERR.getStatus());
-            map.put("msg", GlobalStatus.INTERNAL_SERVER_ERR.getMsg());
+            map.put("message", GlobalStatus.INTERNAL_SERVER_ERR.getMsg());
         }
         return map;
     }
@@ -25,12 +25,12 @@ public class CommonUtil {
         try {
             if(obj == null) throw new Exception("renderResultByMap: data not found");
             map.put("status" , GlobalStatus.SUCCESS.getStatus());
-            map.put("msg", GlobalStatus.SUCCESS.getMsg());
+            map.put("message", GlobalStatus.SUCCESS.getMsg());
             map.put("data", obj);
 
         } catch (Exception e) {
             map.put("status" , GlobalStatus.INTERNAL_SERVER_ERR.getStatus());
-            map.put("msg", GlobalStatus.INTERNAL_SERVER_ERR.getMsg());
+            map.put("message", GlobalStatus.INTERNAL_SERVER_ERR.getMsg());
         }
         return map;
     }

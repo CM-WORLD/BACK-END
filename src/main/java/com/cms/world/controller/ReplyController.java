@@ -25,11 +25,11 @@ public class ReplyController {
         try {
 //            map.put("data", service.listByBbsId(bbsId));
             map.put("status", GlobalStatus.SUCCESS.getStatus());
-            map.put("msg", GlobalStatus.SUCCESS.getMsg());
+            map.put("message", GlobalStatus.SUCCESS.getMsg());
             return map;
         } catch(Exception e) {
             map.put("status", GlobalStatus.INTERNAL_SERVER_ERR.getStatus());
-            map.put("msg", GlobalStatus.INTERNAL_SERVER_ERR.getMsg());
+            map.put("message", GlobalStatus.INTERNAL_SERVER_ERR.getMsg());
             return CommonUtil.renderResultByMap(e.getMessage());
         }
     }
