@@ -1,14 +1,14 @@
 package com.cms.world.controller;
 
 
+import com.cms.world.domain.vo.PageVo;
+import com.cms.world.domain.vo.ReviewVo;
 import com.cms.world.service.ReviewService;
-import com.cms.world.utils.GlobalStatus;
+import com.cms.world.utils.CommonUtil;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.Map;
 
 @RestController
@@ -18,18 +18,19 @@ public class ReviewController {
 
     private final ReviewService service;
 
+    /* 사용자별 또는 전체 리뷰 조회 */
     @GetMapping("/list")
-    public Map<String, Object> list () {
-        System.out.println(".... review......");
-        Map<String, Object> map = new HashMap<>();
+    public Map<String, Object> list(HttpServletRequest request, @ModelAttribute PageVo pageVo) {
+        return CommonUtil.renderResultByMap(service.list(pageVo, request));
+    }
+
+    @PostMapping("/")
+    public Map<String, Object> create (HttpServletRequest request, @ModelAttribute ReviewVo vo) {
         try {
-            map.put("data", service.list());
-            map.put("status", GlobalStatus.SUCCESS.getStatus());
-            map.put("msg", GlobalStatus.SUCCESS.getMsg());
+            return CommonUtil.successResultMap(service.create(vo, request));
         } catch (Exception e) {
-            map.put("status", GlobalStatus.INTERNAL_SERVER_ERR.getStatus());
-            map.put("msg", GlobalStatus.INTERNAL_SERVER_ERR.getMsg());
+            e.printStackTrace();
+            return CommonUtil.failResultMap(e.getMessage());
         }
-        return map;
     }
 }

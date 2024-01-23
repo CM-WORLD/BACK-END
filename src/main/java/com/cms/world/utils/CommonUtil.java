@@ -35,4 +35,19 @@ public class CommonUtil {
         return map;
     }
 
+    public static Map<String, Object> successResultMap(Object obj) {
+        Map<String, Object> map = new HashMap<>();
+            map.put("status" , GlobalStatus.SUCCESS.getStatus());
+            map.put("message", GlobalStatus.SUCCESS.getMsg());
+            map.put("data", obj);
+        return map;
+    }
+
+    public static Map<String, Object> failResultMap (String errorMessage) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("status" , GlobalStatus.INTERNAL_SERVER_ERR.getStatus());
+        map.put("message", errorMessage);
+        return map;
+    }
+
 }

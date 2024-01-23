@@ -1,13 +1,11 @@
 package com.cms.world.domain.dto;
 
 
+import com.cms.world.utils.DateUtil;
 import com.cms.world.utils.StringUtil;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
 @Entity
 @Table(name="cms_rvw")
@@ -27,8 +25,16 @@ public class ReviewDto {
     @Column(name = "CONTENT", nullable = false)
     private String content;
 
-    @Column(name = "NICK_NM", nullable = false)
+    /* 성능 개선 + 마이리뷰용 닉네임 (닉네임이 작성자 대신 보이게 하려고 id 대신) */
+    @Column(name = "NICK_NM")
     private String nickName;
+
+    @Column(name = "MEM_ID", nullable = false)
+    private Long memberId;
+
+    /* 성능 개선 + 커미션 통계용 cmsId */
+    @Column(name = "CMS_ID", nullable = false)
+    private String cmsId;
 
     @Column(name = "DSPY_YN")
     private String displayYn;
@@ -38,7 +44,7 @@ public class ReviewDto {
 
     @PrePersist
     public void doPersist () {
-        this.setRegDate(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy.MM.dd")));
+        this.setRegDate(DateUtil.currentDateTime());
         if (StringUtil.isEmpty(displayYn)) {
             this.setDisplayYn("N");
         }
