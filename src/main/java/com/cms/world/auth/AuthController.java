@@ -62,14 +62,14 @@ public class AuthController {
             memberRepository.save(dto);
 
             respMap.put("status", GlobalStatus.SUCCESS.getStatus());
-            respMap.put("msg", GlobalStatus.SUCCESS.getMsg());
+            respMap.put("message", GlobalStatus.SUCCESS.getMsg());
             respMap.put("tokens", resultMap.get("tokens"));
             respMap.put("nick", dto.getNickName());
 
             return respMap;
         } catch (Exception e) {
             respMap.put("status", GlobalStatus.INTERNAL_SERVER_ERR.getStatus());
-            respMap.put("msg", GlobalStatus.INTERNAL_SERVER_ERR.getMsg());
+            respMap.put("message", GlobalStatus.INTERNAL_SERVER_ERR.getMsg());
 
             return respMap;
         }
@@ -89,12 +89,12 @@ public class AuthController {
                 memberService.save(memberDto);
             }
             map.put("status", GlobalStatus.SUCCESS.getStatus());
-            map.put("msg", GlobalStatus.SUCCESS.getMsg());
+            map.put("message", GlobalStatus.SUCCESS.getMsg());
             return map;
         } catch (Exception e) {
             e.printStackTrace();
             map.put("status", GlobalStatus.INTERNAL_SERVER_ERR.getStatus());
-            map.put("msg", GlobalStatus.INTERNAL_SERVER_ERR.getMsg());
+            map.put("message", GlobalStatus.INTERNAL_SERVER_ERR.getMsg());
         }
             return map;
     }
