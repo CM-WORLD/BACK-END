@@ -16,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -36,20 +37,22 @@ public class BoardController {
 
     /* 공통 게시판 게시글 추가, X @RequestBody */
     @PostMapping("/form")
-    public Map<String, Object> form (HttpServletRequest request, @Valid BoardVo vo, BindingResult bindingResult) {
+    public Map<String, Object> form (HttpServletRequest request, @Validated(BoardVo.BoardVoCheckSequence.class) BoardVo vo, BindingResult bindingResult) {
         try {
             Map<String, Object> resultMap = new HashMap<>();
             if (bindingResult.hasErrors()) {
-                List<FieldError> errors = bindingResult.getFieldErrors();
-                Map<String, Object> errorMap = new HashMap<>();
+//                List<FieldError> errors = bindingResult.getFieldErrors();
+//                Map<String, Object> errorMap = new HashMap<>();
+//                for (FieldError error : errors) {
+//                    log.info("bindingResult has errors"+ error.getDefaultMessage());
+//
+//                    errorMap.put(error.getField(), error.getDefaultMessage());
+//                }
 
-                for (FieldError error : errors) {
-                    log.info("bindingResult has errors"+ error.getDefaultMessage());
+                String errorMessage = bindingResult.getFieldError().getDefaultMessage();
 
-                    errorMap.put(error.getField(), error.getDefaultMessage());
-                }
                 resultMap.put("status", GlobalStatus.BAD_REQUEST.getStatus());
-                resultMap.put("message", errorMap);
+                resultMap.put("message", errorMessage);
                 return resultMap;
             }
 

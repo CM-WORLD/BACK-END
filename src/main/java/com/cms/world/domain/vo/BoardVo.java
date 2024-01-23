@@ -1,8 +1,10 @@
 package com.cms.world.domain.vo;
 
 
+import jakarta.validation.GroupSequence;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
+import jakarta.validation.groups.Default;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -15,15 +17,23 @@ import java.util.List;
 @ToString
 public class BoardVo {
 
-    @NotEmpty(message = "{empty.title}")
-    @Size(min = 5, max = 30, message = "제목은 5자 이상 30자 이하로 입력해주세요.")
+    public interface TitleCheck {}
+    public interface ContentCheck {}
+    public interface ImgListCheck {}
+
+    @GroupSequence({TitleCheck.class, ContentCheck.class, ImgListCheck.class})
+    public interface BoardVoCheckSequence {}
+
+    @NotEmpty(message = "{empty.title}", groups = TitleCheck.class)
+    @Size(min = 5, max = 30, message = "{invalid.title}", groups = TitleCheck.class)
     private String title;
 
-    @Size(min = 30, max = 200, message = "내용은 30자 이상 200자 이하로 입력해주세요.")
+    @NotEmpty(message = "{empty.content}", groups = ContentCheck.class)
+    @Size(min = 30, max = 200, message = "{invalid.content}", groups = ContentCheck.class)
     private String content;
     private String bbsCode;
     private Long memberId;
 
-    @NotEmpty(message = "이미지를 1개 이상 등록해주세요.")
+    @NotEmpty(message = "이미지를 1개 이상 등록해주세요.", groups = ImgListCheck.class)
     private List<MultipartFile> imgList;
 }
