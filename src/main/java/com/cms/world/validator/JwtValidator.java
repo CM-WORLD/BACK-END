@@ -46,8 +46,8 @@ public class JwtValidator {
         String rtkValue = request.getHeader("RefreshToken");
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            map.put("status", GlobalStatus.INVALID_AUTH.getStatus());
-            map.put("message", GlobalStatus.INVALID_AUTH.getMsg());
+            map.put("status", GlobalStatus.LOGIN_REQUIRED.getStatus());
+            map.put("message", GlobalStatus.LOGIN_REQUIRED.getMsg());
             return map;
         }
         String atkValue = authHeader.substring(7); // atk 추출

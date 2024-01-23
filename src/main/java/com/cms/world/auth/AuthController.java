@@ -74,6 +74,12 @@ public class AuthController {
     public Map<String, Object> invalidateTkns (HttpServletRequest request) {
         Map<String, Object> map = new HashMap<>();
         try {
+            if (jwtValidator.validate(request).get("status").equals(GlobalStatus.LOGIN_REQUIRED.getStatus())) {
+                map.put("status", GlobalStatus.BAD_REQUEST.getStatus());
+                map.put("message", "로그아웃할 인가 정보 없음");
+                return map;
+            }
+
             String refreshToken = request.getHeader("RefreshToken");
             Optional<MemberDto> dto = memberService.getByRtk(refreshToken);
 
