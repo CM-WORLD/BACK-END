@@ -1,8 +1,6 @@
 package com.cms.world.auth;
 
 import com.cms.world.security.jwt.JwtTokens;
-import com.cms.world.security.jwt.JwtTokensGenerator;
-import com.cms.world.security.jwt.JwtTokenProvider;
 import com.cms.world.domain.dto.MemberDto;
 import com.cms.world.utils.GlobalStatus;
 import com.cms.world.validator.JwtValidator;
@@ -27,11 +25,7 @@ public class AuthController {
 
     private final  MemberRepository memberRepository;
 
-    private final JwtTokenProvider jwtTokenProvider;
-
     private final MemberService memberService;
-
-    private final JwtTokensGenerator jwtTokensGenerator;
 
     private final JwtValidator jwtValidator;
 

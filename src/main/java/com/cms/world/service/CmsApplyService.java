@@ -108,7 +108,8 @@ public class CmsApplyService {
     /* 사용자별 신청 리스트 조회 */
     public Page<CmsApplyDto> listByMemberID (Long id, int page, int size) {
         Pageable pageable = PageRequest.of(page, size,  Sort.by(Sort.Direction.DESC, "regDate"));
-        return repository.findByMemberDto_Id(id, pageable);
+//        return repository.findByMemberDto_Id(id, pageable);
+        return repository.findListByMemberId(id, pageable);
     }
 
     /* 커미션 신청 상세 */

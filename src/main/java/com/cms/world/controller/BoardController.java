@@ -41,14 +41,6 @@ public class BoardController {
         try {
             Map<String, Object> resultMap = new HashMap<>();
             if (bindingResult.hasErrors()) {
-//                List<FieldError> errors = bindingResult.getFieldErrors();
-//                Map<String, Object> errorMap = new HashMap<>();
-//                for (FieldError error : errors) {
-//                    log.info("bindingResult has errors"+ error.getDefaultMessage());
-//
-//                    errorMap.put(error.getField(), error.getDefaultMessage());
-//                }
-
                 String errorMessage = bindingResult.getFieldError().getDefaultMessage();
 
                 resultMap.put("status", GlobalStatus.BAD_REQUEST.getStatus());
