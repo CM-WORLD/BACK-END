@@ -85,19 +85,18 @@ public class BoardController {
     public Map<String, Object> inquiryByMemberId (@RequestParam(name= "page", defaultValue = "0") Integer page,
                                              @RequestParam(name ="size", defaultValue = "10") Integer size,
                                              HttpServletRequest request) {
-        Map<String, Object> map = new HashMap<>();
+
+        Map<String, Object> jwtMap = jwtValidator.validate(request);
+        if(!jwtValidator.isAuthValid((int)(jwtMap.get("status")))) {
+            return jwtMap;
+        }
 
         try {
-            Long memberId = jwtTokensGenerator.extractMemberIdFromReq(request); // req로부터 id 추출
-            map.put("data", service.listByMemId(memberId, GlobalCode.BBS_INQUIRY.getCode(), page, size));
-            map.put("status", GlobalStatus.SUCCESS.getStatus());
-            map.put("msg", GlobalStatus.SUCCESS.getMsg());
-
+            Long memberId = jwtTokensGenerator.extractMemberIdFromReq(request);
+            return CommonUtil.successResultMapWithJwt(service.listByMemId(memberId, GlobalCode.BBS_INQUIRY.getCode(), page, size), jwtMap);
         } catch (Exception e) {
-            map.put("status", GlobalStatus.INTERNAL_SERVER_ERR.getStatus());
-            map.put("msg", GlobalStatus.INTERNAL_SERVER_ERR.getMsg());
+            return CommonUtil.failResultMap(GlobalStatus.INTERNAL_SERVER_ERR.getStatus(), e.getMessage());
         }
-        return map;
     }
 
     /* 게시판 상세 조회 */
