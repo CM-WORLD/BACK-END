@@ -10,6 +10,7 @@ import com.cms.world.repository.CmsApplyRepository;
 import com.cms.world.repository.ReviewRepository;
 import com.cms.world.security.jwt.JwtTokensGenerator;
 import com.cms.world.utils.GlobalCode;
+import com.cms.world.utils.GlobalStatus;
 import com.cms.world.utils.StringUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -33,8 +34,8 @@ public class ReviewService {
     public Page<ReviewDto> list (HttpServletRequest request, PageVo vo, String isMemberYn) {
         Pageable pageable = PageRequest.of(vo.getPage(), vo.getSize(), Sort.by(Sort.Direction.DESC, "regDate"));
 
-        Long memberId = isMemberYn.equals("Y") ? jwtTokensGenerator.extractMemberIdFromReq(request) : null;
-        return repository.findListWithCond(memberId,  pageable);
+        if (isMemberYn.equals("N")) return repository.findAll(pageable);
+        return repository.findLitByMemberId(jwtTokensGenerator.extractMemberIdFromReq(request),  pageable);
 
     }
 
@@ -58,4 +59,13 @@ public class ReviewService {
         }
         return newReview;
     }
+
+    @Transactional
+    public int toggle (Long id) throws Exception {
+        ReviewDto dto = repository.findById(id)
+                .orElseThrow(() -> new Exception("ReviewService.toggle() : 리뷰가 존재하지 않습니다."));
+        dto.setDisplayYn(dto.getDisplayYn().equals("Y") ? "N" : "Y");
+        return GlobalStatus.SUCCESS.getStatus();
+    }
+
 }

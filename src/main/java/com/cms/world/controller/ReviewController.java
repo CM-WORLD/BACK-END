@@ -9,7 +9,6 @@ import com.cms.world.utils.CommonUtil;
 import com.cms.world.utils.GlobalStatus;
 import com.cms.world.validator.JwtValidator;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -42,6 +41,7 @@ public class ReviewController {
         return CommonUtil.successResultMapWithJwt(service.list(request, pageVo, "Y"), jwtMap);
     }
 
+    /* 리뷰  작성 */
     @PostMapping("/create")
     public Map<String, Object> create (HttpServletRequest request, @ModelAttribute @Validated(ReviewVo.ReviewVoCheckSequence.class) ReviewVo vo, BindingResult bindingResult) {
         try {
@@ -55,7 +55,21 @@ public class ReviewController {
             }
             return CommonUtil.successResultMapWithJwt(service.create(vo, request), jwtMap);
         } catch (Exception e) {
-            e.printStackTrace();
+            return CommonUtil.failResultMap(GlobalStatus.INTERNAL_SERVER_ERR.getStatus(), e.getMessage());
+        }
+    }
+
+    /* 리뷰 비공개/공개 토글 처리 */
+    @PutMapping("/toggle/{id}")
+    public Map<String, Object> toggle (HttpServletRequest request, @PathVariable("id") Long id) {
+        System.out.println("id = " + id);
+        try {
+            Map<String, Object> jwtMap = jwtValidator.validate(request);
+            if(!jwtValidator.isAuthValid((int)(jwtMap.get("status")))) {
+                return jwtMap;
+            }
+            return CommonUtil.successResultMapWithJwt(service.toggle(id), jwtMap);
+        } catch (Exception e) {
             return CommonUtil.failResultMap(GlobalStatus.INTERNAL_SERVER_ERR.getStatus(), e.getMessage());
         }
     }
