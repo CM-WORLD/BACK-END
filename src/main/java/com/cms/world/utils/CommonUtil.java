@@ -62,4 +62,15 @@ public class CommonUtil {
         return map;
     }
 
+    public static Map<String, Object> failResultMapWithJwt(int errorStatus, String errorMessage, Map<String, Object> jwtMap) {
+        Map<String, Object> map = new HashMap<>();
+        if (jwtMap.get("status").equals(GlobalStatus.ATK_REISSUED.getStatus())) {
+            map.put("newAtk", jwtMap.get("newAtk"));
+        }
+
+        map.put("status" , errorStatus);
+        map.put("message", errorMessage);
+        return map;
+    }
+
 }

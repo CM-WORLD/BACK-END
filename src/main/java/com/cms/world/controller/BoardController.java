@@ -37,8 +37,8 @@ public class BoardController {
     /* 공통 게시판 게시글 추가, X @RequestBody */
     @PostMapping("/form")
     public Map<String, Object> form (HttpServletRequest request, @Validated(BoardVo.BoardVoCheckSequence.class) BoardVo vo, BindingResult bindingResult) {
-        try {
             Map<String, Object> jwtMap = jwtValidator.validate(request);
+        try {
             if(!jwtValidator.isAuthValid((int)(jwtMap.get("status")))) {
                 return jwtMap;
             }
@@ -53,8 +53,7 @@ public class BoardController {
 
             return resultMap;
         } catch (Exception e) {
-            e.printStackTrace();
-            return CommonUtil.resultMap(GlobalStatus.EXECUTE_FAILED.getStatus());
+            return CommonUtil.failResultMapWithJwt(GlobalStatus.INTERNAL_SERVER_ERR.getStatus(),e.getMessage(), jwtMap);
         }
     }
 
@@ -88,14 +87,20 @@ public class BoardController {
             Long memberId = jwtTokensGenerator.extractMemberIdFromReq(request);
             return CommonUtil.successResultMapWithJwt(service.listByMemId(memberId, GlobalCode.BBS_INQUIRY.getCode(), page, size), jwtMap);
         } catch (Exception e) {
-            return CommonUtil.failResultMap(GlobalStatus.INTERNAL_SERVER_ERR.getStatus(), e.getMessage());
+            return CommonUtil.failResultMapWithJwt(GlobalStatus.INTERNAL_SERVER_ERR.getStatus(), e.getMessage(), jwtMap);
         }
     }
 
-    /* 게시판 상세 조회 */
-    @GetMapping("/{bbsCode}/{id}")
-    public Map<String, Object> getById (@PathVariable("bbsCode") String bbsCode, @PathVariable("id") Long id) {
-        return CommonUtil.renderResultByMap(service.detailById(bbsCode, id));
+    /* 신청 공지 상세 조회 */
+    @GetMapping("/notice/{id}")
+    public Map<String, Object> getById (@PathVariable("id") Long id) {
+        return CommonUtil.renderResultByMap(service.detailById(GlobalCode.BBS_APLY.getCode(), id));
+    }
+
+    /* 문의 상세 조회 */
+    @GetMapping("/inquiry/{id}")
+    public Map<String, Object> getInqById (@PathVariable("id") Long id) {
+        return CommonUtil.renderResultByMap(service.detailById(GlobalCode.BBS_INQUIRY.getCode(), id));
     }
 
     public Page<BoardDto> getListByBbsCode (String type, int page, int size) {
