@@ -131,4 +131,15 @@ class CmsWorldApplicationTests {
 //
 //        System.out.println("dto.toString() = " + dto.toString());
 //    }
+
+    @Test
+    public void replyReplyTest () {
+        ReplyDto parent = replyRepository.findById(1L).get();
+        List<ReplyDto> list = replyRepository.findByParent(parent);
+
+        for(ReplyDto item : list) {
+            System.out.println("item.toString() = " + item.getContent());
+            System.out.println(" = --------------------------");
+        }
+    }
 }

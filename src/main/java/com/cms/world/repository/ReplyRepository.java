@@ -12,4 +12,6 @@ public interface ReplyRepository extends JpaRepository<ReplyDto, Long> {
 
     List<ReplyDto> findByBoardDto(BoardDto dto);
 
+    List<ReplyDto> findByParent(ReplyDto parent);
+
 }
