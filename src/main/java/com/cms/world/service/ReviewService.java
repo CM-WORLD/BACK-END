@@ -2,12 +2,14 @@ package com.cms.world.service;
 
 
 import com.cms.world.auth.MemberRepository;
+import com.cms.world.domain.dto.CmsApplyDto;
 import com.cms.world.domain.dto.ReviewDto;
 import com.cms.world.domain.vo.PageVo;
 import com.cms.world.domain.vo.ReviewVo;
 import com.cms.world.repository.CmsApplyRepository;
 import com.cms.world.repository.ReviewRepository;
 import com.cms.world.security.jwt.JwtTokensGenerator;
+import com.cms.world.utils.GlobalCode;
 import com.cms.world.utils.StringUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +18,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -25,29 +28,34 @@ public class ReviewService {
 
     private final CmsApplyRepository cmsApplyRepository;
 
-    private final MemberRepository memberRepository;
-
     private final JwtTokensGenerator jwtTokensGenerator;
 
-    public Page<ReviewDto> list (PageVo vo, HttpServletRequest request) {
+    public Page<ReviewDto> list (HttpServletRequest request, PageVo vo, String isMemberYn) {
         Pageable pageable = PageRequest.of(vo.getPage(), vo.getSize(), Sort.by(Sort.Direction.DESC, "regDate"));
-        Long memberId = jwtTokensGenerator.extractMemberIdFromReq(request); // req로부터 id 추출
 
-        if (!memberRepository.findById(memberId).isPresent()) return repository.findAll(pageable);
-        return repository.findByMemberId(memberId,pageable);
+        Long memberId = isMemberYn.equals("Y") ? jwtTokensGenerator.extractMemberIdFromReq(request) : null;
+        return repository.findListWithCond(memberId,  pageable);
+
     }
 
-    public Long create (ReviewVo vo, HttpServletRequest request) throws Exception {
+    @Transactional
+    public ReviewDto create (ReviewVo vo, HttpServletRequest request) throws Exception {
         Long memberId = jwtTokensGenerator.extractMemberIdFromReq(request); // req로부터 id 추출
 
         ReviewDto dto = new ReviewDto();
-        dto.setApplyDto(cmsApplyRepository.findById(vo.getCmsApplyId())
-                .orElseThrow(() -> new Exception("ReviewService.create() : 신청서가 존재하지 않습니다.")));
+        CmsApplyDto applyDto = cmsApplyRepository.findById(vo.getCmsApplyId())
+                .orElseThrow(() -> new Exception("ReviewService.create() : 신청서가 존재하지 않습니다."));
+
+        dto.setApplyDto(applyDto);
         dto.setMemberId(memberId);
         dto.setContent(vo.getContent());
         dto.setNickName(StringUtil.isEmpty(vo.getNickName()) ? "익명" : vo.getNickName());
         dto.setCmsId(dto.getApplyDto().getCmsDto().getId());
 
-        return repository.save(dto).getId();
+        ReviewDto newReview = repository.save(dto);
+        if(newReview != null) {
+            applyDto.setStatus(GlobalCode.CMS_REVIEW.getCode()); // 리뷰 작성 성공시 상태 변경
+        }
+        return newReview;
     }
 }

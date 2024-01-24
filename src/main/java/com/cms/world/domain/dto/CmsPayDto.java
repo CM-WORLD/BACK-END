@@ -21,7 +21,7 @@ public class CmsPayDto {
     private Long id;
 
     @OneToOne
-    @JsonIgnore
+//    @JsonIgnore
     @JoinColumn(name = "APLY_ID", referencedColumnName = "ID") //name은 설정할 fk 이름이다.
     private CmsApplyDto applyDto;
 

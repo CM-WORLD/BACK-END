@@ -129,11 +129,11 @@ public class CmsApplyService {
     public List<CmsApplyImgDto> imgListByStatus (String id, String status) {
         Optional<CmsApplyDto> applyDto = repository.findById(id);
         List<CmsApplyImgDto> imgList = new ArrayList<>();
-        if (applyDto.isPresent()) {
-            imgList = applyDto.get().getCmsApplyImgDto().stream()
-                   .filter(img -> img.getStatus().equals(status))
-                   .toList();
-        }
+//        if (applyDto.isPresent()) {
+//            imgList = applyDto.get().getCmsApplyImgDto().stream()
+//                   .filter(img -> img.getStatus().equals(status))
+//                   .toList();
+//        }
         return imgList;
     }
 

@@ -1,6 +1,7 @@
 package com.cms.world.domain.vo;
 
 
+import jakarta.validation.GroupSequence;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
@@ -15,8 +16,14 @@ import java.util.List;
 @ToString
 public class ReviewVo {
 
-    @NotEmpty(message = "{empty.content}")
-    @Size(min = 10, max = 500, message = "{invalid.content}")
+    public interface ContentCheck {}
+    public interface ImgListCheck {}
+
+    @GroupSequence({ReviewVo.ContentCheck.class, ReviewVo.ImgListCheck.class})
+    public interface ReviewVoCheckSequence {}
+
+    @NotEmpty(message = "{empty.content}", groups = ReviewVo.ContentCheck.class)
+    @Size(min = 10, max = 500, message = "{invalid.content}", groups = ReviewVo.ContentCheck.class)
     private String content;
 
     private List<MultipartFile> imgList;

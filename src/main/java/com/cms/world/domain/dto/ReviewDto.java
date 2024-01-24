@@ -6,6 +6,7 @@ import com.cms.world.utils.StringUtil;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Formula;
 
 @Entity
 @Table(name="cms_rvw")
@@ -19,7 +20,7 @@ public class ReviewDto {
     private Long id;
 
     @OneToOne
-    @JoinColumn(name = "APLY_ID", referencedColumnName = "ID")
+    @JoinColumn(name = "APLY_ID", referencedColumnName = "ID") // one to one test ok
     private CmsApplyDto applyDto;
 
     @Column(name = "CONTENT", nullable = false)
@@ -42,12 +43,21 @@ public class ReviewDto {
     @Column(name = "RGTR_DT")
     private String regDate;
 
+    @Transient
+    private String cmsName;
+
     @PrePersist
     public void doPersist () {
         this.setRegDate(DateUtil.currentDateTime());
         if (StringUtil.isEmpty(displayYn)) {
-            this.setDisplayYn("N");
+            this.setDisplayYn("Y");
         }
     }
 
+    @PostLoad
+    public void doLoad () {
+        if (applyDto != null) {
+            this.setCmsName(applyDto.getCmsDto().getName());
+        }
+    }
 }

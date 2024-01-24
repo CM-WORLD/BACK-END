@@ -28,12 +28,6 @@ public class CmsApplyDto {
     @JoinColumn(name = "MEM_ID", referencedColumnName = "ID")
     private MemberDto memberDto;
 
-    @OneToOne(mappedBy = "applyDto")
-    private CmsPayDto cmsPayDto;
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "applyDto")
-    private List<CmsApplyImgDto> cmsApplyImgDto;
-
     @Column(name = "TP_CD")
     private String cmsType;
 
@@ -54,11 +48,11 @@ public class CmsApplyDto {
     @Column(name = "STATUS")
     private String status;
 
-    @Transient
-    private String statusNm;
-
     @Column(name = "RGTR_DT")
     private String regDate;
+
+    @Transient
+    private String statusNm;
 
     @Transient
     private String cmsName;

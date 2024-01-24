@@ -43,9 +43,21 @@ public class CommonUtil {
         return map;
     }
 
-    public static Map<String, Object> failResultMap (String errorMessage) {
+    public static Map<String, Object> successResultMapWithJwt(Object obj, Map<String, Object> jwtMap) {
         Map<String, Object> map = new HashMap<>();
-        map.put("status" , GlobalStatus.INTERNAL_SERVER_ERR.getStatus());
+        if (jwtMap.get("status").equals(GlobalStatus.ATK_REISSUED.getStatus())) {
+            map.put("newAtk", jwtMap.get("newAtk"));
+        }
+
+        map.put("status" , GlobalStatus.SUCCESS.getStatus());
+        map.put("message", GlobalStatus.SUCCESS.getMsg());
+        map.put("data", obj);
+        return map;
+    }
+
+    public static Map<String, Object> failResultMap (int errorStatus, String errorMessage) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("status" , errorStatus);
         map.put("message", errorMessage);
         return map;
     }
