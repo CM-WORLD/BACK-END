@@ -15,7 +15,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,23 +38,18 @@ public class BoardController {
     @PostMapping("/form")
     public Map<String, Object> form (HttpServletRequest request, @Validated(BoardVo.BoardVoCheckSequence.class) BoardVo vo, BindingResult bindingResult) {
         try {
-            Map<String, Object> resultMap = new HashMap<>();
-            if (bindingResult.hasErrors()) {
-                String errorMessage = bindingResult.getFieldError().getDefaultMessage();
-
-                resultMap.put("status", GlobalStatus.BAD_REQUEST.getStatus());
-                resultMap.put("message", errorMessage);
-                return resultMap;
-            }
-
             Map<String, Object> jwtMap = jwtValidator.validate(request);
             if(!jwtValidator.isAuthValid((int)(jwtMap.get("status")))) {
                 return jwtMap;
             }
 
+            if(bindingResult.hasErrors()) {
+                return CommonUtil.failResultMap(GlobalStatus.BAD_REQUEST.getStatus(), bindingResult.getFieldError().getDefaultMessage());
+            }
+
             Long memberId = jwtTokensGenerator.extractMemberIdFromReq(request); // req로부터 id 추출
             vo.setMemberId(memberId);
-            resultMap = CommonUtil.renderResultByMap(service.insert(vo));
+            Map<String, Object> resultMap = CommonUtil.renderResultByMap(service.insert(vo));
             jwtValidator.checkAndAddRefreshToken(jwtMap, resultMap);
 
             return resultMap;
