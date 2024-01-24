@@ -49,8 +49,7 @@ public class BoardController {
 
             Long memberId = jwtTokensGenerator.extractMemberIdFromReq(request); // req로부터 id 추출
             vo.setMemberId(memberId);
-            Map<String, Object> resultMap = CommonUtil.renderResultByMap(service.insert(vo));
-            jwtValidator.checkAndAddRefreshToken(jwtMap, resultMap);
+            Map<String, Object> resultMap = CommonUtil.successResultMapWithJwt(service.insert(vo), jwtMap);
 
             return resultMap;
         } catch (Exception e) {
