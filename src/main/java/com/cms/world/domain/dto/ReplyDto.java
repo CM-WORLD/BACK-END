@@ -49,13 +49,16 @@ public class ReplyDto {
     private Long memberId;
 
     @Column(name = "PRNT_ID")
-    private Long parentReplyId;
+    private Long parentId;
 
     @Transient
     private boolean isMyReply;
 
     @Transient
     private String nickName;
+
+    @Transient
+    private boolean hasChildren;
 
     @Column(name = "RGTR_DT")
     private String regDate;
@@ -68,5 +71,6 @@ public class ReplyDto {
         this.setRegDate(DateUtil.currentDateTime());
         if(this.getGroupId() == null) this.setGroupId(0L);
         if(this.getSequenceId() == null) this.setSequenceId(0L);
+        if(this.getLevelId() == null) this.setLevelId(0L);
     }
 }

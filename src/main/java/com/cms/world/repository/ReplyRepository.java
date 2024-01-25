@@ -14,4 +14,7 @@ public interface ReplyRepository extends JpaRepository<ReplyDto, Long> {
 
     @Query(value = "SELECT MAX(SEQ_ID) FROM bbs_reply WHERE GRP_ID = :groupId", nativeQuery = true)
     int getMaxSequenceId(@Param("groupId") Long groupId);
+
+    @Query(value = "SELECT MAX(LVL_ID) FROM bbs_reply WHERE GRP_ID = :groupId", nativeQuery = true)
+    int getMaxLevelId (@Param("groupId") Long groupId);
 }

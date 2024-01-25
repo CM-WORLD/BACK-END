@@ -51,7 +51,7 @@ public class ReplyService {
             dto.setSequenceId(repository.getMaxSequenceId(parent.getGroupId()) + 1L); // 그룹아이디랑 pk랑 동일
             dto.setLevelId(parent.getLevelId() + 1);
             dto.setGroupId(parent.getGroupId());
-            dto.setParentReplyId(vo.getParentReplyId() + 1);
+            dto.setParentId(vo.getParentReplyId() + 1);
             repository.save(dto);
         }
         return GlobalStatus.EXECUTE_SUCCESS.getStatus();
@@ -63,10 +63,13 @@ public class ReplyService {
 
         List<ReplyDto> list = repository.findByBoardDtoOrderByGroupIdAscSequenceIdAsc(bbsDto.get());
         for (ReplyDto dto : list) {
-            //조회 시 memberId로 nickName을 transien iv에 저장
             MemberDto memberDto = memberRepository.findById(dto.getMemberId()).get();
             dto.setNickName(memberDto.getNickName());
             dto.setMyReply(memberId == memberDto.getId());
+
+            int maxLevelId = repository.getMaxLevelId(dto.getGroupId());
+            dto.setHasChildren(maxLevelId > dto.getLevelId());
+            // 그룹 내 최대 레벨보다 현재 레벨이 더 작으면 자식이 있다는 뜻
         }
         return repository.findByBoardDtoOrderByGroupIdAscSequenceIdAsc(bbsDto.get());
     }
