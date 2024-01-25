@@ -73,8 +73,7 @@ public class ReplyService {
     public int update (ReplyVo vo) {
         ReplyDto dto = repository.findById(vo.getId()).get();
         dto.setContent(vo.getContent());
-        dto.setUptDate(DateUtil.currentDateTime()); //분시초까지
-//        repository.save(dto);
+        dto.setUptDate(DateUtil.currentDateTime());
         return GlobalStatus.EXECUTE_SUCCESS.getStatus();
     }
 

@@ -2,6 +2,7 @@ package com.cms.world.controller;
 
 
 import com.cms.world.domain.vo.ReplyVo;
+import com.cms.world.domain.vo.ReviewVo;
 import com.cms.world.security.jwt.JwtTokensGenerator;
 import com.cms.world.service.ReplyService;
 import com.cms.world.utils.CommonUtil;
@@ -9,6 +10,8 @@ import com.cms.world.utils.GlobalStatus;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -48,8 +51,12 @@ public class ReplyController {
         return CommonUtil.resultMap(service.delete(id));
     }
 
-    @PutMapping("/")
-    public Map<String, Object> update (@RequestBody ReplyVo vo) {
+    /* 댓글 수정 */
+    @PutMapping("/") //test ok
+    public Map<String, Object> update (@Validated ReplyVo vo, BindingResult bindingResult) {
+                if(bindingResult.hasErrors()) {
+                    return CommonUtil.failResultMap(GlobalStatus.BAD_REQUEST.getStatus(), bindingResult.getFieldError().getDefaultMessage());
+                }
         return CommonUtil.resultMap(service.update(vo));
     }
 }
