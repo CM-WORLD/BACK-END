@@ -10,7 +10,6 @@ import com.cms.world.utils.GlobalCode;
 import com.cms.world.utils.GlobalStatus;
 import com.cms.world.validator.JwtValidator;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -18,8 +17,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -91,16 +88,10 @@ public class BoardController {
         }
     }
 
-    /* 신청 공지 상세 조회 */
-    @GetMapping("/notice/{id}")
-    public Map<String, Object> getById (@PathVariable("id") Long id) {
-        return CommonUtil.renderResultByMap(service.detailById(GlobalCode.BBS_APLY.getCode(), id));
-    }
-
-    /* 문의 상세 조회 */
-    @GetMapping("/inquiry/{id}")
-    public Map<String, Object> getInqById (@PathVariable("id") Long id) {
-        return CommonUtil.renderResultByMap(service.detailById(GlobalCode.BBS_INQUIRY.getCode(), id));
+    /* 게시판 상세 조회 */
+    @GetMapping("/{bbsCode}/{id}")
+    public Map<String, Object> getById (@PathVariable("bbsCode") String bbsCode, @PathVariable("id") Long id) {
+        return CommonUtil.renderResultByMap(service.detailById(bbsCode, id));
     }
 
     public Page<BoardDto> getListByBbsCode (String type, int page, int size) {

@@ -134,12 +134,12 @@ class CmsWorldApplicationTests {
 
     @Test
     public void replyReplyTest () {
-        ReplyDto parent = replyRepository.findById(1L).get();
-        List<ReplyDto> list = replyRepository.findByParent(parent);
-
-        for(ReplyDto item : list) {
-            System.out.println("item.toString() = " + item.getContent());
-            System.out.println(" = --------------------------");
-        }
+//        ReplyDto parent = replyRepository.findById(1L).get();
+//        List<ReplyDto> list = replyRepository.findByParent(parent);
+//
+//        for(ReplyDto item : list) {
+//            System.out.println("item.toString() = " + item.getContent());
+//            System.out.println(" = --------------------------");
+//        }
     }
 }

@@ -26,14 +26,32 @@ public class ReplyDto {
     @JoinColumn(name = "BBS_ID", referencedColumnName = "ID")
     private BoardDto boardDto;
 
-    @JsonIgnore
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "PRNT_ID", referencedColumnName = "ID")
-    private ReplyDto parent;
+//    @JsonIgnore
+//    @ManyToOne(fetch = FetchType.EAGER)
+//    @JoinColumn(name = "PRNT_ID", referencedColumnName = "ID")
+//    private ReplyDto parent;
+//
+//    @OneToMany(fetch = FetchType.LAZY, mappedBy = "parent")
+//    private List<ReplyDto> children;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "parent")
-    private List<ReplyDto> children;
+    @Column(name = "GRP_ID", nullable = false)
+    private String groupId; // 그룹아이디
+
+    @Column(name = "LVL_ID", nullable = false)
+    private String levelId; // 들여쓰기 레벨
+
+    @Column(name = "SEQ_ID", nullable = false)
+    private String sequenceId; // 그룹 내 순서
     
+    @Column(name = "MEM_ID", nullable = false)
+    private Long memberId;
+
+    @Transient
+    private boolean isMyReply;
+
+    @Transient
+    private String nickName;
+
     @Column(name = "RGTR_DT")
     private String regDate;
 
