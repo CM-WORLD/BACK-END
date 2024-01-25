@@ -2,11 +2,11 @@ package com.cms.world.domain.dto;
 
 
 import com.cms.world.utils.DateUtil;
-import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import java.util.List;
+import org.hibernate.annotations.ColumnDefault;
+
 
 @Entity
 @Table(name="bbs_reply")
@@ -34,17 +34,22 @@ public class ReplyDto {
 //    @OneToMany(fetch = FetchType.LAZY, mappedBy = "parent")
 //    private List<ReplyDto> children;
 
-    @Column(name = "GRP_ID", nullable = false)
-    private String groupId; // 그룹아이디
+    @Column(name = "GRP_ID")
+    @ColumnDefault("0")
+    private Long groupId; // 그룹아이디
 
-    @Column(name = "LVL_ID", nullable = false)
-    private String levelId; // 들여쓰기 레벨
+    @Column(name = "LVL_ID")
+    private Long levelId; // 들여쓰기 레벨
 
-    @Column(name = "SEQ_ID", nullable = false)
-    private String sequenceId; // 그룹 내 순서
+    @Column(name = "SEQ_ID")
+    @ColumnDefault("0")
+    private Long sequenceId; // 그룹 내 순서
     
     @Column(name = "MEM_ID", nullable = false)
     private Long memberId;
+
+    @Column(name = "PRNT_ID")
+    private Long parentReplyId;
 
     @Transient
     private boolean isMyReply;
@@ -61,5 +66,7 @@ public class ReplyDto {
     @PrePersist
     public void doPersist () {
         this.setRegDate(DateUtil.currentDateTime());
+        if(this.getGroupId() == null) this.setGroupId(0L);
+        if(this.getSequenceId() == null) this.setSequenceId(0L);
     }
 }

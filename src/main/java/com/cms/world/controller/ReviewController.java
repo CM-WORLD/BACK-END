@@ -62,15 +62,15 @@ public class ReviewController {
     /* 리뷰 비공개/공개 토글 처리 */
     @PutMapping("/toggle/{id}")
     public Map<String, Object> toggle (HttpServletRequest request, @PathVariable("id") Long id) {
+        Map<String, Object> jwtMap = jwtValidator.validate(request);
         System.out.println("id = " + id);
         try {
-            Map<String, Object> jwtMap = jwtValidator.validate(request);
             if(!jwtValidator.isAuthValid((int)(jwtMap.get("status")))) {
                 return jwtMap;
             }
             return CommonUtil.successResultMapWithJwt(service.toggle(id), jwtMap);
         } catch (Exception e) {
-            return CommonUtil.failResultMap(GlobalStatus.INTERNAL_SERVER_ERR.getStatus(), e.getMessage());
+            return CommonUtil.failResultMapWithJwt(GlobalStatus.INTERNAL_SERVER_ERR.getStatus(), e.getMessage(), jwtMap);
         }
     }
 }

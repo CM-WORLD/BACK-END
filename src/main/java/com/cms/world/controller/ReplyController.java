@@ -7,6 +7,7 @@ import com.cms.world.security.jwt.JwtTokensGenerator;
 import com.cms.world.service.ReplyService;
 import com.cms.world.utils.CommonUtil;
 import com.cms.world.utils.GlobalStatus;
+import com.cms.world.validator.JwtValidator;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,8 @@ public class ReplyController {
 
     private final JwtTokensGenerator jwtTokensGenerator;
 
+    private final JwtValidator jwtValidator;
+
     /* 게시글당 댓글 조회 */
     @GetMapping("/{bbsId}")
     public Map<String, Object> list (HttpServletRequest request, @PathVariable("bbsId") Long bbsId) {
@@ -37,12 +40,24 @@ public class ReplyController {
         }
     }
 
+    /* 루트/대댓글 추가 */
     @PostMapping("/")
-    public Map<String,Object> insert (ReplyVo vo) throws Exception {
-        System.out.println("vo.toString() = " + vo.toString());
-//        return CommonUtil.resultMap(service.insert(vo));
+    public Map<String,Object> insert (HttpServletRequest request, @Validated ReplyVo vo, BindingResult bindingResult) throws Exception {
+        Map<String, Object> jwtMap = jwtValidator.validate(request);
+        try {
+            if (!jwtValidator.isAuthValid((int) (jwtMap.get("status")))) {
+                return jwtMap;
+            }
+            if (bindingResult.hasErrors()) {
+                return CommonUtil.failResultMapWithJwt(GlobalStatus.BAD_REQUEST.getStatus(), bindingResult.getFieldError().getDefaultMessage(), jwtMap);
+            }
+            Long memberId = jwtTokensGenerator.extractMemberIdFromReq(request); // req로부터 id 추출
+            vo.setMemberId(memberId);
 
-        return new HashMap<>();
+            return CommonUtil.resultMap(service.insert(vo));
+        } catch (Exception e) {
+            return CommonUtil.failResultMapWithJwt(GlobalStatus.INTERNAL_SERVER_ERR.getStatus(), e.getMessage(), jwtMap);
+        }
     }
 
     @DeleteMapping("/{id}")
@@ -53,10 +68,18 @@ public class ReplyController {
 
     /* 댓글 수정 */
     @PutMapping("/") //test ok
-    public Map<String, Object> update (@Validated ReplyVo vo, BindingResult bindingResult) {
-                if(bindingResult.hasErrors()) {
-                    return CommonUtil.failResultMap(GlobalStatus.BAD_REQUEST.getStatus(), bindingResult.getFieldError().getDefaultMessage());
-                }
-        return CommonUtil.resultMap(service.update(vo));
+    public Map<String, Object> update (HttpServletRequest request, @Validated ReplyVo vo, BindingResult bindingResult) {
+        Map<String, Object> jwtMap = jwtValidator.validate(request);
+        try {
+            if (!jwtValidator.isAuthValid((int) (jwtMap.get("status")))) {
+                return jwtMap;
+            }
+            if (bindingResult.hasErrors()) {
+                return CommonUtil.failResultMapWithJwt(GlobalStatus.BAD_REQUEST.getStatus(), bindingResult.getFieldError().getDefaultMessage(), jwtMap);
+            }
+            return CommonUtil.resultMap(service.update(vo));
+        } catch (Exception e) {
+            return CommonUtil.failResultMapWithJwt(GlobalStatus.INTERNAL_SERVER_ERR.getStatus(), e.getMessage(), jwtMap);
+        }
     }
 }

@@ -31,24 +31,30 @@ public class ReplyService {
 
     private final MemberRepository memberRepository;
 
-
     @Transactional
     public int insert (ReplyVo vo) throws Exception {
-//        ReplyDto dto = new ReplyDto();
-//        dto.setContent(vo.getContent());
-//        dto.setRegDate(DateUtil.currentDateTime());
-//        BoardDto bbsDto = boardRepository.findById(vo.getBbsId()).get();
-//        dto.setBoardDto(bbsDto);
-//
-//        // parentId로 replyDto를 가져와서 신규 dto의 parent로 넣는다.
-//        if(vo.getParentId() != 0) {
-//        ReplyDto parent = repository.findById(vo.getParentId()).get();
-//        dto.setParent(parent);
-//        }
-//        repository.save(dto);
-//
-//        return GlobalStatus.EXECUTE_SUCCESS.getStatus();
-        return 1;
+        ReplyDto dto = new ReplyDto();
+        dto.setContent(vo.getContent()); //내용
+        BoardDto bbsDto = boardRepository.findById(vo.getBbsId()).get();
+        dto.setBoardDto(bbsDto); //게시글 아이디
+        dto.setRegDate(DateUtil.currentDateTime()); //등록일
+        dto.setMemberId(vo.getMemberId()); // memberId 저장
+
+        if (vo.getParentReplyId() == null ) {
+            ReplyDto newReply = repository.save(dto);
+            newReply.setGroupId(newReply.getId()); // save 후에 본인 아이디로 groupId 채우기
+
+        } else {
+            // 그룹별로 시퀀스를 정하고, 부모 레벨 + 1로 레벨을 정한다.
+            ReplyDto parent = repository.findById(vo.getParentReplyId()).get();
+
+            dto.setSequenceId(repository.getMaxSequenceId(parent.getGroupId()) + 1L); // 그룹아이디랑 pk랑 동일
+            dto.setLevelId(parent.getLevelId() + 1);
+            dto.setGroupId(parent.getGroupId());
+            dto.setParentReplyId(vo.getParentReplyId() + 1);
+            repository.save(dto);
+        }
+        return GlobalStatus.EXECUTE_SUCCESS.getStatus();
     }
 
     public List<ReplyDto> listByBbsId (Long bbsId, Long memberId) throws Exception {
@@ -57,6 +63,7 @@ public class ReplyService {
 
         List<ReplyDto> list = repository.findByBoardDtoOrderByGroupIdAscSequenceIdAsc(bbsDto.get());
         for (ReplyDto dto : list) {
+            //조회 시 memberId로 nickName을 transien iv에 저장
             MemberDto memberDto = memberRepository.findById(dto.getMemberId()).get();
             dto.setNickName(memberDto.getNickName());
             dto.setMyReply(memberId == memberDto.getId());

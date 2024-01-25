@@ -11,4 +11,7 @@ import java.util.List;
 public interface ReplyRepository extends JpaRepository<ReplyDto, Long> {
 
     List<ReplyDto> findByBoardDtoOrderByGroupIdAscSequenceIdAsc(BoardDto boardDto);
+
+    @Query(value = "SELECT MAX(SEQ_ID) FROM bbs_reply WHERE GRP_ID = :groupId", nativeQuery = true)
+    int getMaxSequenceId(@Param("groupId") Long groupId);
 }
