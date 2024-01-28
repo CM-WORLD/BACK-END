@@ -32,10 +32,16 @@ public class ReplyController {
     /* 게시글당 댓글 조회 */
     @GetMapping("/{bbsId}")
     public Map<String, Object> list (HttpServletRequest request, @PathVariable("bbsId") Long bbsId) {
+        Map<String, Object> jwtMap = jwtValidator.validate(request);
         try {
+            if (!jwtValidator.isAuthValid((int) (jwtMap.get("status")))) {
+                return jwtMap;
+            }
+
             Long memberId = jwtTokensGenerator.extractMemberIdFromReq(request); // req로부터 id 추출
             return CommonUtil.successResultMap(service.listByBbsId(bbsId, memberId));
         } catch (Exception e) {
+            e.printStackTrace();
             return CommonUtil.failResultMap(GlobalStatus.INTERNAL_SERVER_ERR.getStatus(), e.getMessage());
         }
     }

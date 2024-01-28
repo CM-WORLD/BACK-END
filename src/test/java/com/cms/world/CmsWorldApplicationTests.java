@@ -53,17 +53,6 @@ class CmsWorldApplicationTests {
         System.out.println("dto.toString() = " + dto.getContent());
     }
 
-    @Test
-    public void replyList () {
-        //게시물 1L 당 댓글리스트 다 가져오기.
-        BoardDto dto = boardRepository.findById(1L).get();
-        List<ReplyDto> replyList = replyRepository
-                .findByBoardDto(dto);
-
-        for(ReplyDto item : replyList) {
-            System.out.println("item.toString() = " + item.getContent());
-        }
-    }
 
     @Test
     public void applyImgList () {
@@ -123,23 +112,10 @@ class CmsWorldApplicationTests {
     @Autowired
     MemberRepository memberRepository;
 
-//    @Test
-//    public void test () {
-//        Pageable pageable = PageRequest.of(0, 10,  Sort.by(Sort.Direction.DESC, "regDate"));
-//
-//        Page<BoardDto> dto = boardRepository.findByMemberDto_IdAndBbsCode(2L, "BS02", pageable);
-//
-//        System.out.println("dto.toString() = " + dto.toString());
-//    }
-
     @Test
-    public void replyReplyTest () {
-//        ReplyDto parent = replyRepository.findById(1L).get();
-//        List<ReplyDto> list = replyRepository.findByParent(parent);
-//
-//        for(ReplyDto item : list) {
-//            System.out.println("item.toString() = " + item.getContent());
-//            System.out.println(" = --------------------------");
-//        }
+    public void memberTest () {
+        int maxLevelId = replyRepository.getMaxSequenceId(1L);
+        System.out.println("maxLevelId = " + maxLevelId);
+
     }
 }
