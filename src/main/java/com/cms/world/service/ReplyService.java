@@ -1,7 +1,7 @@
 package com.cms.world.service;
 
 
-import com.cms.world.auth.MemberRepository;
+import com.cms.world.oauth.MemberRepository;
 import com.cms.world.domain.dto.BoardDto;
 import com.cms.world.domain.dto.MemberDto;
 import com.cms.world.domain.dto.ReplyDto;
@@ -10,16 +10,12 @@ import com.cms.world.repository.BoardRepository;
 import com.cms.world.repository.ReplyRepository;
 import com.cms.world.utils.DateUtil;
 import com.cms.world.utils.GlobalStatus;
-import com.cms.world.utils.StringUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor

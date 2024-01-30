@@ -1,7 +1,7 @@
 package com.cms.world.validator;
 
 
-import com.cms.world.auth.MemberService;
+import com.cms.world.oauth.MemberService;
 import com.cms.world.domain.dto.MemberDto;
 import com.cms.world.security.jwt.JwtTokenProvider;
 import com.cms.world.security.jwt.JwtTokensGenerator;

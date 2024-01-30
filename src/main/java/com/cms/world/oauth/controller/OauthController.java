@@ -1,13 +1,30 @@
-package com.cms.world.auth;
+package com.cms.world.oauth.controller;
 
+import com.cms.world.oauth.KakaoLoginParams;
+import com.cms.world.oauth.MemberRepository;
+import com.cms.world.oauth.MemberService;
+import com.cms.world.oauth.OAuthLoginService;
+import com.cms.world.oauth.domain.TwitterApiInfo;
 import com.cms.world.security.jwt.JwtTokens;
 import com.cms.world.domain.dto.MemberDto;
+import com.cms.world.utils.CommonUtil;
 import com.cms.world.utils.GlobalStatus;
 import com.cms.world.validator.JwtValidator;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.social.oauth1.AuthorizedRequestToken;
+import org.springframework.social.oauth1.OAuth1Operations;
+import org.springframework.social.oauth1.OAuth1Parameters;
+import org.springframework.social.oauth1.OAuthToken;
+import org.springframework.social.twitter.api.Twitter;
+import org.springframework.social.twitter.api.TwitterProfile;
+import org.springframework.social.twitter.api.impl.TwitterTemplate;
+import org.springframework.social.twitter.connect.TwitterConnectionFactory;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
@@ -19,11 +36,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
-public class AuthController {
+public class OauthController {
 
     private final OAuthLoginService oAuthLoginService;
 
-    private final  MemberRepository memberRepository;
+    private final MemberRepository memberRepository;
 
     private final MemberService memberService;
 
@@ -68,6 +85,49 @@ public class AuthController {
             return respMap;
         }
     }
+
+
+    private final TwitterApiInfo twitterApiInfo;
+
+    // 콜백 url
+    @PostMapping("/process/twitter")
+    public Map<String, Object> twitterOauthCallback (@RequestBody Map<String, Object> codeMap) {
+
+        TwitterConnectionFactory connectionFactory = new TwitterConnectionFactory(twitterApiInfo.getApiKey(),twitterApiInfo.getApiSecret());
+        OAuth1Operations oauthOperations = connectionFactory.getOAuthOperations();
+
+        String oauthToken = String.valueOf(codeMap.get("oauthToken"));
+        String oauthVerifier = String.valueOf(codeMap.get("oauthVerifier"));
+
+        OAuthToken accessToken = oauthOperations.exchangeForAccessToken(
+                new AuthorizedRequestToken(new OAuthToken(oauthToken, ""), oauthVerifier), null);
+
+        System.out.println("Token Value:- accesstoken");
+        Twitter twitter = new TwitterTemplate(twitterApiInfo.getApiKey(),
+                twitterApiInfo.getApiSecret(),
+                accessToken.getValue(),
+                accessToken.getSecret());
+        TwitterProfile profile = twitter.userOperations().getUserProfile();
+
+        profile.getId(); // 고유 사용자 uid 느낌
+
+        return CommonUtil.successResultMap(profile);
+    }
+
+    /* 트위터 로그인, 호출시 트위터 인증 페이지로 이동 */
+    @GetMapping("/sign/in/twitter")
+    public void  twitterOauthLogin(HttpServletResponse response) throws IOException {
+        TwitterConnectionFactory connectionFactory =
+                new TwitterConnectionFactory(twitterApiInfo.getApiKey(),twitterApiInfo.getApiSecret());
+        OAuth1Operations oauthOperations = connectionFactory.getOAuthOperations();
+
+        OAuthToken requestToken = oauthOperations.fetchRequestToken(twitterApiInfo.getCallbackUrl(), null);
+        String token = requestToken.getValue();
+        String authorizeUrl = oauthOperations.buildAuthorizeUrl(token, OAuth1Parameters.NONE);
+
+        response.sendRedirect(authorizeUrl);
+    }
+
 
     /* 로그아웃 시 토큰 폐기 */
     @PostMapping("/invalidate/token")

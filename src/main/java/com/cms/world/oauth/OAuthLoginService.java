@@ -1,4 +1,4 @@
-package com.cms.world.auth;
+package com.cms.world.oauth;
 
 
 import com.cms.world.security.jwt.JwtTokens;
@@ -18,11 +18,11 @@ public class OAuthLoginService {
     private final JwtTokensGenerator jwtTokensGenerator;
     private final RequestOAuthInfoService requestOAuthInfoService;
 
-    public JwtTokens login(OAuthLoginParams params) {
-        OAuthInfoResponse oAuthInfoResponse = requestOAuthInfoService.request(params);
-        Long memberId = findOrCreateMember(oAuthInfoResponse);
-        return jwtTokensGenerator.generate(memberId);
-    }
+//    public JwtTokens login(OAuthLoginParams params) {
+//        OAuthInfoResponse oAuthInfoResponse = requestOAuthInfoService.request(params);
+//        Long memberId = findOrCreateMember(oAuthInfoResponse);
+//        return jwtTokensGenerator.generate(memberId);
+//    }
 
     public Map<String, Object> getMemberAndTokens(OAuthLoginParams params) {
         Map<String, Object> map = new HashMap<>();
@@ -43,7 +43,7 @@ public class OAuthLoginService {
     private Long newMember(OAuthInfoResponse oAuthInfoResponse) {
         MemberDto member  = new MemberDto();
         member.setNickName("user_" + UUID.randomUUID().toString().substring(0, 8));
-        member.setEmail(oAuthInfoResponse.getEmail());
+//        member.setEmail(oAuthInfoResponse.getEmail());
         return memberRepository.save(member).getId();
     }
 }

@@ -1,4 +1,4 @@
-package com.cms.world.auth;
+package com.cms.world.oauth;
 
 import com.cms.world.domain.dto.MemberDto;
 import org.springframework.data.jpa.repository.JpaRepository;

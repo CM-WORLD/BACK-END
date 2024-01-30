@@ -1,4 +1,4 @@
-package com.cms.world.auth;
+package com.cms.world.oauth;
 
 public interface OAuthInfoResponse {
 

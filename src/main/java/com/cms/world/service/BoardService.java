@@ -1,7 +1,7 @@
 package com.cms.world.service;
 
 
-import com.cms.world.auth.MemberRepository;
+import com.cms.world.oauth.MemberRepository;
 import com.cms.world.domain.dto.BbsImgDto;
 import com.cms.world.domain.dto.BoardDto;
 import com.cms.world.domain.dto.MemberDto;
@@ -10,7 +10,6 @@ import com.cms.world.repository.BbsImgRepository;
 import com.cms.world.repository.BoardRepository;
 import com.cms.world.utils.GlobalStatus;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -19,7 +18,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.Optional;
 
 

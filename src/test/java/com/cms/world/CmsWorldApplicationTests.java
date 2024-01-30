@@ -1,6 +1,6 @@
 package com.cms.world;
 
-import com.cms.world.auth.MemberRepository;
+import com.cms.world.oauth.MemberRepository;
 import com.cms.world.security.jwt.JwtTokensGenerator;
 import com.cms.world.security.jwt.JwtTokenProvider;
 import com.cms.world.domain.dto.*;

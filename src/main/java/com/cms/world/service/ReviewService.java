@@ -1,7 +1,6 @@
 package com.cms.world.service;
 
 
-import com.cms.world.auth.MemberRepository;
 import com.cms.world.domain.dto.CmsApplyDto;
 import com.cms.world.domain.dto.ReviewDto;
 import com.cms.world.domain.vo.PageVo;
