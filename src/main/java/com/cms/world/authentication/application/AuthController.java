@@ -68,13 +68,13 @@ public class AuthController {
 
             MemberDto dto = memberRepository.findById(memberId).get();
             dto.setRefreshToken(authTokens.getRefreshToken()); // 리프레시 토큰 저장
-            dto.setLastLoginTime(DateUtil.currentDateTime());
-            memberRepository.save(dto);
-
-            respMap.put("status", GlobalStatus.SUCCESS.getStatus());
-            respMap.put("message", GlobalStatus.SUCCESS.getMsg());
-            respMap.put("tokens", resultMap.get("tokens"));
-            respMap.put("nick", dto.getNickName());
+//            dto.setLastLoginTime(DateUtil.currentDateTime());
+//            memberRepository.save(dto);
+//
+//            respMap.put("status", GlobalStatus.SUCCESS.getStatus());
+//            respMap.put("message", GlobalStatus.SUCCESS.getMsg());
+//            respMap.put("tokens", resultMap.get("tokens"));
+//            respMap.put("nick", dto.getNickName());
 
             return respMap;
         } catch (Exception e) {
@@ -84,6 +84,7 @@ public class AuthController {
             return respMap;
         }
     }
+
 
     private final TwitterApiInfo twitterApiInfo;
 
@@ -129,7 +130,7 @@ public class AuthController {
 
     /* 로그아웃 시 토큰 폐기 */
     @PostMapping("/invalidate/token")
-    public Map<String, Object> invalidateTkns (HttpServletRequest request) {
+    public Map<String, Object> invalidateTokens (HttpServletRequest request) {
         Map<String, Object> map = new HashMap<>();
         try {
             if (jwtValidator.validate(request).get("status").equals(GlobalStatus.LOGIN_REQUIRED.getStatus())) {
@@ -151,10 +152,8 @@ public class AuthController {
             return map;
         } catch (Exception e) {
             e.printStackTrace();
-            map.put("status", GlobalStatus.INTERNAL_SERVER_ERR.getStatus());
-            map.put("message", GlobalStatus.INTERNAL_SERVER_ERR.getMsg());
+            return CommonUtil.failResultMap(GlobalStatus.INTERNAL_SERVER_ERR.getStatus(), e.getMessage());
         }
-            return map;
     }
 
 }

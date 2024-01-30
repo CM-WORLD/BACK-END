@@ -13,5 +13,5 @@ public interface MemberRepository extends JpaRepository<MemberDto, Long> {
 
 
      // 사용자를 id + uid 조합으로 찾기
-     Optional<MemberDto> findByUidAndLoginTp(Long uid, String loginTp);
+     Optional<MemberDto> findByUidAndLoginType(Long uid, String loginTp);
 }

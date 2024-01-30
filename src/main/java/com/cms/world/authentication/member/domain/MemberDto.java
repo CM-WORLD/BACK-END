@@ -15,11 +15,11 @@ import org.hibernate.annotations.CreationTimestamp;
 @Setter
 public class MemberDto {
     @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private Long id;
 
-    @Id
+//    @Id
     @Column(name ="UID")
     private Long uid;
 

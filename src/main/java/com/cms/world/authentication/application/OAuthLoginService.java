@@ -43,12 +43,12 @@ public class OAuthLoginService {
                 .orElseGet(() -> newMember(oAuthInfoResponse));
     }
 
-    /* uid와 provider로 사용자 중복구분하기 */
-    private Long selectOrCreateMember(OAuthInfoResponse oAuthInfoResponse) {
-        return memberRepository.findByUidAndLoginTp(oAuthInfoResponse.getUid(), oAuthInfoResponse.getOAuthProvider().toString())
-                .map(MemberDto::getId)
-                .orElseGet(() -> newMember(oAuthInfoResponse));
-    }
+//    /* uid와 provider로 사용자 중복구분하기 */
+//    private Long selectOrCreateMember(OAuthInfoResponse oAuthInfoResponse) {
+//        return memberRepository.findByUidAndLoginTp(oAuthInfoResponse.getUid(), oAuthInfoResponse.getOAuthProvider().toString())
+//                .map(MemberDto::getId)
+//                .orElseGet(() -> newMember(oAuthInfoResponse));
+//    }
 
     private Long newMember(OAuthInfoResponse oAuthInfoResponse) {
         MemberDto member  = new MemberDto();
