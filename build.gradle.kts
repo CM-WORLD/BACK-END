@@ -43,7 +43,13 @@ dependencies {
     implementation ("org.springframework.boot:spring-boot-starter-webflux")
     implementation ("io.projectreactor:reactor-core:3.5.4") // 원하는 버전으로 변경
 
+
+    //twitter
     implementation ("org.springframework.social:spring-social-twitter:1.1.2.RELEASE")
+    implementation("org.apache.httpcomponents.client5:httpclient5:5.3.1")
+    implementation("org.apache.httpcomponents.core5:httpcore5:5.2.4")
+
+
 
 
     testImplementation("org.mybatis.spring.boot:mybatis-spring-boot-starter-test:3.0.3")
