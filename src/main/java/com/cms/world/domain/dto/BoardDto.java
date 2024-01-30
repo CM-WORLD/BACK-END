@@ -1,6 +1,7 @@
 package com.cms.world.domain.dto;
 
 
+import com.cms.world.authentication.member.domain.MemberDto;
 import com.cms.world.utils.DateUtil;
 import com.cms.world.utils.GlobalCode;
 import com.cms.world.utils.StringUtil;

@@ -1,4 +1,4 @@
-package com.cms.world.oauth.domain;
+package com.cms.world.authentication;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -1,7 +1,8 @@
 package com.cms.world.service;
 
 
-import com.cms.world.oauth.MemberRepository;
+import com.cms.world.authentication.member.domain.MemberDto;
+import com.cms.world.authentication.member.domain.MemberRepository;
 import com.cms.world.domain.dto.*;
 import com.cms.world.domain.vo.CmsApplyVo;
 import com.cms.world.repository.CmsApplyImgRepository;

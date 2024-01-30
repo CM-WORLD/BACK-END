@@ -1,6 +1,6 @@
 package com.cms.world.controller;
 
-import com.cms.world.security.jwt.JwtTokensGenerator;
+import com.cms.world.authentication.domain.AuthTokensGenerator;
 
 import com.cms.world.domain.dto.CmsApplyDto;
 import com.cms.world.domain.vo.CmsApplyVo;
@@ -24,14 +24,14 @@ public class CmsApplyController {
 
     private final CmsApplyService service;
 
-    private final JwtTokensGenerator jwtTokensGenerator;
+    private final AuthTokensGenerator authTokensGenerator;
 
     /* 커미션 신청 */
     @PostMapping("/apply/form")
     public Map<String, Object> submit(HttpServletRequest request, CmsApplyVo vo) {
         Map<String, Object> map = new HashMap<>();
         try {
-            vo.setUserId(jwtTokensGenerator.extractMemberIdFromReq(request)); // req로부터 id 추출);
+            vo.setUserId(authTokensGenerator.extractMemberIdFromReq(request)); // req로부터 id 추출);
             String cmsId = service.insert(vo);
             if (!StringUtil.isEmpty(service.insert(vo))) {
                 map.put("status", String.valueOf(GlobalStatus.SUCCESS.getStatus()));
@@ -61,7 +61,7 @@ public class CmsApplyController {
     public Map<String, Object> applyHistoryByMemberId (HttpServletRequest request,
                                                      @RequestParam(name= "page", defaultValue = "0") Integer page,
                                                      @RequestParam(name = "size", defaultValue = "10") Integer size)  {
-        Long id = jwtTokensGenerator.extractMemberIdFromReq(request);
+        Long id = authTokensGenerator.extractMemberIdFromReq(request);
         return CommonUtil.renderResultByMap(service.listByMemberID(id, page, size));
     }
 

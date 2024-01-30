@@ -1,8 +1,8 @@
 package com.cms.world;
 
-import com.cms.world.oauth.MemberRepository;
-import com.cms.world.security.jwt.JwtTokensGenerator;
-import com.cms.world.security.jwt.JwtTokenProvider;
+import com.cms.world.authentication.member.domain.MemberRepository;
+import com.cms.world.authentication.domain.AuthTokensGenerator;
+import com.cms.world.authentication.infra.JwtTokenProvider;
 import com.cms.world.domain.dto.*;
 import com.cms.world.domain.vo.AlertMsg;
 import com.cms.world.domain.social.TelegramChat;
@@ -84,7 +84,7 @@ class CmsWorldApplicationTests {
     }
     
     @Autowired
-    JwtTokensGenerator tokensGenerator;
+    AuthTokensGenerator tokensGenerator;
     
     @Test
     public void claimsTest () {

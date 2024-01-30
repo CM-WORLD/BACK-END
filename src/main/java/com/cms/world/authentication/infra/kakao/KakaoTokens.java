@@ -1,4 +1,4 @@
-package com.cms.world.oauth;
+package com.cms.world.authentication.infra.kakao;
 
 
 import com.fasterxml.jackson.annotation.JsonProperty;

@@ -1,13 +1,12 @@
 package com.cms.world.domain.dto;
 
+import com.cms.world.authentication.member.domain.MemberDto;
 import com.cms.world.utils.DateUtil;
 import com.cms.world.utils.GlobalCode;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
-
-import java.util.List;
 
 @Entity
 @Table(name="cms_aply")

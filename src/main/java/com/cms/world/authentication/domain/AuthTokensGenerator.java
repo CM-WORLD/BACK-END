@@ -1,5 +1,6 @@
-package com.cms.world.security.jwt;
+package com.cms.world.authentication.domain;
 
+import com.cms.world.authentication.infra.JwtTokenProvider;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -8,7 +9,7 @@ import java.util.Date;
 
 @Component
 @RequiredArgsConstructor
-public class JwtTokensGenerator {
+public class AuthTokensGenerator {
     private static final String BEARER_TYPE = "Bearer";
     private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 30;            // 30분
 //private static final long ACCESS_TOKEN_EXPIRE_TIME = 10000; // 10초
@@ -17,7 +18,7 @@ public class JwtTokensGenerator {
 
     private final JwtTokenProvider jwtTokenProvider;
 
-    public JwtTokens generate(Long memberId) {
+    public AuthTokens generate(Long memberId) {
         long now = (new Date()).getTime();
         Date accessTokenExpiredAt = new Date(now + ACCESS_TOKEN_EXPIRE_TIME);
         Date refreshTokenExpiredAt = new Date(now + REFRESH_TOKEN_EXPIRE_TIME);
@@ -26,7 +27,7 @@ public class JwtTokensGenerator {
         String accessToken = jwtTokenProvider.generate(subject, accessTokenExpiredAt);
         String refreshToken = jwtTokenProvider.generate(subject, refreshTokenExpiredAt);
 
-        return JwtTokens.of(accessToken, refreshToken, BEARER_TYPE, ACCESS_TOKEN_EXPIRE_TIME / 1000L);
+        return AuthTokens.of(accessToken, refreshToken, BEARER_TYPE, ACCESS_TOKEN_EXPIRE_TIME / 1000L);
     }
 
     public String generateAtk(Long memberId) {

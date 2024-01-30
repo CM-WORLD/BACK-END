@@ -1,7 +1,7 @@
 package com.cms.world.controller;
 
 
-import com.cms.world.security.jwt.JwtTokensGenerator;
+import com.cms.world.authentication.domain.AuthTokensGenerator;
 import com.cms.world.domain.dto.BoardDto;
 import com.cms.world.domain.vo.BoardVo;
 import com.cms.world.service.BoardService;
@@ -27,7 +27,7 @@ public class BoardController {
 
     private final BoardService service;
 
-    private final JwtTokensGenerator jwtTokensGenerator;
+    private final AuthTokensGenerator authTokensGenerator;
 
     private final JwtValidator jwtValidator;
 
@@ -44,7 +44,7 @@ public class BoardController {
                 return CommonUtil.failResultMap(GlobalStatus.BAD_REQUEST.getStatus(), bindingResult.getFieldError().getDefaultMessage());
             }
 
-            Long memberId = jwtTokensGenerator.extractMemberIdFromReq(request); // req로부터 id 추출
+            Long memberId = authTokensGenerator.extractMemberIdFromReq(request); // req로부터 id 추출
             vo.setMemberId(memberId);
             Map<String, Object> resultMap = CommonUtil.successResultMapWithJwt(service.insert(vo), jwtMap);
 
@@ -81,7 +81,7 @@ public class BoardController {
         }
 
         try {
-            Long memberId = jwtTokensGenerator.extractMemberIdFromReq(request);
+            Long memberId = authTokensGenerator.extractMemberIdFromReq(request);
             return CommonUtil.successResultMapWithJwt(service.listByMemId(memberId, GlobalCode.BBS_INQUIRY.getCode(), page, size), jwtMap);
         } catch (Exception e) {
             return CommonUtil.failResultMapWithJwt(GlobalStatus.INTERNAL_SERVER_ERR.getStatus(), e.getMessage(), jwtMap);

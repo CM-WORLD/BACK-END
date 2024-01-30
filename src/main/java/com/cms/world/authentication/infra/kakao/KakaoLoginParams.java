@@ -1,6 +1,8 @@
-package com.cms.world.oauth;
+package com.cms.world.authentication.infra.kakao;
 
 
+import com.cms.world.authentication.domain.oauth.OAuthLoginParams;
+import com.cms.world.authentication.domain.oauth.OAuthProvider;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,7 +12,7 @@ import org.springframework.util.MultiValueMap;
 @Getter
 @Setter
 @NoArgsConstructor
-public class KakaoLoginParams implements OAuthLoginParams{
+public class KakaoLoginParams implements OAuthLoginParams {
 
     private String authorizationCode;
 

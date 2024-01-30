@@ -1,4 +1,4 @@
-package com.cms.world.security.jwt;
+package com.cms.world.authentication.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,14 +9,14 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class JwtTokens {
+public class AuthTokens {
 
     private String accessToken;
     private String refreshToken;
     private String grantType;
     private Long expiresIn;
 
-    public static JwtTokens of(String accessToken, String refreshToken, String grantType, Long expiresIn) {
-        return new JwtTokens(accessToken, refreshToken, grantType, expiresIn);
+    public static AuthTokens of(String accessToken, String refreshToken, String grantType, Long expiresIn) {
+        return new AuthTokens(accessToken, refreshToken, grantType, expiresIn);
     }
 }

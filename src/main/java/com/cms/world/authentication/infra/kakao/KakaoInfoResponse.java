@@ -1,13 +1,15 @@
-package com.cms.world.oauth;
+package com.cms.world.authentication.infra.kakao;
 
 
+import com.cms.world.authentication.domain.oauth.OAuthInfoResponse;
+import com.cms.world.authentication.domain.oauth.OAuthProvider;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 
 @Getter
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class KakaoInfoResponse implements OAuthInfoResponse{
+public class KakaoInfoResponse implements OAuthInfoResponse {
 
     @JsonProperty("kakao_account")
     private KakaoAccount kakaoAccount;
@@ -28,6 +30,11 @@ public class KakaoInfoResponse implements OAuthInfoResponse{
     @Override
     public String getEmail() {
         return kakaoAccount.email;
+    }
+
+    @Override
+    public Long getUid() {
+        return 0L;
     }
 
     @Override

@@ -2,20 +2,17 @@ package com.cms.world.controller;
 
 
 import com.cms.world.domain.vo.ReplyVo;
-import com.cms.world.domain.vo.ReviewVo;
-import com.cms.world.security.jwt.JwtTokensGenerator;
+import com.cms.world.authentication.domain.AuthTokensGenerator;
 import com.cms.world.service.ReplyService;
 import com.cms.world.utils.CommonUtil;
 import com.cms.world.utils.GlobalStatus;
 import com.cms.world.validator.JwtValidator;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.Map;
 
 @RestController
@@ -25,7 +22,7 @@ public class ReplyController {
 
     private final ReplyService service;
 
-    private final JwtTokensGenerator jwtTokensGenerator;
+    private final AuthTokensGenerator authTokensGenerator;
 
     private final JwtValidator jwtValidator;
 
@@ -38,7 +35,7 @@ public class ReplyController {
                 return jwtMap;
             }
 
-            Long memberId = jwtTokensGenerator.extractMemberIdFromReq(request); // req로부터 id 추출
+            Long memberId = authTokensGenerator.extractMemberIdFromReq(request); // req로부터 id 추출
             return CommonUtil.successResultMap(service.listByBbsId(bbsId, memberId));
         } catch (Exception e) {
             e.printStackTrace();
@@ -57,7 +54,7 @@ public class ReplyController {
             if (bindingResult.hasErrors()) {
                 return CommonUtil.failResultMapWithJwt(GlobalStatus.BAD_REQUEST.getStatus(), bindingResult.getFieldError().getDefaultMessage(), jwtMap);
             }
-            Long memberId = jwtTokensGenerator.extractMemberIdFromReq(request); // req로부터 id 추출
+            Long memberId = authTokensGenerator.extractMemberIdFromReq(request); // req로부터 id 추출
             vo.setMemberId(memberId);
 
             return CommonUtil.resultMap(service.insert(vo));

@@ -1,4 +1,4 @@
-package com.cms.world.domain.dto;
+package com.cms.world.authentication.member.domain;
 
 
 import com.cms.world.utils.GlobalCode;
@@ -15,9 +15,13 @@ import org.hibernate.annotations.CreationTimestamp;
 @Setter
 public class MemberDto {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private Long id;
+
+    @Id
+    @Column(name ="UID")
+    private Long uid;
 
     @Column(name = "EMAIL", nullable = false, unique = true)
     private String email;
@@ -27,6 +31,9 @@ public class MemberDto {
 
     @Column(name = "STATUS")
     private String status;
+
+    @Column(name = "LOGIN_TP")
+    private String loginType;
 
     @Column(name ="LOG_IN_DT")
     private String lastLoginTime;

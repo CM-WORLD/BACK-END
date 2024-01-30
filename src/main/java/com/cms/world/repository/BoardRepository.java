@@ -1,7 +1,7 @@
 package com.cms.world.repository;
 
 import com.cms.world.domain.dto.BoardDto;
-import com.cms.world.domain.dto.MemberDto;
+import com.cms.world.authentication.member.domain.MemberDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

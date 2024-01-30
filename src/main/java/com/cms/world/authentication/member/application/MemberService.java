@@ -1,7 +1,8 @@
-package com.cms.world.oauth;
+package com.cms.world.authentication.member.application;
 
 
-import com.cms.world.domain.dto.MemberDto;
+import com.cms.world.authentication.member.domain.MemberDto;
+import com.cms.world.authentication.member.domain.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

@@ -1,10 +1,10 @@
 package com.cms.world.service;
 
 
-import com.cms.world.oauth.MemberRepository;
+import com.cms.world.authentication.member.domain.MemberRepository;
 import com.cms.world.domain.dto.BbsImgDto;
 import com.cms.world.domain.dto.BoardDto;
-import com.cms.world.domain.dto.MemberDto;
+import com.cms.world.authentication.member.domain.MemberDto;
 import com.cms.world.domain.vo.BoardVo;
 import com.cms.world.repository.BbsImgRepository;
 import com.cms.world.repository.BoardRepository;

@@ -1,19 +1,18 @@
-package com.cms.world.oauth.controller;
+package com.cms.world.authentication.application;
 
-import com.cms.world.oauth.KakaoLoginParams;
-import com.cms.world.oauth.MemberRepository;
-import com.cms.world.oauth.MemberService;
-import com.cms.world.oauth.OAuthLoginService;
-import com.cms.world.oauth.domain.TwitterApiInfo;
-import com.cms.world.security.jwt.JwtTokens;
-import com.cms.world.domain.dto.MemberDto;
+import com.cms.world.authentication.TwitterApiInfo;
+import com.cms.world.authentication.domain.AuthTokens;
+import com.cms.world.authentication.infra.kakao.KakaoLoginParams;
+import com.cms.world.authentication.member.domain.MemberRepository;
+import com.cms.world.authentication.member.application.MemberService;
+import com.cms.world.authentication.member.domain.MemberDto;
 import com.cms.world.utils.CommonUtil;
+import com.cms.world.utils.DateUtil;
 import com.cms.world.utils.GlobalStatus;
 import com.cms.world.validator.JwtValidator;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.social.oauth1.AuthorizedRequestToken;
 import org.springframework.social.oauth1.OAuth1Operations;
 import org.springframework.social.oauth1.OAuth1Parameters;
@@ -25,8 +24,6 @@ import org.springframework.social.twitter.connect.TwitterConnectionFactory;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -36,7 +33,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
-public class OauthController {
+public class AuthController {
 
     private final OAuthLoginService oAuthLoginService;
 
@@ -57,6 +54,8 @@ public class OauthController {
     public Map<String, Object> kakaoLogin(@RequestBody Map<String, Object> codeMap) {
             Map<String, Object> respMap = new HashMap<>();
         try {
+
+            //
             KakaoLoginParams params = new KakaoLoginParams();
 
             String code = String.valueOf(codeMap.get("code"));
@@ -64,12 +63,12 @@ public class OauthController {
 
             Map<String, Object> resultMap = oAuthLoginService.getMemberAndTokens(params);
 
-            JwtTokens jwtTokens = (JwtTokens) resultMap.get("tokens");
+            AuthTokens authTokens = (AuthTokens) resultMap.get("tokens");
             Long memberId = (Long) resultMap.get("memberId");
 
             MemberDto dto = memberRepository.findById(memberId).get();
-            dto.setRefreshToken(jwtTokens.getRefreshToken()); // 리프레시 토큰 저장
-            dto.setLastLoginTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm")));
+            dto.setRefreshToken(authTokens.getRefreshToken()); // 리프레시 토큰 저장
+            dto.setLastLoginTime(DateUtil.currentDateTime());
             memberRepository.save(dto);
 
             respMap.put("status", GlobalStatus.SUCCESS.getStatus());
@@ -86,10 +85,9 @@ public class OauthController {
         }
     }
 
-
     private final TwitterApiInfo twitterApiInfo;
 
-    // 콜백 url
+    /* 트위터 콜백 메서드 */
     @PostMapping("/process/twitter")
     public Map<String, Object> twitterOauthCallback (@RequestBody Map<String, Object> codeMap) {
 

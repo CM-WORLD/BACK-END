@@ -1,4 +1,4 @@
-package com.cms.world.oauth;
+package com.cms.world.authentication.domain.oauth;
 
 
 import org.springframework.stereotype.Component;

@@ -1,9 +1,9 @@
 package com.cms.world.service;
 
 
-import com.cms.world.oauth.MemberRepository;
+import com.cms.world.authentication.member.domain.MemberRepository;
 import com.cms.world.domain.dto.BoardDto;
-import com.cms.world.domain.dto.MemberDto;
+import com.cms.world.authentication.member.domain.MemberDto;
 import com.cms.world.domain.dto.ReplyDto;
 import com.cms.world.domain.vo.ReplyVo;
 import com.cms.world.repository.BoardRepository;

@@ -1,10 +1,10 @@
 package com.cms.world.validator;
 
 
-import com.cms.world.oauth.MemberService;
-import com.cms.world.domain.dto.MemberDto;
-import com.cms.world.security.jwt.JwtTokenProvider;
-import com.cms.world.security.jwt.JwtTokensGenerator;
+import com.cms.world.authentication.member.application.MemberService;
+import com.cms.world.authentication.member.domain.MemberDto;
+import com.cms.world.authentication.infra.JwtTokenProvider;
+import com.cms.world.authentication.domain.AuthTokensGenerator;
 import com.cms.world.utils.GlobalStatus;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Component;
@@ -20,15 +20,15 @@ public class JwtValidator {
 
     private final MemberService memberService;
 
-    private final JwtTokensGenerator jwtTokensGenerator;
+    private final AuthTokensGenerator authTokensGenerator;
 
     public JwtValidator(
             JwtTokenProvider jwtTokenProvider,
             MemberService memberService,
-            JwtTokensGenerator jwtTokensGenerator) {
+            AuthTokensGenerator authTokensGenerator) {
         this.jwtTokenProvider = jwtTokenProvider;
         this.memberService = memberService;
-        this.jwtTokensGenerator = jwtTokensGenerator;
+        this.authTokensGenerator = authTokensGenerator;
     }
 
 
@@ -68,7 +68,7 @@ public class JwtValidator {
                 //atk 재발급
                 MemberDto member = dto.get();
                 Long memberId = member.getId();
-                String newAtk = jwtTokensGenerator.generateAtk(memberId);
+                String newAtk = authTokensGenerator.generateAtk(memberId);
 
                 map.put("status", GlobalStatus.ATK_REISSUED.getStatus());
                 map.put("message", GlobalStatus.ATK_REISSUED.getMsg());

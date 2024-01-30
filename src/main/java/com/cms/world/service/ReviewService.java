@@ -7,7 +7,7 @@ import com.cms.world.domain.vo.PageVo;
 import com.cms.world.domain.vo.ReviewVo;
 import com.cms.world.repository.CmsApplyRepository;
 import com.cms.world.repository.ReviewRepository;
-import com.cms.world.security.jwt.JwtTokensGenerator;
+import com.cms.world.authentication.domain.AuthTokensGenerator;
 import com.cms.world.utils.GlobalCode;
 import com.cms.world.utils.GlobalStatus;
 import com.cms.world.utils.StringUtil;
@@ -28,19 +28,19 @@ public class ReviewService {
 
     private final CmsApplyRepository cmsApplyRepository;
 
-    private final JwtTokensGenerator jwtTokensGenerator;
+    private final AuthTokensGenerator authTokensGenerator;
 
     public Page<ReviewDto> list (HttpServletRequest request, PageVo vo, String isMemberYn) {
         Pageable pageable = PageRequest.of(vo.getPage(), vo.getSize(), Sort.by(Sort.Direction.DESC, "regDate"));
 
         if (isMemberYn.equals("N")) return repository.findAll(pageable);
-        return repository.findLitByMemberId(jwtTokensGenerator.extractMemberIdFromReq(request),  pageable);
+        return repository.findLitByMemberId(authTokensGenerator.extractMemberIdFromReq(request),  pageable);
 
     }
 
     @Transactional
     public ReviewDto create (ReviewVo vo, HttpServletRequest request) throws Exception {
-        Long memberId = jwtTokensGenerator.extractMemberIdFromReq(request); // req로부터 id 추출
+        Long memberId = authTokensGenerator.extractMemberIdFromReq(request); // req로부터 id 추출
 
         ReviewDto dto = new ReviewDto();
         CmsApplyDto applyDto = cmsApplyRepository.findById(vo.getCmsApplyId())
