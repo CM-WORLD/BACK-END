@@ -18,11 +18,23 @@ public class NaverInfoResponse implements OAuthInfoResponse {
     static class Response {
         private String email;
         private String nickname;
+        private String profile_img;
+    }
+
+//    @Override
+//    public String getEmail() {
+//        return response.email;
+//    }
+
+    @Override
+    public String getProfileImg() {
+        return response.profile_img;
+        //TODO:: profile_img 항목값 맞는지 체크
     }
 
     @Override
-    public String getEmail() {
-        return response.email;
+    public long getId() {
+        return 100;
     }
 
     @Override
