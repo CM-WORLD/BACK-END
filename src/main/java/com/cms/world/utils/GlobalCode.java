@@ -27,9 +27,12 @@ public enum GlobalCode { //타입 등의 코드
     PAY_PENDING("CM02", "결제 요청"), //신청 완료, 결제 대기
     PAY_COMPLETE("CM03", "결제 완료"),
     CMS_PROCESS("CM04", "작업중"),
-    CMS_REQ_EDITING("CM05", "요청사항 수정중"),
-    CMS_CONFIRM("CM06", "작업 완료"),
+    CMS_MODIFYING("CM05", "요청사항 수정중"),
+    CMS_COMPLETE("CM06", "작업 완료"),
     CMS_REVIEW("CM07", "리뷰 작성 완료"),
+
+    CMS_CANCEL("CM08", "취소"),
+    CMS_REJECT("CM09", "거절"),
 
     //커미션 열/닫
     CMS_CLOSED("RP01", "커미션 닫힘"),
