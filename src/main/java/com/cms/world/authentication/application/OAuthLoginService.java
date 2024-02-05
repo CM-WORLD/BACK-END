@@ -10,6 +10,7 @@ import com.cms.world.authentication.domain.AuthTokensGenerator;
 import com.cms.world.authentication.member.domain.MemberDto;
 import com.cms.world.utils.DateUtil;
 import com.cms.world.utils.GlobalCode;
+import com.cms.world.utils.StringUtil;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
@@ -45,28 +46,28 @@ public class OAuthLoginService {
         System.out.println("oAuthInfoResponse.getId() = " + oAuthInfoResponse.getId());
     }
 
-    /* 카카오, 네이버 로그인 */
-    public Map<String, Object> login (OAuthLoginParams params) {
-        OAuthInfoResponse oAuthInfoResponse = requestOAuthInfoService.request(params);
-        Long id = findOrCreateMember(oAuthInfoResponse);
-        return handleTokenAndLoginTime(id);
-    }
+
 
     private Long findOrCreateMember(OAuthInfoResponse oAuthInfoResponse) {
         return memberRepository.findByUidAndLoginType(oAuthInfoResponse.getId(), oAuthInfoResponse.getOAuthProvider())
                 .map(MemberDto::getId).orElseGet(() -> newMember(oAuthInfoResponse));
     }
 
+    /* naver, kakao 신규 가입 처리 */
     private Long newMember(OAuthInfoResponse oAuthInfoResponse) {
         MemberDto member = new MemberDto();
         member.setUid(String.valueOf(oAuthInfoResponse.getId()));
         member.setNickName(oAuthInfoResponse.getNickname());
-        member.setProfileImg(oAuthInfoResponse.getProfileImg());
+
+        if(StringUtil.isEmpty(oAuthInfoResponse.getProfileImg())) {
+            member.setProfileImg("https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png");
+        } else {
+            member.setProfileImg(oAuthInfoResponse.getProfileImg());
+        }
         member.setLoginType(oAuthInfoResponse.getOAuthProvider());
         return memberRepository.save(member).getId();
     }
 
-    // ------------------------------------------------- 트위터 로그인 -------------------------------------------------
 
     /* 트위터 조회/가입 분기처리 */
     public long findOrCreateMember (TwitterProfile profile) {
@@ -79,12 +80,16 @@ public class OAuthLoginService {
         MemberDto member = new MemberDto();
         member.setUid(String.valueOf(profile.getId()));
         member.setNickName(profile.getName());
-        member.setProfileImg(profile.getProfileImageUrl());
+        if(StringUtil.isEmpty(profile.getProfileImageUrl())) {
+            member.setProfileImg("https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png");
+        } else {
+            member.setProfileImg(profile.getProfileImageUrl());
+        }
         member.setLoginType(GlobalCode.OAUTH_TWITTER.getCode());
         return memberRepository.save(member).getId();
     }
 
-    /* 트위터 jwt token 생성 + refresh token 저장 + 로그인 시각 저장 */
+    /* 공통 리프레시 토큰, 로그인 시각 처리 */
     @Transactional
     public Map<String, Object> handleTokenAndLoginTime (long memberId) {
         Map<String, Object> map = new HashMap<>();
@@ -103,6 +108,13 @@ public class OAuthLoginService {
     /* 로그인 (트위터) */
     public Map<String, Object> login (TwitterProfile profile) {
         Long id = findOrCreateMember(profile);
+        return handleTokenAndLoginTime(id);
+    }
+
+    /* 카카오, 네이버 로그인 */
+    public Map<String, Object> login (OAuthLoginParams params) {
+        OAuthInfoResponse oAuthInfoResponse = requestOAuthInfoService.request(params);
+        Long id = findOrCreateMember(oAuthInfoResponse);
         return handleTokenAndLoginTime(id);
     }
 
