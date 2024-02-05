@@ -3,6 +3,7 @@ package com.cms.world.authentication.infra.kakao;
 
 import com.cms.world.authentication.domain.oauth.OAuthLoginParams;
 import com.cms.world.authentication.domain.oauth.OAuthProvider;
+import com.cms.world.utils.GlobalCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -17,8 +18,8 @@ public class KakaoLoginParams implements OAuthLoginParams {
     private String authorizationCode;
 
     @Override
-    public OAuthProvider oAuthProvider() {
-        return OAuthProvider.KAKAO;
+    public String  oAuthProvider() {
+        return GlobalCode.OAUTH_KAKAO.getCode();
     }
 
     @Override

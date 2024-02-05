@@ -2,7 +2,7 @@ package com.cms.world.authentication.domain.oauth;
 
 public interface OAuthApiClient {
 
-    OAuthProvider oAuthProvider();
+    String oAuthProvider();
     String requestAccessToken(OAuthLoginParams params);
     OAuthInfoResponse requestOauthInfo(String accessToken);
 }

@@ -20,11 +20,11 @@ public class MemberDto {
     private Long id;
 
     @Column(name = "UID", nullable = false)
-    private Long uid;
+    private String uid;
 
     // 이메일보다 phone이 더 필요해 보이는데....  // 일단 로그인 시 이메일을 받지 않도록 한다.
 
-    @Column(name = "NICK_NM", nullable = false, unique = true)
+    @Column(name = "NICK_NM", nullable = false)
     private String nickName;
 
     @Schema(description = "프로필 이미지 url", example = "http://localhost:8080/img/profile/1.jpg")

@@ -3,7 +3,7 @@ package com.cms.world.authentication.domain.oauth;
 import org.springframework.util.MultiValueMap;
 
 public interface OAuthLoginParams {
-    OAuthProvider oAuthProvider();
+    String oAuthProvider();
     MultiValueMap<String, String> makeBody();
 
 

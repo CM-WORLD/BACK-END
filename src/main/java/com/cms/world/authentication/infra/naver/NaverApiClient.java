@@ -4,6 +4,7 @@ import com.cms.world.authentication.domain.oauth.OAuthApiClient;
 import com.cms.world.authentication.domain.oauth.OAuthInfoResponse;
 import com.cms.world.authentication.domain.oauth.OAuthLoginParams;
 import com.cms.world.authentication.domain.oauth.OAuthProvider;
+import com.cms.world.utils.GlobalCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -35,8 +36,8 @@ public class NaverApiClient implements OAuthApiClient {
     private final RestTemplate restTemplate;
 
     @Override
-    public OAuthProvider oAuthProvider() {
-        return OAuthProvider.NAVER;
+    public String oAuthProvider() {
+        return GlobalCode.OAUTH_NAVER.getCode();
     }
 
     @Override

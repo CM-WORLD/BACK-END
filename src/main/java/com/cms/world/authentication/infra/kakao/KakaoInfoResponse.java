@@ -3,6 +3,7 @@ package com.cms.world.authentication.infra.kakao;
 
 import com.cms.world.authentication.domain.oauth.OAuthInfoResponse;
 import com.cms.world.authentication.domain.oauth.OAuthProvider;
+import com.cms.world.utils.GlobalCode;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
@@ -33,8 +34,8 @@ public class KakaoInfoResponse implements OAuthInfoResponse {
 //    }
 
     @Override
-    public long getId() {
-        return 0;
+    public String getId() {
+        return "";
     }
 
     @Override
@@ -48,7 +49,7 @@ public class KakaoInfoResponse implements OAuthInfoResponse {
     }
 
     @Override
-    public OAuthProvider getOAuthProvider() {
-        return OAuthProvider.KAKAO;
+    public String  getOAuthProvider() {
+        return GlobalCode.OAUTH_KAKAO.getCode();
     }
 }

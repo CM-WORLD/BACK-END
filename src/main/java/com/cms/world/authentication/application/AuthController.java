@@ -2,6 +2,7 @@ package com.cms.world.authentication.application;
 
 import com.cms.world.authentication.domain.AuthTokens;
 import com.cms.world.authentication.infra.kakao.KakaoLoginParams;
+import com.cms.world.authentication.infra.naver.NaverLoginParams;
 import com.cms.world.authentication.infra.twitter.TwitterApiClient;
 import com.cms.world.authentication.member.domain.MemberRepository;
 import com.cms.world.authentication.member.application.MemberService;
@@ -42,7 +43,7 @@ public class AuthController {
 
     /* 프론트로부터 카카오 인가 코드를 받아서 처리한다. */
     @PostMapping("/process/kakao")
-    public Map<String, Object> kakaoLogin(@RequestBody Map<String, Object> codeMap) {
+    public Map<String, Object> kakaoLogin (@RequestBody Map<String, Object> codeMap) {
             Map<String, Object> respMap = new HashMap<>();
         try {
 
@@ -52,7 +53,8 @@ public class AuthController {
             String code = String.valueOf(codeMap.get("code"));
             params.setAuthorizationCode(code);
 
-            Map<String, Object> resultMap = oAuthLoginService.getMemberAndTokens(params);
+//            Map<String, Object> resultMap = oAuthLoginService.getMemberAndTokens(params);
+            Map<String, Object> resultMap = new HashMap<>();
 
             AuthTokens authTokens = (AuthTokens) resultMap.get("tokens");
             Long memberId = (Long) resultMap.get("memberId");
@@ -69,6 +71,17 @@ public class AuthController {
 
             return respMap;
         } catch (Exception e) {
+            return CommonUtil.failResultMap(GlobalStatus.INTERNAL_SERVER_ERR.getStatus(), e.getMessage());
+        }
+    }
+
+    @PostMapping("/process/naver")
+    public Map<String, Object> naverLogin (@RequestBody NaverLoginParams params) {
+        Map<String, Object> respMap = new HashMap<>();
+        try {
+            return CommonUtil.successResultMap(oAuthLoginService.login(params));
+        } catch (Exception e) {
+            e.printStackTrace();
             return CommonUtil.failResultMap(GlobalStatus.INTERNAL_SERVER_ERR.getStatus(), e.getMessage());
         }
     }
