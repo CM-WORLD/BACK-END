@@ -88,38 +88,23 @@ public class AuthController {
 
     private final TwitterApiInfo twitterApiInfo;
 
-    /* 트위터 콜백 메서드 */
+    /* 트위터 프로필 리턴 */
     @PostMapping("/process/twitter")
     public Map<String, Object> twitterOauthCallback (@RequestBody Map<String, Object> codeMap) {
-
-        TwitterConnectionFactory connectionFactory = new TwitterConnectionFactory(twitterApiInfo.getApiKey(),twitterApiInfo.getApiSecret());
-        OAuth1Operations oauthOperations = connectionFactory.getOAuthOperations();
-
         String oauthToken = String.valueOf(codeMap.get("oauthToken"));
         String oauthVerifier = String.valueOf(codeMap.get("oauthVerifier"));
 
-        OAuthToken accessToken = oauthOperations.exchangeForAccessToken(
-                new AuthorizedRequestToken(new OAuthToken(oauthToken, ""), oauthVerifier), null);
-
-        System.out.println("Token Value:- accesstoken");
-        Twitter twitter = new TwitterTemplate(twitterApiInfo.getApiKey(),
-                twitterApiInfo.getApiSecret(),
-                accessToken.getValue(),
-                accessToken.getSecret());
-        TwitterProfile profile = twitter.userOperations().getUserProfile();
-
-
+        TwitterProfile profile =  twitterApiClient.getTwitterProfile(oauthToken, oauthVerifier); // test ok
         return CommonUtil.successResultMap(profile);
     }
 
     private final TwitterApiClient twitterApiClient;
 
-    /* 트위터 로그인, 호출시 트위터 인증 페이지로 이동 */
+    /* 트위터 로그인 페이지로 이동 */
     @GetMapping("/sign/in/twitter")
     public void  twitterOauthLogin(HttpServletResponse response) throws IOException {
         response.sendRedirect(twitterApiClient.getTwitterLoginUrl());
     }
-
 
     /* 로그아웃 시 토큰 폐기 */
     @PostMapping("/invalidate/token")
