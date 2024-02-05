@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 
 
-@Tag(name = "배너 API", description = "배너 API")
 @RestController
 @RequestMapping("/bnr")
+@Tag(name = "배너 API", description = "배너 API")
 public class BannerController {
 
     private final BannerService service;
