@@ -21,7 +21,7 @@ import java.util.Map;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/bbs")
+@RequestMapping("/bbs")
 @RequiredArgsConstructor
 public class BoardController {
 

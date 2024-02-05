@@ -1,18 +1,19 @@
 package com.cms.world.controller;
 
 
-import com.cms.world.domain.dto.BannerDto;
 import com.cms.world.domain.vo.BannerVo;
 import com.cms.world.service.BannerService;
 import com.cms.world.utils.CommonUtil;
-import lombok.RequiredArgsConstructor;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Map;
 
+
+@Tag(name = "배너 API", description = "배너 API")
 @RestController
-@RequestMapping("/api/bnr")
+@RequestMapping("/bnr")
 public class BannerController {
 
     private final BannerService service;
@@ -22,11 +23,13 @@ public class BannerController {
     }
 
     @GetMapping("/list")
+    @Operation(summary = "배너 목록", description = "배너 목록을 조회한다")
     public Map<String, Object> list () {
         return CommonUtil.renderResultByMap(service.list());
     }
 
     @PostMapping("/form")
+    @Operation(summary = "배너 등록", description = "배너를 등록한다")
     public Map<String, Object> form (BannerVo vo) { //관리자가 postman으로 할 것이라서 @RequestBody 제외
         return CommonUtil.resultMap(service.insert(vo));
     }

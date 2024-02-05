@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/post")
+@RequestMapping("/post")
 public class PostController { // 블로그 이미지 리스트
 
     private final PostService service;

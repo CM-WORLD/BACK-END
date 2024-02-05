@@ -16,7 +16,7 @@ import java.util.Map;
 
 
 @RestController
-@RequestMapping("/api/cms")
+@RequestMapping("/cms")
 @RequiredArgsConstructor
 public class CommissionController {
 
