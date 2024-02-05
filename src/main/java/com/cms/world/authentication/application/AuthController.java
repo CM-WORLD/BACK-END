@@ -2,7 +2,10 @@ package com.cms.world.authentication.application;
 
 import com.cms.world.authentication.TwitterApiInfo;
 import com.cms.world.authentication.domain.AuthTokens;
+import com.cms.world.authentication.domain.oauth.OAuthInfoResponse;
 import com.cms.world.authentication.infra.kakao.KakaoLoginParams;
+import com.cms.world.authentication.infra.twitter.TwitterApiClient;
+import com.cms.world.authentication.infra.twitter.TwitterInfoResponse;
 import com.cms.world.authentication.member.domain.MemberRepository;
 import com.cms.world.authentication.member.application.MemberService;
 import com.cms.world.authentication.member.domain.MemberDto;
@@ -13,6 +16,7 @@ import com.cms.world.validator.JwtValidator;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import org.springframework.social.oauth1.AuthorizedRequestToken;
 import org.springframework.social.oauth1.OAuth1Operations;
 import org.springframework.social.oauth1.OAuth1Parameters;
@@ -62,11 +66,11 @@ public class AuthController {
 
             Map<String, Object> resultMap = oAuthLoginService.getMemberAndTokens(params);
 
-            AuthTokens authTokens = (AuthTokens) resultMap.get("tokens");
-            Long memberId = (Long) resultMap.get("memberId");
-
-            MemberDto dto = memberRepository.findById(memberId).get();
-            dto.setRefreshToken(authTokens.getRefreshToken()); // 리프레시 토큰 저장
+//            AuthTokens authTokens = (AuthTokens) resultMap.get("tokens");
+//            Long memberId = (Long) resultMap.get("memberId");
+//
+//            MemberDto dto = memberRepository.findById(memberId).get();
+//            dto.setRefreshToken(authTokens.getRefreshToken()); // 리프레시 토큰 저장
 //            dto.setLastLoginTime(DateUtil.currentDateTime());
 //            memberRepository.save(dto);
 //
@@ -77,10 +81,7 @@ public class AuthController {
 
             return respMap;
         } catch (Exception e) {
-            respMap.put("status", GlobalStatus.INTERNAL_SERVER_ERR.getStatus());
-            respMap.put("message", GlobalStatus.INTERNAL_SERVER_ERR.getMsg());
-
-            return respMap;
+            return CommonUtil.failResultMap(GlobalStatus.INTERNAL_SERVER_ERR.getStatus(), e.getMessage());
         }
     }
 
@@ -107,23 +108,16 @@ public class AuthController {
                 accessToken.getSecret());
         TwitterProfile profile = twitter.userOperations().getUserProfile();
 
-        profile.getId(); // 고유 사용자 uid 느낌
 
         return CommonUtil.successResultMap(profile);
     }
 
+    private final TwitterApiClient twitterApiClient;
+
     /* 트위터 로그인, 호출시 트위터 인증 페이지로 이동 */
     @GetMapping("/sign/in/twitter")
     public void  twitterOauthLogin(HttpServletResponse response) throws IOException {
-        TwitterConnectionFactory connectionFactory =
-                new TwitterConnectionFactory(twitterApiInfo.getApiKey(),twitterApiInfo.getApiSecret());
-        OAuth1Operations oauthOperations = connectionFactory.getOAuthOperations();
-
-        OAuthToken requestToken = oauthOperations.fetchRequestToken(twitterApiInfo.getCallbackUrl(), null);
-        String token = requestToken.getValue();
-        String authorizeUrl = oauthOperations.buildAuthorizeUrl(token, OAuth1Parameters.NONE);
-
-        response.sendRedirect(authorizeUrl);
+        response.sendRedirect(twitterApiClient.getTwitterLoginUrl());
     }
 
 
