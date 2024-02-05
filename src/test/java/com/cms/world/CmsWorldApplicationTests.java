@@ -114,8 +114,5 @@ class CmsWorldApplicationTests {
 
     @Test
     public void memberTest () {
-        int maxLevelId = replyRepository.getMaxSequenceId(1L);
-        System.out.println("maxLevelId = " + maxLevelId);
-
     }
 }

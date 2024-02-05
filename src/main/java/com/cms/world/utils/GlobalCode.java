@@ -43,6 +43,11 @@ public enum GlobalCode { //타입 등의 코드
     BBS_INQUIRY ("BS02", "문의 게시판"),
     BBS_REVIEW ("BS03", "커미션 후기 게시판"),
 
+    //회원 로그인 타입
+    OAUTH_NAVER("NAVER", "네이버 로그인"),
+    OAUTH_KAKAO("KAKAO", "카카오 로그인"),
+    OAUTH_TWITTER("TWITTER", "트위터 로그인"),
+    
     //회원 상태
     USER_ACTIVE("US01", "정상 회원"),
     USER_BLOCKED("US02", "차단 회원");
