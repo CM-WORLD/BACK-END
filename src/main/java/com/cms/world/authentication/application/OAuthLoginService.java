@@ -58,12 +58,7 @@ public class OAuthLoginService {
         MemberDto member = new MemberDto();
         member.setUid(String.valueOf(oAuthInfoResponse.getId()));
         member.setNickName(oAuthInfoResponse.getNickname());
-
-        if(StringUtil.isEmpty(oAuthInfoResponse.getProfileImg())) {
-            member.setProfileImg("https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png");
-        } else {
-            member.setProfileImg(oAuthInfoResponse.getProfileImg());
-        }
+        member.setProfileImg(getProfileImg(oAuthInfoResponse.getProfileImg()));
         member.setLoginType(oAuthInfoResponse.getOAuthProvider());
         return memberRepository.save(member).getId();
     }
@@ -80,11 +75,7 @@ public class OAuthLoginService {
         MemberDto member = new MemberDto();
         member.setUid(String.valueOf(profile.getId()));
         member.setNickName(profile.getName());
-        if(StringUtil.isEmpty(profile.getProfileImageUrl())) {
-            member.setProfileImg("https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png");
-        } else {
-            member.setProfileImg(profile.getProfileImageUrl());
-        }
+        member.setProfileImg(getProfileImg(profile.getProfileImageUrl()));
         member.setLoginType(GlobalCode.OAUTH_TWITTER.getCode());
         return memberRepository.save(member).getId();
     }
@@ -116,6 +107,10 @@ public class OAuthLoginService {
         OAuthInfoResponse oAuthInfoResponse = requestOAuthInfoService.request(params);
         Long id = findOrCreateMember(oAuthInfoResponse);
         return handleTokenAndLoginTime(id);
+    }
+
+    private String getProfileImg(String profileImg) {
+        return StringUtil.isEmpty(profileImg) ? "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" : profileImg;
     }
 
 
