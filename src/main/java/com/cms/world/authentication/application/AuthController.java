@@ -78,7 +78,8 @@ public class AuthController {
     /* 트위터 로그인 페이지로 이동 */
     @GetMapping("/sign/in/twitter")
     public void  twitterOauthLogin(HttpServletResponse response) throws IOException {
-        response.sendRedirect(twitterApiClient.getTwitterLoginUrl());
+        response.sendRedirect(twitterApiClient.getTwitterLoginUrl() + "&force_login=true");
+        // force_login=true : 접속 시 마다 로그인 요구
     }
 
     /* 로그아웃 시 토큰 폐기 */
