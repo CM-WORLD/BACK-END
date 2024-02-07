@@ -1,11 +1,11 @@
 package com.cms.world.service;
 
 
-import com.cms.world.domain.dto.CmsApplyDto;
+import com.cms.world.apply.domain.CmsApplyDto;
 import com.cms.world.domain.dto.ReviewDto;
 import com.cms.world.domain.vo.PageVo;
 import com.cms.world.domain.vo.ReviewVo;
-import com.cms.world.repository.CmsApplyRepository;
+import com.cms.world.apply.repository.CmsApplyRepository;
 import com.cms.world.repository.ReviewRepository;
 import com.cms.world.authentication.domain.AuthTokensGenerator;
 import com.cms.world.utils.GlobalCode;

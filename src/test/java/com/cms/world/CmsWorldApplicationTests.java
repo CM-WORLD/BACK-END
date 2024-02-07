@@ -1,5 +1,9 @@
 package com.cms.world;
 
+import com.cms.world.apply.domain.CmsApplyDto;
+import com.cms.world.apply.domain.CmsApplyImgDto;
+import com.cms.world.apply.repository.CmsApplyImgRepository;
+import com.cms.world.apply.repository.CmsApplyRepository;
 import com.cms.world.authentication.member.domain.MemberRepository;
 import com.cms.world.authentication.domain.AuthTokensGenerator;
 import com.cms.world.authentication.infra.JwtTokenProvider;

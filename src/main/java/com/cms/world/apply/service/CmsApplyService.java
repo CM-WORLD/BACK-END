@@ -1,14 +1,20 @@
-package com.cms.world.service;
+package com.cms.world.apply.service;
 
 
+import com.cms.world.apply.domain.CmsApplyDto;
+import com.cms.world.apply.domain.CmsApplyImgDto;
 import com.cms.world.authentication.member.domain.MemberDto;
 import com.cms.world.authentication.member.domain.MemberRepository;
+import com.cms.world.common.DtoMapper;
 import com.cms.world.domain.dto.*;
-import com.cms.world.domain.vo.CmsApplyVo;
-import com.cms.world.repository.CmsApplyImgRepository;
-import com.cms.world.repository.CmsApplyRepository;
+import com.cms.world.apply.domain.CmsApplyVo;
+import com.cms.world.apply.repository.CmsApplyImgRepository;
+import com.cms.world.apply.repository.CmsApplyRepository;
 import com.cms.world.repository.CmsPayRepository;
 import com.cms.world.repository.CommissionRepository;
+import com.cms.world.service.S3UploadService;
+import com.cms.world.service.TimeLogService;
+import com.cms.world.utils.DateUtil;
 import com.cms.world.utils.GlobalStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -40,18 +46,14 @@ public class CmsApplyService {
 
     private final CommissionRepository commissionRepository;
 
-    private MemberRepository memberRepository;
+    private final MemberRepository memberRepository;
 
     /* 커미션 신청 */
     @Transactional
     public String insert(CmsApplyVo vo) throws Exception{
-            CmsApplyDto dto = new CmsApplyDto();
-            dto.setStatus(vo.getStatus());
-            dto.setTitle(vo.getTitle());
-            dto.setContent(vo.getContent());
-            dto.setBankOwner(vo.getBankOwner());
+        CmsApplyDto dto = DtoMapper.map(vo, CmsApplyDto.class); // vo와 dto 매핑
 
-            Optional<CommissionDto> cmsDto = commissionRepository.findById(vo.getCmsId());
+        Optional<CommissionDto> cmsDto = commissionRepository.findById(vo.getCmsId());
             if (cmsDto.isPresent()) dto.setCmsDto(cmsDto.get());
             else throw new Exception("apply.insert :: cmsDto not found");
 
@@ -60,6 +62,7 @@ public class CmsApplyService {
             else throw new Exception("apply.insert :: memberDto not found");
 
             CmsApplyDto newDto = repository.save(dto);
+            // newDto가 == null일 경우 예외를 던진다.
 
             if (vo.getImgList() != null && !vo.getImgList().isEmpty()) {
                 for (MultipartFile img : vo.getImgList()) {
@@ -68,6 +71,7 @@ public class CmsApplyService {
                     imgDto.setImgUrl(awsUrl);
                     imgDto.setApplyDto(newDto);
                     imgRepository.save(imgDto);
+                    // save한 값이 == null일 경우 예외를 던진다.
                 }
             }
             return newDto.getId();
@@ -77,33 +81,6 @@ public class CmsApplyService {
     public List<CmsApplyDto> list () {
         List<CmsApplyDto> list = repository.findAll(Sort.by("regDate"));
         return list;
-    }
-
-    // OK
-    @Transactional
-    public int updateStatus (String id, String status) {
-        try {
-            CmsApplyDto dto = repository.findById(id).get();
-            dto.setStatus(status);
-            return GlobalStatus.EXECUTE_SUCCESS.getStatus();
-        } catch (Exception e) {
-            return GlobalStatus.EXECUTE_FAILED.getStatus();
-        }
-    }
-
-    /* 커미션 신청 타입 변경 (1인/단체) */
-    @Transactional
-    public int updateTp (String id, String cmsType) throws Exception{
-        Optional<CmsApplyDto> dto = repository.findById(id);
-        if(!dto.isPresent()) throw new Exception("updateTp error: applyDto not found");
-        dto.get().setCmsType(cmsType);
-
-        return GlobalStatus.EXECUTE_SUCCESS.getStatus();
-    }
-
-    /* 조건당 커미션 신청 수 조회 */
-    public long cntByStatus (String status) {
-        return repository.countByStatus(status);
     }
 
     /* 사용자별 신청 리스트 조회 */
@@ -126,7 +103,7 @@ public class CmsApplyService {
         }
     }
     
-    /* 커미션 신청 이미지 리스트 상태별 조회 */
+    /* 커미션 신청 이미지 리스트 상태별 조회  (신청/완료) */
     public List<CmsApplyImgDto> imgListByStatus (String id, String status) {
         Optional<CmsApplyDto> applyDto = repository.findById(id);
         List<CmsApplyImgDto> imgList = new ArrayList<>();

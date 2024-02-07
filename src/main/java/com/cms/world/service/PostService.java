@@ -29,9 +29,11 @@ public class PostService {
         repository.save(dto);
     }
 
+    /* 전체/타입별 리스트 조회 */
     public List<PostDto> list (String type) {
-        String cmsType = StringUtil.isEmpty(type) ? GlobalCode.TYPE_SINGLE.getCode() : type; //기본값
-        return repository.findByTypeContaining(cmsType);
+        if(StringUtil.isEmpty(type) || type.equals("ALL")) return repository.findAll();
+
+        return repository.findByTypeContaining(type);
     }
 
 

@@ -1,6 +1,6 @@
 package com.cms.world.domain.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.cms.world.apply.domain.CmsApplyDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

@@ -1,7 +1,7 @@
-package com.cms.world.repository;
+package com.cms.world.apply.repository;
 
-import com.cms.world.domain.dto.CmsApplyDto;
-import com.cms.world.domain.dto.CmsApplyImgDto;
+import com.cms.world.apply.domain.CmsApplyDto;
+import com.cms.world.apply.domain.CmsApplyImgDto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,9 +1,9 @@
-package com.cms.world.domain.dto;
+package com.cms.world.apply.domain;
 
 
+import com.cms.world.apply.domain.CmsApplyDto;
 import com.cms.world.utils.DateUtil;
 import com.cms.world.utils.GlobalCode;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

@@ -52,6 +52,8 @@ dependencies {
     implementation ("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2")
 
 
+    implementation ("org.modelmapper:modelmapper:2.4.4")
+
 
     testImplementation("org.mybatis.spring.boot:mybatis-spring-boot-starter-test:3.0.3")
     testImplementation("org.springframework.boot:spring-boot-starter-test")

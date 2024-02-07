@@ -32,7 +32,7 @@ public class BoardDto {
     @Column(name = "TITLE", nullable = false)
     private String title;
 
-    @Column(name = "CONTENT", nullable = false)
+    @Column(name = "CONTENT", nullable = false, length = 1000)
     private String content;
 
     @Column(name = "VW_CNT")

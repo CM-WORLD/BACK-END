@@ -13,13 +13,13 @@ import org.springframework.stereotype.Component;
 public class KakaoBo {
 
     public KakaoBo(@Value("${kakao.clientId}") String clientId,
-                   @Value("${kakao.redirectUrl}") String redirectUrl,
+//                   @Value("${kakao.redirectUrl}") String redirectUrl,
                    @Value("${kakao.clientSecret}") String clientSecret,
                    @Value("${kakao.authUrl}") String authUrl,
                    @Value("${kakao.send.msgUrl}") String sendMsgUrl) {
         this.clientId = clientId;
         this.clientSecret = clientSecret;
-        this.redirectUrl = redirectUrl;
+        this.redirectUrl = "redirectUrl";
         this.authUrl = authUrl;
         this.sendMsgUrl = sendMsgUrl;
     }

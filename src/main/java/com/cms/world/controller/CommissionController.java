@@ -2,7 +2,7 @@ package com.cms.world.controller;
 
 import com.cms.world.domain.dto.CommissionDto;
 import com.cms.world.domain.vo.CommissionVo;
-import com.cms.world.service.CmsApplyService;
+import com.cms.world.apply.service.CmsApplyService;
 import com.cms.world.service.CommissionService;
 import com.cms.world.utils.CommonUtil;
 import com.cms.world.utils.GlobalCode;

@@ -1,10 +1,10 @@
 package com.cms.world.service;
 
 
-import com.cms.world.domain.dto.CmsApplyDto;
+import com.cms.world.apply.domain.CmsApplyDto;
 import com.cms.world.domain.dto.CmsPayDto;
 import com.cms.world.domain.vo.CmsPayVo;
-import com.cms.world.repository.CmsApplyRepository;
+import com.cms.world.apply.repository.CmsApplyRepository;
 import com.cms.world.repository.CmsPayRepository;
 import com.cms.world.utils.GlobalStatus;
 import org.springframework.beans.factory.annotation.Autowired;

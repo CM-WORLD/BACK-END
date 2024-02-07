@@ -1,6 +1,7 @@
 package com.cms.world.domain.dto;
 
 
+import com.cms.world.utils.DateUtil;
 import com.cms.world.utils.GlobalCode;
 import com.cms.world.utils.StringUtil;
 import jakarta.persistence.*;
@@ -54,7 +55,7 @@ public class PostDto {
 
     @PrePersist
     public void onPrePersist() { // 디비에 넣기 전에 현재 시각 날짜를 format해서 insert
-        this.regDate = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy.MM.dd"));
+        this.regDate = DateUtil.currentDate();
         if (StringUtil.isEmpty(this.type)) this.type = GlobalCode.TYPE_SINGLE.getCode(); // 타입 코드가 없으면 1인 기본 설정
     }
 }

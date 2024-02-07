@@ -9,4 +9,6 @@ public interface PostRepository extends JpaRepository<PostDto, Long> {
 
     List<PostDto> findByTypeContaining(String type);
 
+    List<PostDto> findAll();
+
 }

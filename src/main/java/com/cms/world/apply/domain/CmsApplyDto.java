@@ -1,17 +1,20 @@
-package com.cms.world.domain.dto;
+package com.cms.world.apply.domain;
 
 import com.cms.world.authentication.member.domain.MemberDto;
+import com.cms.world.domain.dto.CommissionDto;
 import com.cms.world.utils.DateUtil;
 import com.cms.world.utils.GlobalCode;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.validator.constraints.Length;
 
 @Entity
 @Table(name="cms_aply")
 @Getter
 @Setter
+@ToString
 public class CmsApplyDto {
 
     @Id
@@ -30,14 +33,11 @@ public class CmsApplyDto {
     @Column(name = "TP_CD")
     private String cmsType;
 
-    @Transient
-    private String cmsTypeNm;
-
     @Column(name = "TITLE", nullable = false)
     @Length(min = 2, max = 2000)
     private String title;
 
-    @Column(name = "CONTENT", nullable = false)
+    @Column(name = "CONTENT", nullable = false, length = 1000)
     @Length(min = 5, max = 2000)
     private String content;
 
@@ -49,6 +49,9 @@ public class CmsApplyDto {
 
     @Column(name = "RGTR_DT")
     private String regDate;
+
+    @Transient
+    private String cmsTypeNm;
 
     @Transient
     private String statusNm;

@@ -30,13 +30,6 @@ public class OAuthLoginService {
     private final AuthTokensGenerator authTokensGenerator;
     private final RequestOAuthInfoService requestOAuthInfoService;
 
-//    public AuthTokens login(OAuthLoginParams params) {
-//        OAuthInfoResponse oAuthInfoResponse = requestOAuthInfoService.request(params);
-//        StringBuilder sb = new StringBuilder();
-//        Long memberId = findOrCreateMember(oAuthInfoResponse);
-//        return authTokensGenerator.generate(memberId);
-//    }
-
     public void testLogin (OAuthLoginParams params) {
         OAuthInfoResponse oAuthInfoResponse = requestOAuthInfoService.request(params);
 
@@ -45,8 +38,6 @@ public class OAuthLoginService {
         System.out.println("oAuthInfoResponse.getProfileImg() = " + oAuthInfoResponse.getProfileImg());
         System.out.println("oAuthInfoResponse.getId() = " + oAuthInfoResponse.getId());
     }
-
-
 
     private Long findOrCreateMember(OAuthInfoResponse oAuthInfoResponse) {
         return memberRepository.findByUidAndLoginType(oAuthInfoResponse.getId(), oAuthInfoResponse.getOAuthProvider())
