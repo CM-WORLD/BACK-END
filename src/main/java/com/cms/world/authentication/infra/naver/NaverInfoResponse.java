@@ -6,6 +6,7 @@ import com.cms.world.utils.GlobalCode;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -24,15 +25,19 @@ public class NaverInfoResponse implements OAuthInfoResponse {
         
     }
 
-//    @Override
-//    public String getEmail() {
-//        return response.email;
-//    }
+    @Setter
+    /* 로그아웃을 위한 액세스 토큰 */
+    private String accessToken;
+
 
     @Override
     public String getProfileImg() {
         return response.profile_image;
-        //TODO:: profile_img 항목값 맞는지 체크
+    }
+
+    @Override
+    public String getAccessToken() {
+        return accessToken;
     }
 
     @Override

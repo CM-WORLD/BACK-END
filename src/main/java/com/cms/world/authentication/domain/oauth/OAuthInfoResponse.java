@@ -8,6 +8,7 @@ public interface OAuthInfoResponse {
     String getNickname();
     String getProfileImg();
 
-
     String getOAuthProvider();
+
+    String getAccessToken();
 }

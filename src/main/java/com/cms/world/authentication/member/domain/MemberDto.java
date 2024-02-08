@@ -40,6 +40,10 @@ public class MemberDto {
     @Column(name ="LOG_IN_DT")
     private String lastLoginTime;
 
+    // 네이버 로그아웃 용도로 네이버 accessToken 저장
+    @Column(name ="ATK_VAL")
+    private String accessToken;
+
     @Column(name ="RTK_VAL")
     private String refreshToken;
 

@@ -18,6 +18,13 @@ public class KakaoInfoResponse implements OAuthInfoResponse {
 
     private long id;
 
+    private String accessToken;
+
+    @Override
+    public String getAccessToken() {
+        return accessToken;
+    }
+
     @Getter
     @JsonIgnoreProperties(ignoreUnknown = true)
     static class KakaoAccount {

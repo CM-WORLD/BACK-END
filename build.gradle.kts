@@ -21,6 +21,15 @@ repositories {
     mavenCentral()
 }
 
+extra["springCloudVersion"] = "2023.0.0"
+
+dependencyManagement {
+    imports {
+        mavenBom("org.springframework.cloud:spring-cloud-dependencies:${property("springCloudVersion")}")
+    }
+}
+
+
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-web")
@@ -40,6 +49,10 @@ dependencies {
     // 기본적인 Project Reactor 의존성
     implementation ("org.springframework.boot:spring-boot-starter-webflux")
     implementation ("io.projectreactor:reactor-core:3.5.4") // 원하는 버전으로 변경
+
+    //feignclient
+    implementation ("org.springframework.cloud:spring-cloud-starter-openfeign")
+
 
     //twitter
     implementation ("org.springframework.social:spring-social-twitter:1.1.2.RELEASE")
