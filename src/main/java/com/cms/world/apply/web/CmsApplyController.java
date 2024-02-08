@@ -57,19 +57,6 @@ public class CmsApplyController {
         return map;
     }
 
-    @RequestMapping("/form2")
-    public void submit2 (HttpServletRequest request, CmsApplyVo vo) {
-
-        CmsApplyDto dto = DtoMapper.map(vo, CmsApplyDto.class);
-        System.out.println("vo.getImgList().size() = " + vo.getImgList().size());
-        System.out.println("dto.toString() = " + dto.toString());
-        /*
-        * dto.toString() = CmsApplyDto(id=7505b1f2-7c6c-48d3-904b-c37ca8d57be7, cmsDto=null, memberDto=null, cmsType=null, title=ㄴㅇㄹㄴㅇㄹㄴㅇㄹ, content=ㄹㅇㄴㄹㅇㄴㄹㅇㄴㄴ, bankOwner=ㄹㅇㄹㄴㄹㄴㅇㄹㄴㅇ, status=, regDate=null, cmsTypeNm=null, statusNm=null, cmsName=null)
-
-         *
-        * */
-    }
-
     /* 사용자별 신청 내역 */
     @GetMapping("/member/history")
     public Map<String, Object> applyHistoryByMemberId (HttpServletRequest request,

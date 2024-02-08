@@ -62,32 +62,16 @@ public class NaverApiClient implements OAuthApiClient {
 
     @Override
     public OAuthInfoResponse requestOauthInfo(String accessToken) {
-//        String url = apiUrl + "/v1/nid/me";
-//
-//        HttpHeaders httpHeaders = new HttpHeaders();
-//        httpHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-//        httpHeaders.set("Authorization", "Bearer " + accessToken);
-//
-//        MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
-//
-//        HttpEntity<?> request = new HttpEntity<>(body, httpHeaders);
-//
-//        NaverInfoResponse response = restTemplate.postForObject(url, request, NaverInfoResponse.class);
-//        response.setAccessToken(accessToken);
-//
-//        return response;
-
         String url = apiUrl + "/v1/nid/me";
 
-        // HttpHeaders와 body를 함께 설정
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-        httpHeaders.add("Authorization", "Bearer " + accessToken);
+        httpHeaders.set("Authorization", "Bearer " + accessToken);
 
-        // HttpEntity 생성 시 body와 headers 함께 설정
-        HttpEntity<?> request = new HttpEntity<>(httpHeaders);
+        MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
 
-        // POST 요청 보내기
+        HttpEntity<?> request = new HttpEntity<>(body, httpHeaders);
+
         NaverInfoResponse response = restTemplate.postForObject(url, request, NaverInfoResponse.class);
         response.setAccessToken(accessToken);
 

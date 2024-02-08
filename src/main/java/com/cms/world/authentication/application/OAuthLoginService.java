@@ -2,7 +2,8 @@ package com.cms.world.authentication.application;
 
 
 import com.cms.world.authentication.domain.AuthTokens;
-import com.cms.world.authentication.infra.naver.NaverFeignApi;
+import com.cms.world.authentication.infra.kakao.api.SignOutKakaoApi;
+import com.cms.world.authentication.infra.naver.api.DeleteTokenApi;
 import com.cms.world.authentication.member.domain.MemberRepository;
 import com.cms.world.authentication.domain.oauth.OAuthInfoResponse;
 import com.cms.world.authentication.domain.oauth.OAuthLoginParams;
@@ -12,8 +13,6 @@ import com.cms.world.authentication.member.domain.MemberDto;
 import com.cms.world.utils.DateUtil;
 import com.cms.world.utils.GlobalCode;
 import com.cms.world.utils.StringUtil;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.social.twitter.api.TwitterProfile;
@@ -31,19 +30,18 @@ public class OAuthLoginService {
     private final AuthTokensGenerator authTokensGenerator;
     private final RequestOAuthInfoService requestOAuthInfoService;
 
-    //인터페이스는 생성자 주입으로만 가능하다. @RequiredArgsConstructor 불가능
-//    private final NaverFeignApi naverFeignApi;
+    private final DeleteTokenApi deleteTokenApi;
 
-
+    private final SignOutKakaoApi signOutKakaoApi;
 
     private Long findOrCreateMember(OAuthInfoResponse oAuthInfoResponse) {
         Optional<MemberDto> member = memberRepository.findByUidAndLoginType(oAuthInfoResponse.getId(), oAuthInfoResponse.getOAuthProvider());
         if (member.isPresent()) {
-            MemberDto dto = member.get();
-            dto.setAccessToken(oAuthInfoResponse.getAccessToken()); // 네이버의 경우 액세스 토큰 저장
-            memberRepository.save(dto);
-            return dto.getId();
-        } else return newMember(oAuthInfoResponse);
+            MemberDto memberDto= member.get();
+            memberDto.setAccessToken(oAuthInfoResponse.getAccessToken());
+            return memberDto.getId();
+        }
+        else return newMember(oAuthInfoResponse);
     }
 
     /* naver, kakao 신규 가입 처리 */
@@ -53,9 +51,7 @@ public class OAuthLoginService {
         member.setNickName(getNickName(oAuthInfoResponse.getNickname()));
         member.setProfileImg(getProfileImg(oAuthInfoResponse.getProfileImg()));
         member.setLoginType(oAuthInfoResponse.getOAuthProvider());
-        if (StringUtil.isEmpty(oAuthInfoResponse.getAccessToken())){
-            member.setAccessToken(oAuthInfoResponse.getAccessToken());
-        }
+        member.setAccessToken(oAuthInfoResponse.getAccessToken());
         return memberRepository.save(member).getId();
     }
 
@@ -84,11 +80,12 @@ public class OAuthLoginService {
         MemberDto dto = memberRepository.findById(memberId).get();
         dto.setRefreshToken(authTokens.getRefreshToken()); // 리프레시 토큰 저장
         dto.setLastLoginTime(DateUtil.currentDateTime()); // 로그인 시각 저장
+
         memberRepository.save(dto);
 
         map.put("tokens", authTokens);
         map.put("nick", dto.getNickName());
-        map.put("provider", dto.getLoginType());
+        map.put("provider", dto.getLoginType()); // TODO:: 개선
         return map;
     }
 
@@ -116,21 +113,16 @@ public class OAuthLoginService {
         return StringUtil.isEmpty(nickName) ? defaultNickName: nickName;
     }
 
-    /* naver */
-    public String deleteAccessToken (Long memberId) {
-        // 멤버 아이디로 토큰 조회
-        Optional<MemberDto> dto = memberRepository.findById(memberId);
-        if (dto.isPresent()) {
-            String accessToken = dto.get().getAccessToken();
-//            Map<String, Object> map = naverFeignApi.deleteToken(accessToken, GlobalCode.OAUTH_NAVER.getCode());
-
-
-//            System.out.println("map.get() = " + map.get("access_token"));
-//            System.out.println("map.get(\"message\") = " + map.get("result"));
-        }
-
-        return "";
+    /* naver 접속 토큰 삭제 */
+    public String removeNaverAccessToken (String accessToken) {
+        Map<String, Object> map = deleteTokenApi.deleteToken(accessToken, GlobalCode.OAUTH_NAVER.getCode());
+        return map.get("result").toString(); // Success 리턴
     }
 
+    /* kakao 로그아웃 호출 */
+    public Long removeKakaoAccessToken (String accessToken) {
+        Long memberId = signOutKakaoApi.deleteToken("Bearer " + accessToken);
+        return memberId;
+    }
 
 }

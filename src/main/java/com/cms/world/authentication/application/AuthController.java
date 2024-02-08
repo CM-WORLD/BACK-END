@@ -1,10 +1,7 @@
 package com.cms.world.authentication.application;
 
-import com.cms.world.authentication.domain.AuthTokens;
 import com.cms.world.authentication.domain.AuthTokensGenerator;
-import com.cms.world.authentication.domain.oauth.OAuthInfoResponse;
 import com.cms.world.authentication.infra.kakao.KakaoLoginParams;
-import com.cms.world.authentication.infra.naver.NaverFeignApi;
 import com.cms.world.authentication.infra.naver.NaverLoginParams;
 import com.cms.world.authentication.infra.twitter.TwitterApiClient;
 import com.cms.world.authentication.member.domain.MemberRepository;
@@ -15,7 +12,6 @@ import com.cms.world.validator.JwtValidator;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.social.twitter.api.TwitterProfile;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,6 +35,7 @@ public class AuthController {
 
     private final AuthTokensGenerator authTokensGenerator;
 
+
     /* 로그인 여부 체크 */
     @GetMapping("/login/check")
     public Map<String, Object> isLogined (HttpServletRequest request) {
@@ -54,6 +51,12 @@ public class AuthController {
             e.printStackTrace();
             return CommonUtil.failResultMap(GlobalStatus.INTERNAL_SERVER_ERR.getStatus(), e.getMessage());
         }
+    }
+
+    /* 카카오 로그인 처리 */
+    @GetMapping("/sign/out/kakao")
+    public void kakaoLogout (HttpServletResponse response) throws IOException {
+        response.sendRedirect("https://kapi.kakao.com/v1/user/unlink"); // url 변경할것
     }
 
     @PostMapping("/process/naver")
@@ -115,30 +118,36 @@ public class AuthController {
 
     /* provider별 로그아웃 처리 */
     @PostMapping("/sign/out")
-    public Map<String, Object> signOut (@RequestParam(name ="provider") String provider, HttpServletRequest request) {
+    public Map<String, Object> signOut (HttpServletRequest request, HttpServletResponse response) throws IOException {
         Map<String, Object> map = new HashMap<>();
 
         Long memberId = authTokensGenerator.extractMemberIdFromReq(request); // req로부터 id 추출
+        Optional<MemberDto> member = memberRepository.findById(memberId);
 
         // 1. 로그아웃할 사용자 정보 없는 경우
-        if (memberId == null) {
+        if (memberId == null || !member.isPresent()) {
             map.put("status", GlobalStatus.BAD_REQUEST.getStatus());
             map.put("message", "로그아웃할 사용자 정보 없음");
             return map;
         }
 
-        MemberDto dto = memberRepository.findById(memberId).get();
-        if (StringUtil.isEmpty(provider)) provider = dto.getLoginType();
+        MemberDto dto = member.get();
+        String accessToken = dto.getAccessToken();
 
-        if (provider.equals(GlobalCode.OAUTH_NAVER.getCode())) {
-           // 네이버는 토큰 검사 api 호출 (토큰이 유효한지 확인)
-
-            // 네이버면 토큰 삭제 api feignclient로 호출
-
-
-
+        String provider = dto.getLoginType();
+        if (provider.equals(GlobalCode.OAUTH_NAVER.getCode())) { //네이버인 경우
+            oAuthLoginService.removeNaverAccessToken(accessToken);
         }
+        else if (provider.equals(GlobalCode.OAUTH_KAKAO.getCode())) { //카카오인 경우
+            oAuthLoginService.removeKakaoAccessToken(accessToken);
+        }
+
+
+        // problem......
         //공통 accessToken, refreshToken 삭제하기
+        dto.setAccessToken(null);
+        dto.setRefreshToken(null);
+        memberRepository.save(dto);
 
         return map;
     }
