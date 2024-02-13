@@ -55,7 +55,7 @@ public class CmsApplyService {
 
     private final TelegramBotApi TelegramBotApi;
 
-    /* 커미션 신청 */
+    /* 커미션 신청 리팩토링 전 코드 */
     @Transactional
     public String insert2(CmsApplyVo vo) throws Exception {
         CmsApplyDto dto = DtoMapper.map(vo, CmsApplyDto.class); // vo와 dto 매핑
@@ -98,7 +98,7 @@ public class CmsApplyService {
     }
 
     @Transactional
-    public String  insert(CmsApplyVo vo) throws Exception {
+    public String insert(CmsApplyVo vo) throws Exception {
         CmsApplyDto dto = DtoMapper.map(vo, CmsApplyDto.class); // vo와 dto 매핑
 
         Optional<CommissionDto> cmsDto = commissionRepository.findById(vo.getCmsId());
@@ -147,7 +147,7 @@ public class CmsApplyService {
         TelegramBotApi.sendAlertToAdmin(messageStr);
         //TODO:: 신청자의 휴대전화로 카톡 전송
 
-        return "success";
+        return newApplication.getId();
     }
     /* 커미션 전체 리스트 조회 (등록 최신순) */
     public List<CmsApplyDto> list () {

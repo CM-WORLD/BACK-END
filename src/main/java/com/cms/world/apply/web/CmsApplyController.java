@@ -34,20 +34,16 @@ public class CmsApplyController {
 
     /* 커미션 신청 */
     @PostMapping("/form")
-    public Map<String, Object> submit(HttpServletRequest request, @Validated(CmsApplyVo.CmsApplyVoSequence.class) CmsApplyVo vo, BindingResult bindingResult) {
-        Map<String, Object> map = new HashMap<>();
+    public Map<String, Object> submit(HttpServletRequest request,
+                                      @Validated(CmsApplyVo.CmsApplyVoSequence.class) CmsApplyVo vo,
+                                      BindingResult bindingResult) {
         try {
-            if(bindingResult.hasErrors()) {
+            if (bindingResult.hasErrors()) {
                 return CommonUtil.failResultMap(GlobalStatus.BAD_REQUEST.getStatus(), bindingResult.getFieldError().getDefaultMessage());
             }
             vo.setUserId(authTokensGenerator.extractMemberIdFromReq(request)); // 사용자 아이디 삽입
-            String cmsId = service.insert(vo);
-            if (!StringUtil.isEmpty(cmsId)) {
-                map.put("status", String.valueOf(GlobalStatus.SUCCESS.getStatus()));
-                map.put("msg", String.valueOf(GlobalStatus.SUCCESS.getMsg()));
+            return CommonUtil.successResultMap(service.insert(vo));
 
-            }
-            return map;
         } catch (Exception e) {
             return CommonUtil.failResultMap(GlobalStatus.INTERNAL_SERVER_ERR.getStatus(), e.getMessage());
         }

@@ -23,7 +23,7 @@ public enum GlobalCode { //타입 등의 코드
 
     //커미션 프로세스
     CMS_RESERVE("CM00", "예약 접수"),
-    CMS_PENDING("CM01", "신청 접수"),
+    CMS_PENDING("CM01", "신청 접수"), // 신청자가 신청서 신규 생성
     PAY_PENDING("CM02", "결제 요청"), // 관리자가 결제 확인하고 결제 요청서 보냄
     PAY_COMPLETE("CM03", "결제 완료"),
     CMS_PROCESS("CM04", "작업중"),
