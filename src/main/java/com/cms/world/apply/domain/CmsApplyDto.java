@@ -61,8 +61,8 @@ public class CmsApplyDto {
 
     @PrePersist
     public void doPersist () {
-        this.setStatus(GlobalCode.PAY_PENDING.getCode());
-        this.setStatusNm(GlobalCode.PAY_PENDING.getDesc());
+        this.setStatus(GlobalCode.CMS_PENDING.getCode());
+        this.setStatusNm(GlobalCode.CMS_PENDING.getDesc());
         this.setRegDate(DateUtil.currentDateTime());
     }
 

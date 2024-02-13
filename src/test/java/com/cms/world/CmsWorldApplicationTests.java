@@ -1,5 +1,6 @@
 package com.cms.world;
 
+import com.cms.world.alert.telegram.ChatBotApi;
 import com.cms.world.apply.domain.CmsApplyDto;
 import com.cms.world.apply.domain.CmsApplyImgDto;
 import com.cms.world.apply.repository.CmsApplyImgRepository;
@@ -8,8 +9,8 @@ import com.cms.world.authentication.member.domain.MemberRepository;
 import com.cms.world.authentication.domain.AuthTokensGenerator;
 import com.cms.world.authentication.infra.JwtTokenProvider;
 import com.cms.world.domain.dto.*;
-import com.cms.world.domain.vo.AlertMsg;
-import com.cms.world.domain.social.TelegramChat;
+import com.cms.world.alert.AlertMsg;
+import com.cms.world.alert.telegram.TelegramBotApi;
 import com.cms.world.repository.*;
 import com.cms.world.utils.GlobalCode;
 import org.junit.jupiter.api.Test;
@@ -40,13 +41,10 @@ class CmsWorldApplicationTests {
     AlertMsg alertMsg;
 
     @Autowired
-    TelegramChat telegramChat;
-    @Test
-    public void createMsg () {
-        AlertMsg msg = alertMsg;
-        msg.setText("test alert.. aply...test....... ");
-        telegramChat.sendAlert(msg);
-    }
+    TelegramBotApi telegramBotApi;
+
+    @Autowired
+    ChatBotApi chatBotApi;
 
     @Autowired
     ReplyRepository replyRepository;
@@ -68,15 +66,6 @@ class CmsWorldApplicationTests {
             System.out.println("item.getImgUrl() = " + item.getImgUrl());
         }
     }
-    
-//    too short.... 
-//    @Test
-//    public void jwtSecretKey () {
-//        //jwt Secret key create
-//        SecretKey key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
-//        String secretString = Encoders.BASE64.encode(key.getEncoded());
-//        System.out.println("key = " + secretString);
-//    }
     
     @Autowired
     JwtTokenProvider jwtTokenProvider;
@@ -117,6 +106,8 @@ class CmsWorldApplicationTests {
     MemberRepository memberRepository;
 
     @Test
-    public void memberTest () {
+    public void telegramAlert () {
+
+
     }
 }

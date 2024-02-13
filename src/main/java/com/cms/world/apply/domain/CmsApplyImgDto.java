@@ -24,7 +24,7 @@ public class CmsApplyImgDto {
     @JoinColumn(name = "APLY_ID", referencedColumnName = "ID") //name은 설정할 fk 이름이다.
     private CmsApplyDto applyDto;
 
-    @Column(name = "IMG_URL", nullable = false, columnDefinition = "varchar(100)")
+    @Column(name = "IMG_URL", nullable = false, columnDefinition = "varchar(300)")
     private String imgUrl;
     
     @Column(name = "STATUS")

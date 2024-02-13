@@ -5,6 +5,7 @@ plugins {
 }
 
 group = "com.blog"
+
 version = "0.0.1-SNAPSHOT"
 
 java {
@@ -65,6 +66,7 @@ dependencies {
     implementation ("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2")
 
 
+    // mapping
     implementation ("org.modelmapper:modelmapper:2.4.4")
 
 

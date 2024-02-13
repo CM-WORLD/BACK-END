@@ -40,21 +40,17 @@ public class CmsApplyController {
             if(bindingResult.hasErrors()) {
                 return CommonUtil.failResultMap(GlobalStatus.BAD_REQUEST.getStatus(), bindingResult.getFieldError().getDefaultMessage());
             }
-//            vo.setUserId(authTokensGenerator.extractMemberIdFromReq(request)); // req로부터 id 추출);
+            vo.setUserId(authTokensGenerator.extractMemberIdFromReq(request)); // 사용자 아이디 삽입
             String cmsId = service.insert(vo);
-            if (!StringUtil.isEmpty(service.insert(vo))) {
+            if (!StringUtil.isEmpty(cmsId)) {
                 map.put("status", String.valueOf(GlobalStatus.SUCCESS.getStatus()));
                 map.put("msg", String.valueOf(GlobalStatus.SUCCESS.getMsg()));
-                map.put("cmsId", cmsId);
 
-                //TODO:: admin에게 telegram alert 전송
             }
+            return map;
         } catch (Exception e) {
-            e.printStackTrace();
-            map.put("status", String.valueOf(GlobalStatus.INTERNAL_SERVER_ERR.getStatus()));
-            map.put("msg", String.valueOf(GlobalStatus.INTERNAL_SERVER_ERR.getMsg()));
+            return CommonUtil.failResultMap(GlobalStatus.INTERNAL_SERVER_ERR.getStatus(), e.getMessage());
         }
-        return map;
     }
 
     /* 사용자별 신청 내역 */
