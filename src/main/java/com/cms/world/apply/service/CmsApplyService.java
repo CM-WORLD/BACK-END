@@ -119,6 +119,7 @@ public class CmsApplyService {
 
         // 신청서 저장
         CmsApplyDto newApplication = repository.save(dto);
+        if (newApplication == null) throw new Exception("신청서 저장 중 오류가 발생했습니다.");
 
         // 신청서 id로 신청서 이미지들 저장
         for (MultipartFile img : vo.getImgList()) {
