@@ -15,9 +15,8 @@ import com.cms.world.apply.repository.CmsApplyRepository;
 import com.cms.world.repository.CmsPayRepository;
 import com.cms.world.repository.CommissionRepository;
 import com.cms.world.service.S3UploadService;
-import com.cms.world.service.TimeLogService;
-import com.cms.world.utils.DateUtil;
-import com.cms.world.utils.GlobalStatus;
+import com.cms.world.stepper.domain.StepperDto;
+import com.cms.world.stepper.service.StepperService;
 import com.cms.world.utils.StringUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -45,7 +44,7 @@ public class CmsApplyService {
 
     private final S3UploadService uploadService;
 
-    private final TimeLogService timeLogService;
+    private final StepperService stepperService;
 
     private final CmsPayRepository payRepository;
 
@@ -135,6 +134,7 @@ public class CmsApplyService {
         }
 
         // 신청서 id로 타임로그 현재 시간, 상태로 저장
+        stepperService.insertStep(newApplication.getId(), newApplication.getStatus());
 
         // 텔레그램으로 jinvickybot에 신청 알림 전송 // 테스트 ok
         AlertMsg alertMsg = AlertMsg.builder()
@@ -144,9 +144,7 @@ public class CmsApplyService {
                 .receiverNickName(memberDto.get().getNickName()) // 신청자를 수신자로 설정
                 .build();
         String messageStr = alertMsg.createAlertMsg();
-
         TelegramBotApi.sendAlertToAdmin(messageStr);
-        //TODO:: 신청자의 휴대전화로 카톡 전송
 
         return newApplication.getId();
     }

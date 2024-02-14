@@ -62,27 +62,27 @@ public class AlertMsg {
 
         if (code.equals(CMS_RESERVE.getCode())) {
             sb.append("[커미션 예약 알림]").append("\n\n");
-            sb.append(getIntro()).append("\n");
+            sb.append(getIntro());
             sb.append("신규 커미션 예약이 접수되었습니다.").append("\n");
             getCommssionApplyInfo();
         } else if (code.equals(CMS_PENDING.getCode())) {
             sb.append("[커미션 신청 알림]").append("\n\n");
-            sb.append(getIntro()).append("\n");
+            sb.append(getIntro());
             sb.append("신규 커미션 신청이 접수되었습니다.").append("\n");
             getCommssionApplyInfo();
         } else if (code.equals(PAY_PENDING.getCode())) {
             sb.append("[커미션 결제 요청 알림]").append("\n\n");
-            sb.append(getIntro()).append("\n");
+            sb.append(getIntro());
             sb.append("커미션 결제 요청서가 도착했습니다.").append("\n");
             getCommssionApplyInfo();
         } else if (code.equals(PAY_COMPLETE.getCode())) {
             sb.append("[커미션 결제 완료 알림]").append("\n\n");
-            sb.append(getIntro()).append("\n");
+            sb.append(getIntro());
             sb.append("커미션 결제가 완료되었습니다.").append("\n");
             getCommssionApplyInfo();
         } else if (code.equals(CMS_PROCESS.getCode())) {
             sb.append("[커미션 작업 시작 알림]").append("\n\n");
-            sb.append(getIntro()).append("\n");
+            sb.append(getIntro());
             sb.append("요청하신 커미션 작업이 진행 중입니다.").append("\n");
             getCommssionApplyInfo();
 //        } else if (code.equals(CMS_MODIFYING.getCode())) {
@@ -92,20 +92,20 @@ public class AlertMsg {
 //            getCommssionApplyInfo();
         } else if (code.equals(CMS_COMPLETE.getCode())) {
             sb.append("[커미션 작업 완료 알림]").append("\n\n");
-            sb.append(getIntro()).append("\n");
+            sb.append(getIntro());
             sb.append("요청하신 커미션 작업이 완료되었습니다.").append("\n");
             getCommssionApplyInfo();
         } else if (code.equals(CMS_REVIEW.getCode())) {
             sb.append("[커미션 리뷰 작성 완료 알림]").append("\n\n");
-            sb.append(getIntro()).append("\n");
+            sb.append(getIntro());
             sb.append("신규 커미션 리뷰가 작성되었습니다.").append("\n");
             getCommssionApplyInfo();
         } else if (code.equals(CMS_CANCEL.getCode())) {
             sb.append("[커미션 신청 취소 알림]").append("\n\n");
-            sb.append(getIntro()).append("\n");
+            sb.append(getIntro());
             sb.append("커미션이 취소되었습니다.").append("\n");
         } else if (code.equals(CMS_REJECT.getCode())) {
-            sb.append(getIntro()).append("\n");
+            sb.append(getIntro());
             sb.append("커미션 신청이 거절되었습니다.").append("\n");
         }
 
