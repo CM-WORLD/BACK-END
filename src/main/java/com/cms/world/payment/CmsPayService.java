@@ -1,11 +1,9 @@
-package com.cms.world.service;
+package com.cms.world.payment;
 
 
 import com.cms.world.apply.domain.CmsApplyDto;
-import com.cms.world.domain.dto.CmsPayDto;
-import com.cms.world.domain.vo.CmsPayVo;
 import com.cms.world.apply.repository.CmsApplyRepository;
-import com.cms.world.repository.CmsPayRepository;
+import com.cms.world.payment.domain.InvoiceDto;
 import com.cms.world.utils.GlobalStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,7 +29,7 @@ public class CmsPayService {
 
         if (!applyDto.isPresent()) throw new Exception("applyDto for payment not found");
 
-        CmsPayDto dto = new CmsPayDto();
+        InvoiceDto dto = new InvoiceDto();
         dto.setApplyDto(applyDto.get());
         dto.setPayAmt(vo.getPayAmt());
         dto.setComment(vo.getComment());

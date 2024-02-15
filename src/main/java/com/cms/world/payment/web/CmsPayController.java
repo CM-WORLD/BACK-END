@@ -1,9 +1,11 @@
-package com.cms.world.controller;
+package com.cms.world.payment.web;
 
 
-import com.cms.world.domain.vo.CmsPayVo;
-import com.cms.world.service.CmsPayService;
+import com.cms.world.payment.CmsPayVo;
+import com.cms.world.payment.CmsPayService;
+import com.cms.world.utils.CommonUtil;
 import com.cms.world.utils.GlobalStatus;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -33,6 +35,19 @@ public class CmsPayController {
             map.put("status" , GlobalStatus.INTERNAL_SERVER_ERR.getStatus());
             map.put("msg", GlobalStatus.INTERNAL_SERVER_ERR.getMsg());
             return map;
+        }
+    }
+    /** 신청 ID별 결제요청서 조회 */
+    @GetMapping("/")
+    public Map<String, Object> getPayList (String applyId) {
+        Map<String, Object> map = new HashMap<>();
+        try {
+            map.put("status" , GlobalStatus.SUCCESS.getStatus());
+            map.put("msg", GlobalStatus.SUCCESS.getMsg());
+//            map.put("data", service.getPayList(applyId));
+            return map;
+        } catch (Exception e) {
+           return CommonUtil.failResultMap(GlobalStatus.INTERNAL_SERVER_ERR.getStatus(), e.getMessage());
         }
     }
 }

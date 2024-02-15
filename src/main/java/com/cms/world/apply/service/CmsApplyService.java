@@ -12,10 +12,10 @@ import com.cms.world.domain.dto.*;
 import com.cms.world.apply.domain.CmsApplyVo;
 import com.cms.world.apply.repository.CmsApplyImgRepository;
 import com.cms.world.apply.repository.CmsApplyRepository;
-import com.cms.world.repository.CmsPayRepository;
+import com.cms.world.payment.domain.InvoiceDto;
+import com.cms.world.payment.CmsPayRepository;
 import com.cms.world.repository.CommissionRepository;
 import com.cms.world.service.S3UploadService;
-import com.cms.world.stepper.domain.StepperDto;
 import com.cms.world.stepper.service.StepperService;
 import com.cms.world.utils.StringUtil;
 import lombok.RequiredArgsConstructor;
@@ -195,7 +195,7 @@ public class CmsApplyService {
     }
 
     /* 신청서당 영수증 1:1 조회 */
-    public CmsPayDto paymentDetail (String cmsApplyId) throws Exception {
+    public InvoiceDto paymentDetail (String cmsApplyId) throws Exception {
         Optional<CmsApplyDto> applyDto = repository.findById(cmsApplyId);
         if(!applyDto.isPresent()) throw new Exception ("can not find applyDto");
 

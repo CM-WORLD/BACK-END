@@ -1,4 +1,4 @@
-package com.cms.world.domain.vo;
+package com.cms.world.payment;
 
 import lombok.Getter;
 import lombok.Setter;
