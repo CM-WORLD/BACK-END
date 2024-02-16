@@ -13,7 +13,7 @@ import com.cms.world.apply.domain.CmsApplyVo;
 import com.cms.world.apply.repository.CmsApplyImgRepository;
 import com.cms.world.apply.repository.CmsApplyRepository;
 import com.cms.world.payment.domain.InvoiceDto;
-import com.cms.world.payment.CmsPayRepository;
+import com.cms.world.payment.repository.CmsPayRepository;
 import com.cms.world.repository.CommissionRepository;
 import com.cms.world.service.S3UploadService;
 import com.cms.world.stepper.service.StepperService;

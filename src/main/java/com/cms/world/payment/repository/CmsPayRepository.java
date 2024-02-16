@@ -1,4 +1,4 @@
-package com.cms.world.payment;
+package com.cms.world.payment.repository;
 
 import com.cms.world.apply.domain.CmsApplyDto;
 import com.cms.world.payment.domain.InvoiceDto;

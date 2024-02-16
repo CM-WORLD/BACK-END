@@ -4,6 +4,7 @@ package com.cms.world.payment;
 import com.cms.world.apply.domain.CmsApplyDto;
 import com.cms.world.apply.repository.CmsApplyRepository;
 import com.cms.world.payment.domain.InvoiceDto;
+import com.cms.world.payment.repository.CmsPayRepository;
 import com.cms.world.utils.GlobalStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
