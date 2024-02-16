@@ -9,6 +9,7 @@ import com.cms.world.stepper.repository.StepperRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -29,5 +30,10 @@ public class StepperService {
         stepperDto.setApplyDto(applyDto.get());
 
         if(repository.save(stepperDto) == null) throw new Exception("신청별 작업기록 저장 실패");
+    }
+
+    /* 신청별 작업기록 리스트 조회 */
+    public List<StepperDto> getListByCmsApplyId (String cmsApplyId) {
+        return repository.findAllByApplyDto_Id(cmsApplyId);
     }
 }

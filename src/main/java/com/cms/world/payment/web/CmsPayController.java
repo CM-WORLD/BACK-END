@@ -1,13 +1,11 @@
 package com.cms.world.payment.web;
 
 
-import com.cms.world.payment.CmsPayVo;
-import com.cms.world.payment.CmsPayService;
+import com.cms.world.payment.domain.CmsPayVo;
+import com.cms.world.payment.service.CmsPayService;
 import com.cms.world.payment.service.InvoiceService;
-import com.cms.world.utils.CommonUtil;
 import com.cms.world.utils.GlobalStatus;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

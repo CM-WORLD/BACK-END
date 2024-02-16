@@ -13,10 +13,14 @@ import com.cms.world.apply.domain.CmsApplyVo;
 import com.cms.world.apply.repository.CmsApplyImgRepository;
 import com.cms.world.apply.repository.CmsApplyRepository;
 import com.cms.world.payment.domain.InvoiceDto;
+import com.cms.world.payment.domain.PaymentDto;
 import com.cms.world.payment.repository.CmsPayRepository;
+import com.cms.world.payment.repository.InvoiceRepository;
 import com.cms.world.repository.CommissionRepository;
 import com.cms.world.service.S3UploadService;
+import com.cms.world.stepper.domain.StepperDto;
 import com.cms.world.stepper.service.StepperService;
+import com.cms.world.utils.GlobalCode;
 import com.cms.world.utils.StringUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,11 +32,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -40,6 +43,7 @@ import java.util.regex.Pattern;
 public class CmsApplyService {
 
     private final CmsApplyRepository repository;
+
     private final CmsApplyImgRepository imgRepository;
 
     private final S3UploadService uploadService;
@@ -48,40 +52,14 @@ public class CmsApplyService {
 
     private final CmsPayRepository payRepository;
 
+    private final InvoiceRepository invoiceRepository;
+
     private final CommissionRepository commissionRepository;
 
     private final MemberRepository memberRepository;
 
     private final TelegramBotApi TelegramBotApi;
 
-    /* 커미션 신청 리팩토링 전 코드 */
-    @Transactional
-    public String insert2(CmsApplyVo vo) throws Exception {
-        CmsApplyDto dto = DtoMapper.map(vo, CmsApplyDto.class); // vo와 dto 매핑
-
-        Optional<CommissionDto> cmsDto = commissionRepository.findById(vo.getCmsId());
-        if (cmsDto.isPresent()) dto.setCmsDto(cmsDto.get());
-        else throw new Exception("apply.insert :: cmsDto not found");
-
-        Optional<MemberDto> memberDto = memberRepository.findById(vo.getUserId());
-        if (memberDto.isPresent()) dto.setMemberDto(memberDto.get());
-        else throw new Exception("apply.insert :: memberDto not found");
-
-            CmsApplyDto newDto = repository.save(dto);
-            // newDto가 == null일 경우 예외를 던진다.
-
-            if (vo.getImgList() != null && !vo.getImgList().isEmpty()) {
-                for (MultipartFile img : vo.getImgList()) {
-                    String awsUrl = uploadService.saveFile(img, "apply");
-                    CmsApplyImgDto imgDto = new CmsApplyImgDto();
-                    imgDto.setImgUrl(awsUrl);
-                    imgDto.setApplyDto(newDto);
-                    imgRepository.save(imgDto);
-                    // save한 값이 == null일 경우 예외를 던진다.
-                }
-            }
-            return newDto.getId();
-    }
 
     /* 전화번호 유효성 검사 */
     private boolean notValidPhoneNumber(String phoneNumber) {
@@ -96,6 +74,7 @@ public class CmsApplyService {
         return !matcher.matches();
     }
 
+    /* 커미션 신청 */
     @Transactional
     public String insert(CmsApplyVo vo) throws Exception {
         CmsApplyDto dto = DtoMapper.map(vo, CmsApplyDto.class); // vo와 dto 매핑
@@ -148,30 +127,47 @@ public class CmsApplyService {
 
         return newApplication.getId();
     }
-    /* 커미션 전체 리스트 조회 (등록 최신순) */
-    public List<CmsApplyDto> list () {
-        List<CmsApplyDto> list = repository.findAll(Sort.by("regDate"));
-        return list;
-    }
+
 
     /* 사용자별 신청 리스트 조회 */
     public Page<CmsApplyDto> listByMemberID (Long id, int page, int size) {
         Pageable pageable = PageRequest.of(page, size,  Sort.by(Sort.Direction.DESC, "regDate"));
-//        return repository.findByMemberDto_Id(id, pageable);
         return repository.findListByMemberId(id, pageable);
     }
 
-    /* 커미션 신청 상세 */
-    public CmsApplyDto detail (String id) throws Exception{
-        Optional<CmsApplyDto> applyDto = repository.findById(id);
-        if(applyDto.isPresent()) {
-            // 신청아이디가 속한 커미션 정보 찾기
-            Optional<CommissionDto> cmsDto = commissionRepository.findById(applyDto.get().getCmsDto().getId());
-            applyDto.get().setCmsName(cmsDto.get().getName());
-            return applyDto.get();
-        } else {
-            throw new Exception("applyDto not found");
-        }
+    /* 커미션 신청 상세 조회 */
+    public Map<String, Object> detail (String id) throws Exception {
+        Optional<CmsApplyDto> optApply = repository.findById(id);
+        if (!optApply.isPresent()) throw new Exception("존재하지 않는 신청서 ID입니다.");
+
+        Map<String, Object> map = new HashMap<>();
+        CmsApplyDto applyDto = optApply.get();
+
+        // 신청서 소속 커미션 이름 저장
+        applyDto.setCmsName(applyDto.getCmsDto().getName());
+        map.put("applyDto", applyDto);
+
+        // 신청 이미지 리스트 조회
+        List<CmsApplyImgDto> appliedImageList = imgRepository.findByStatus(GlobalCode.APPLIED_IMG.getCode());
+        map.put("appliedImageList", appliedImageList);
+        //----- 여기까지 신청서 정보 ------
+
+        // 신청서별 완료 이미지 리스트 조회
+        List<CmsApplyImgDto> completeImageList = imgRepository.findByStatus(GlobalCode.COMPLETE_IMG.getCode());
+        map.put("completeImageList", completeImageList);
+
+        // 신청서별 인보이스 리스트 조회
+        List<InvoiceDto> invoiceList = invoiceRepository.findByApplyDto_Id(applyDto.getId());
+        map.put("invoiceList", invoiceList);
+//
+//        // 인보이스별 결제정보 조회
+//        List<PaymentDto> paymentList = payRepository.findByInvoiceDto_Id()
+
+        // 신청서별 타임로그 리스트 조회
+        List<StepperDto> stepperList = stepperService.getListByCmsApplyId(applyDto.getId());
+        map.put("stepperList", stepperList);
+
+        return map;
     }
     
     /* 커미션 신청 이미지 리스트 상태별 조회  (신청/완료) */

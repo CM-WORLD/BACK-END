@@ -2,6 +2,7 @@ package com.cms.world.payment.domain;
 
 
 import com.cms.world.utils.DateUtil;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.persistence.*;
@@ -37,6 +38,10 @@ public class PaymentDto {
     @Schema(description = "결제자 ID", example = "1")
     @Column(name = "MMBER_ID")
     private String memberId;
+
+    @ManyToOne
+    @JoinColumn(name = "INV_ID", referencedColumnName = "ID")
+    private InvoiceDto invoiceDto;
 
     @Schema(description = "결제 일시", example = "2021-10-01 12:00:00")
     @Column(name = "RGTR_DT")

@@ -12,6 +12,7 @@ import com.cms.world.utils.CommonUtil;
 import com.cms.world.utils.GlobalCode;
 import com.cms.world.utils.GlobalStatus;
 import com.cms.world.utils.StringUtil;
+import com.cms.world.validator.JwtValidator;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +32,8 @@ public class CmsApplyController {
     private final CmsApplyService service;
 
     private final AuthTokensGenerator authTokensGenerator;
+
+    private final JwtValidator jwtValidator;
 
     /* 커미션 신청 */
     @PostMapping("/form")
@@ -58,22 +61,19 @@ public class CmsApplyController {
         return CommonUtil.renderResultByMap(service.listByMemberID(id, page, size));
     }
 
-    /* 커미션 신청 상세 TODO:: 리팩토링 */
+    /* 커미션 신청 상세 */
     @GetMapping("/detail")
-    public Map<String, Object> detail (@RequestParam(name = "cmsApplyId") String cmsApplyId) {
-        Map<String, Object> map = new HashMap<>();
+    public Map<String, Object> detail (@RequestParam(name = "cmsApplyId") String cmsApplyId,
+                                       HttpServletRequest request) {
+        Map<String, Object> jwtMap = jwtValidator.validate(request);
         try {
-            map.put("status", GlobalStatus.SUCCESS.getStatus());
-            map.put("msg", GlobalStatus.SUCCESS.getMsg());
-            map.put("data", service.detail(cmsApplyId));
-            map.put("applyImgList", service.imgListByStatus(cmsApplyId, GlobalCode.APPLIED_IMG.getCode()));
-            map.put("completeImgList", service.imgListByStatus(cmsApplyId, GlobalCode.COMPLETE_IMG.getCode()));
-
+            if (!jwtValidator.isAuthValid((int) (jwtMap.get("status")))) {
+                return jwtMap;
+            }
+            return CommonUtil.successResultMapWithJwt(service.detail(cmsApplyId), jwtMap);
         } catch (Exception e) {
-            map.put("status", GlobalStatus.INTERNAL_SERVER_ERR.getStatus());
-            map.put("msg", GlobalStatus.INTERNAL_SERVER_ERR.getMsg());
+            return CommonUtil.failResultMap(GlobalStatus.INTERNAL_SERVER_ERR.getStatus(), e.getMessage());
         }
-        return map;
     }
 
 }

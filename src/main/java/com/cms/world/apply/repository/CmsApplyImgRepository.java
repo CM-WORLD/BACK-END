@@ -12,4 +12,6 @@ import java.util.List;
 public interface CmsApplyImgRepository extends JpaRepository<CmsApplyImgDto, String> {
 
     List<CmsApplyImgDto> findAllByApplyDto(CmsApplyDto applyDto);
+
+    List<CmsApplyImgDto> findByStatus (String status);
 }

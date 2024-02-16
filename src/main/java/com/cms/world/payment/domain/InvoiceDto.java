@@ -2,6 +2,7 @@ package com.cms.world.payment.domain;
 
 import com.cms.world.apply.domain.CmsApplyDto;
 import com.cms.world.utils.DateUtil;
+import com.cms.world.utils.GlobalCode;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.persistence.*;
@@ -35,10 +36,6 @@ public class InvoiceDto {
     @Column(name = "CMMNT")
     private String comment;
 
-    @Schema(description = "인보이스 항목 리스트")
-    @OneToMany(mappedBy = "invoiceDto", fetch = FetchType.LAZY)
-    private List<InvoiceDtlDto> invoiceDtlDtoList;
-
     @Schema(description = "인보이스 생성일", example = "2021-10-01 12:00:00")
     @Column(name = "RGTR_DT")
     private String regDate;
@@ -47,4 +44,6 @@ public class InvoiceDto {
     public void doPersist () {
         this.setRegDate(DateUtil.currentDateTime());
     }
+
+
 }
