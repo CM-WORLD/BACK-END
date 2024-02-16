@@ -26,19 +26,19 @@ public class CmsPayService {
     }
 
     public int form (CmsPayVo vo) throws Exception {
-        Optional<CmsApplyDto> applyDto = cmsApplyRepository.findById(vo.getApplyId());
-
-        if (!applyDto.isPresent()) throw new Exception("applyDto for payment not found");
-
-        InvoiceDto dto = new InvoiceDto();
-        dto.setApplyDto(applyDto.get());
-        dto.setPayAmt(vo.getPayAmt());
-        dto.setComment(vo.getComment());
-
-        LocalDateTime localDateTime = LocalDateTime.ofInstant(vo.getEndDate().toInstant(), ZoneId.systemDefault());
-        dto.setEndDate(localDateTime);
-
-        if(repository.save(dto) == null) throw new Exception("payRepository.save returned null");
+//        Optional<CmsApplyDto> applyDto = cmsApplyRepository.findById(vo.getApplyId());
+//
+//        if (!applyDto.isPresent()) throw new Exception("applyDto for payment not found");
+//
+//        InvoiceDto dto = new InvoiceDto();
+//        dto.setApplyDto(applyDto.get());
+//        dto.setPayAmt(vo.getPayAmt());
+//        dto.setComment(vo.getComment());
+//
+//        LocalDateTime localDateTime = LocalDateTime.ofInstant(vo.getEndDate().toInstant(), ZoneId.systemDefault());
+//        dto.setEndDate(localDateTime);
+//
+//        if(repository.save(dto) == null) throw new Exception("payRepository.save returned null");
         return GlobalStatus.EXECUTE_SUCCESS.getStatus();
     }
 }

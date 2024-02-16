@@ -1,6 +1,7 @@
 package com.cms.world.payment.domain;
 
 import com.cms.world.utils.DateUtil;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.persistence.*;
@@ -21,8 +22,9 @@ public class InvoiceDtlDto {
     private Long id;
 
     @Schema(description = "인보이스 요청서 ID")
+    @JsonIgnoreProperties({"invoiceDtlDtoList"})
     @ManyToOne
-    @JoinColumn(name = "PYMT_ID", referencedColumnName = "ID")
+    @JoinColumn(name = "INV_ID", referencedColumnName = "ID")
     private InvoiceDto invoiceDto;
 
     @Schema(description = "인보이스 아이템 이름", example = "장식 추가금")

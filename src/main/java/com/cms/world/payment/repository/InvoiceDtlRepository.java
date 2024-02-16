@@ -8,6 +8,7 @@ import java.util.Optional;
 
 public interface InvoiceDtlRepository extends JpaRepository<InvoiceDtlDto, Long> {
 
-    /* 인보이스 개별 항목 리스트 조회  */
-    Optional<List<InvoiceDtlDto>> findById (String id);
+    /* 인보이스 아이디별 항목 리스트 조회  */
+    Optional<List<InvoiceDtlDto>> findByInvoiceDto_id (Long id);
+
 }

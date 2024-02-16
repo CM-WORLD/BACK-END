@@ -56,15 +56,8 @@ public class CmsPayController {
 //    }
 
 
-    /* 인보이스 id별 상세 조회 */
-    @GetMapping("/")
-    public Map<String, Object> findDetailById(String id) {
-        try {
-            return CommonUtil.renderResultByMap(invoiceService.findDetailById(id));
-        } catch (Exception e) {
-            e.printStackTrace();
-            return CommonUtil.failResultMap(GlobalStatus.INTERNAL_SERVER_ERR.getStatus(), e.getMessage());
-        }
-    }
+
+
+
 
 }
