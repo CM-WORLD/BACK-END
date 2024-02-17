@@ -3,6 +3,7 @@ package com.cms.world.payment.domain;
 
 import com.cms.world.apply.domain.ApplyDto;
 import com.cms.world.utils.DateUtil;
+import com.cms.world.utils.GlobalCode;
 import com.cms.world.utils.SnowflakeIdGenerator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -39,6 +40,10 @@ public class PaymentDto {
     @Column(name = "STATUS")
     private String status;
 
+    @Schema(description = "결제 상태명", example = "결제완료")
+    @Transient
+    private String statusNm;
+
     @Schema(description = "결제 수단", example = "신용카드")
     @Column(name = "PYMT_MTHD")
     private String paymentMethod;
@@ -58,5 +63,10 @@ public class PaymentDto {
     @PrePersist
     public void doPersist () {
         this.setRegDate(DateUtil.currentDateTime());
+    }
+
+    @PostLoad
+    public void doLoad () {
+        this.setStatusNm(GlobalCode.getDescByCode(this.getStatus()));
     }
 }
