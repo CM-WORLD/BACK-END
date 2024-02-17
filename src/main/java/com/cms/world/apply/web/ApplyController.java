@@ -2,34 +2,25 @@ package com.cms.world.apply.web;
 
 import com.cms.world.authentication.domain.AuthTokensGenerator;
 
-import com.cms.world.apply.domain.CmsApplyDto;
 import com.cms.world.apply.domain.CmsApplyVo;
-import com.cms.world.apply.service.CmsApplyService;
-import com.cms.world.common.DtoMapper;
-import com.cms.world.common.Response;
-import com.cms.world.domain.vo.BoardVo;
+import com.cms.world.apply.service.ApplyService;
 import com.cms.world.utils.CommonUtil;
-import com.cms.world.utils.GlobalCode;
 import com.cms.world.utils.GlobalStatus;
-import com.cms.world.utils.StringUtil;
 import com.cms.world.validator.JwtValidator;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @RestController
 @RequestMapping("/apply")
 @RequiredArgsConstructor
-public class CmsApplyController {
+public class ApplyController {
 
-    private final CmsApplyService service;
+    private final ApplyService service;
 
     private final AuthTokensGenerator authTokensGenerator;
 

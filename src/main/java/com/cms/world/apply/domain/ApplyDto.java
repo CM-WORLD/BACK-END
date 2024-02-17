@@ -11,11 +11,11 @@ import lombok.ToString;
 import org.hibernate.validator.constraints.Length;
 
 @Entity
-@Table(name="cms_aply")
+@Table(name="apply")
 @Getter
 @Setter
 @ToString
-public class CmsApplyDto {
+public class ApplyDto {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -29,6 +29,7 @@ public class CmsApplyDto {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "MEM_ID", referencedColumnName = "ID")
     private MemberDto memberDto;
+
 
     @Column(name = "TP_CD")
     private String cmsType;

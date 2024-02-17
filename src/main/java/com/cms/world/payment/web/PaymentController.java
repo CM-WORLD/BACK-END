@@ -1,9 +1,8 @@
 package com.cms.world.payment.web;
 
 
-import com.cms.world.payment.domain.CmsPayVo;
-import com.cms.world.payment.service.CmsPayService;
-import com.cms.world.payment.service.InvoiceService;
+import com.cms.world.payment.domain.PaymentVo;
+import com.cms.world.payment.service.PaymentService;
 import com.cms.world.utils.GlobalStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,14 +15,12 @@ import java.util.Map;
 @RestController
 @RequestMapping("/payment")
 @RequiredArgsConstructor
-public class CmsPayController {
+public class PaymentController {
 
-    private final CmsPayService service;
-
-    private final InvoiceService invoiceService;
+    private final PaymentService service;
 
     @PostMapping("/form")
-    public Map<String, Object> form(CmsPayVo vo) {
+    public Map<String, Object> form(PaymentVo vo) {
         Map<String, Object> map = new HashMap<>();
         try {
             service.form(vo);

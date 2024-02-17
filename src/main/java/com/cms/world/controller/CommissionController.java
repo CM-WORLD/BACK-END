@@ -2,7 +2,7 @@ package com.cms.world.controller;
 
 import com.cms.world.domain.dto.CommissionDto;
 import com.cms.world.domain.vo.CommissionVo;
-import com.cms.world.apply.service.CmsApplyService;
+import com.cms.world.apply.service.ApplyService;
 import com.cms.world.service.CommissionService;
 import com.cms.world.utils.CommonUtil;
 import com.cms.world.utils.GlobalCode;
@@ -22,7 +22,7 @@ public class CommissionController {
 
     private final CommissionService service;
 
-    private final CmsApplyService cmsApplyService;
+    private final ApplyService applyService;
 
 
     @PostMapping("/form")
@@ -45,8 +45,8 @@ public class CommissionController {
             List<CommissionDto> list = service.list("N");
             for(CommissionDto dto : list) {
 
-                dto.setPrsCnt(cmsApplyService.applyCntByStatus( GlobalCode.CMS_PROCESS.getCode(), dto.getId()));
-                dto.setRsvCnt(cmsApplyService.applyCntByStatus( GlobalCode.CMS_RESERVE.getCode(), dto.getId()));
+                dto.setPrsCnt(applyService.applyCntByStatus( GlobalCode.CMS_PROCESS.getCode(), dto.getId()));
+                dto.setRsvCnt(applyService.applyCntByStatus( GlobalCode.CMS_RESERVE.getCode(), dto.getId()));
 
                 System.out.println("dto.getPrsCnt() = " + dto.getPrsCnt());
                 System.out.println("dto.getPrsCnt() = " + dto.getRsvCnt());

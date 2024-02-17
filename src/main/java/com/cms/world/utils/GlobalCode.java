@@ -8,7 +8,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum GlobalCode { //타입 등의 코드
 
-    //커미션 신청 타입
+    // 커미션 샘플 타입
     TYPE_SINGLE("TY01", "1인 기본"),
 //    TYPE_SINGLE_BG("TY02", "1인 배경"),
     TYPE_COUP("TY03", "2인 기본"),
@@ -20,8 +20,7 @@ public enum GlobalCode { //타입 등의 코드
     APPLIED_IMG("CG01", "신청 이미지"),
     COMPLETE_IMG("CG02", "완성 이미지"),
 
-
-    //커미션 프로세스
+    /* 커미션 신청 프로세스 */
     CMS_RESERVE("CM00", "예약 접수"),
     CMS_PENDING("CM01", "신청 접수"), // 신청자가 신청서 신규 생성
     PAY_PENDING("CM02", "결제 요청"), // 관리자가 결제 확인하고 결제 요청서 보냄
@@ -30,18 +29,16 @@ public enum GlobalCode { //타입 등의 코드
     CMS_MODIFYING("CM05", "요청사항 수정중"),
     CMS_COMPLETE("CM06", "작업 완료"),
     CMS_REVIEW("CM07", "리뷰 작성 완료"),
-
     CMS_CANCEL("CM08", "취소"),
     CMS_REJECT("CM09", "거절"),
 
-    //커미션 열/닫
+    //커미션 열/닫 상태
     CMS_CLOSED("RP01", "커미션 닫힘"),
     CMS_OPENED("RP02", "커미션 열림"),
 
     //게시판 타입
     BBS_APLY ("BS01", "커미션 신청 게시판"),
     BBS_INQUIRY ("BS02", "문의 게시판"),
-    BBS_REVIEW ("BS03", "커미션 후기 게시판"),
 
     //회원 로그인 타입
     OAUTH_NAVER("NAVER", "네이버 로그인"),
@@ -50,7 +47,13 @@ public enum GlobalCode { //타입 등의 코드
     
     //회원 상태
     USER_ACTIVE("US01", "정상 회원"),
-    USER_BLOCKED("US02", "차단 회원");
+    USER_BLOCKED("US02", "차단 회원"),
+
+    /* 결제 상태 */
+    PAYMENT_PENDING("PM01", "결제 대기"),
+    PAYMENT_COMPLETE("PM02", "결제 완료"),
+    PAYMENT_CANCEL("PM03", "결제 취소"),
+    PAYMENT_REFUND("PM04", "환불 완료");
 
     private final String code;
     private final String desc;

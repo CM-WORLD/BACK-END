@@ -2,25 +2,25 @@ package com.cms.world.payment.service;
 
 
 import com.cms.world.apply.repository.CmsApplyRepository;
-import com.cms.world.payment.domain.CmsPayVo;
-import com.cms.world.payment.repository.CmsPayRepository;
+import com.cms.world.payment.domain.PaymentVo;
+import com.cms.world.payment.repository.PaymentRepository;
 import com.cms.world.utils.GlobalStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class CmsPayService {
+public class PaymentService {
 
-    private final CmsPayRepository repository;
+    private final PaymentRepository repository;
 
     @Autowired
     private CmsApplyRepository cmsApplyRepository;
 
-    public CmsPayService (CmsPayRepository repository) {
+    public PaymentService(PaymentRepository repository) {
         this.repository = repository;
     }
 
-    public int form (CmsPayVo vo) throws Exception {
+    public int form (PaymentVo vo) throws Exception {
 //        Optional<CmsApplyDto> applyDto = cmsApplyRepository.findById(vo.getApplyId());
 //
 //        if (!applyDto.isPresent()) throw new Exception("applyDto for payment not found");

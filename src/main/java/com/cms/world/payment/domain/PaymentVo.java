@@ -10,7 +10,7 @@ import java.util.Date;
 @Getter
 @Setter
 @ToString
-public class CmsPayVo {
+public class PaymentVo {
 
     private String applyId;
     private Double payAmt;

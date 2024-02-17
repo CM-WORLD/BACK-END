@@ -1,16 +1,13 @@
 package com.cms.world.stepper.domain;
 
 
-import com.cms.world.apply.domain.CmsApplyDto;
+import com.cms.world.apply.domain.ApplyDto;
 import com.cms.world.utils.DateUtil;
 import com.cms.world.utils.GlobalCode;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
 @Table(name="cms_tm_log")
 @Entity
@@ -26,7 +23,7 @@ public class StepperDto {
 
     @ManyToOne
     @JoinColumn(name = "CMS_ID", referencedColumnName = "ID")
-    private CmsApplyDto applyDto;
+    private ApplyDto applyDto;
 
     @Column(name = "STATUS", nullable = false)
     private String status;

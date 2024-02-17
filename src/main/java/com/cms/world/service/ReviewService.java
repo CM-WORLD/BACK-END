@@ -1,7 +1,7 @@
 package com.cms.world.service;
 
 
-import com.cms.world.apply.domain.CmsApplyDto;
+import com.cms.world.apply.domain.ApplyDto;
 import com.cms.world.domain.dto.ReviewDto;
 import com.cms.world.domain.vo.PageVo;
 import com.cms.world.domain.vo.ReviewVo;
@@ -43,7 +43,7 @@ public class ReviewService {
         Long memberId = authTokensGenerator.extractMemberIdFromReq(request); // req로부터 id 추출
 
         ReviewDto dto = new ReviewDto();
-        CmsApplyDto applyDto = cmsApplyRepository.findById(vo.getCmsApplyId())
+        ApplyDto applyDto = cmsApplyRepository.findById(vo.getCmsApplyId())
                 .orElseThrow(() -> new Exception("ReviewService.create() : 신청서가 존재하지 않습니다."));
 
         dto.setApplyDto(applyDto);

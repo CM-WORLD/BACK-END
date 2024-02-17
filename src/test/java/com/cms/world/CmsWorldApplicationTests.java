@@ -1,23 +1,14 @@
 package com.cms.world;
 
 import com.cms.world.alert.telegram.ChatBotApi;
-import com.cms.world.apply.domain.CmsApplyDto;
-import com.cms.world.apply.domain.CmsApplyImgDto;
 import com.cms.world.apply.repository.CmsApplyImgRepository;
 import com.cms.world.apply.repository.CmsApplyRepository;
-import com.cms.world.authentication.member.domain.MemberRepository;
-import com.cms.world.authentication.domain.AuthTokensGenerator;
-import com.cms.world.authentication.infra.JwtTokenProvider;
-import com.cms.world.domain.dto.*;
 import com.cms.world.alert.AlertMsg;
 import com.cms.world.alert.telegram.TelegramBotApi;
 import com.cms.world.repository.*;
-import com.cms.world.utils.GlobalCode;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import java.util.List;
 
 
 @SpringBootTest

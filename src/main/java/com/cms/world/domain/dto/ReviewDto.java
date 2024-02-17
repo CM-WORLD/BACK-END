@@ -1,7 +1,7 @@
 package com.cms.world.domain.dto;
 
 
-import com.cms.world.apply.domain.CmsApplyDto;
+import com.cms.world.apply.domain.ApplyDto;
 import com.cms.world.utils.DateUtil;
 import com.cms.world.utils.StringUtil;
 import jakarta.persistence.*;
@@ -21,7 +21,7 @@ public class ReviewDto {
 
     @OneToOne
     @JoinColumn(name = "APLY_ID", referencedColumnName = "ID") // one to one test ok
-    private CmsApplyDto applyDto;
+    private ApplyDto applyDto;
 
     @Column(name = "CONTENT", nullable = false)
     private String content;

@@ -1,7 +1,6 @@
 package com.cms.world.apply.domain;
 
 
-import com.cms.world.apply.domain.CmsApplyDto;
 import com.cms.world.utils.DateUtil;
 import com.cms.world.utils.GlobalCode;
 import jakarta.persistence.*;
@@ -10,10 +9,10 @@ import lombok.Setter;
 
 
 @Entity
-@Table(name = "cms_img")
+@Table(name = "aply_img")
 @Getter
 @Setter
-public class CmsApplyImgDto {
+public class ApplyImgDto {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -22,7 +21,7 @@ public class CmsApplyImgDto {
 
     @ManyToOne
     @JoinColumn(name = "APLY_ID", referencedColumnName = "ID") //name은 설정할 fk 이름이다.
-    private CmsApplyDto applyDto;
+    private ApplyDto applyDto;
 
     @Column(name = "IMG_URL", nullable = false, columnDefinition = "varchar(300)")
     private String imgUrl;

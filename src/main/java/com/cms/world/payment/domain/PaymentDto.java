@@ -1,6 +1,7 @@
 package com.cms.world.payment.domain;
 
 
+import com.cms.world.apply.domain.ApplyDto;
 import com.cms.world.utils.DateUtil;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -22,6 +23,10 @@ public class PaymentDto {
     @Column(name = "ID")
     private Long id;
 
+    @ManyToOne
+    @JoinColumn(name = "APLY_ID", referencedColumnName = "ID")
+    private ApplyDto applyDto;
+
     @Schema(description = "결제 금액", example = "1000")
     @Column(name = "AMOUNT")
     private Double amount;
@@ -34,14 +39,14 @@ public class PaymentDto {
     @Column(name = "PYMT_MTHD")
     private String paymentMethod;
 
+    @Schema(description = "어드민의 메세지", example = "금액 설명")
+    @Column(name = "MSG")
+    private String message;
+
     /* 조회를 위해 memberId를 넣지만, fk는 걸지 않는다. 회원과 관계없이 유지되는 데이터 */
     @Schema(description = "결제자 ID", example = "1")
     @Column(name = "MMBER_ID")
     private String memberId;
-
-    @ManyToOne
-    @JoinColumn(name = "INV_ID", referencedColumnName = "ID")
-    private InvoiceDto invoiceDto;
 
     @Schema(description = "결제 일시", example = "2021-10-01 12:00:00")
     @Column(name = "RGTR_DT")
