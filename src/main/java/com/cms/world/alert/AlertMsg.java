@@ -28,8 +28,17 @@ public class AlertMsg {
     @Schema(description = "커미션 이름", example = "저가고퀄 커미션")
     private String cmsName;
 
+    @Schema(description = "커미션 신청 제목", example = "저가고퀄 커미션")
+    private String applyTitle;
+
+    @Schema(description = "커미션 신청 ID", example = "1234")
+    private String applyId;
+
     @Schema(description = "커미션 신청 상태", example = "신청 완료")
     private String cmsApplyStatus;
+
+    @Schema(description = "커미션 결제 상태", example = "")
+    private String paymentStatus;
 
     @Schema(description = "알림 전송 전화번호", example = "010-1234-5678", required = false)
     private String phoneNum;
@@ -111,6 +120,18 @@ public class AlertMsg {
 
         sb.append(getOutTro()); // 마지막 인사 처리
 
+        return sb.toString();
+    }
+
+    public String createBankTransferAlertMsg () {
+        StringBuilder sb = new StringBuilder();
+        sb.append("[계좌이체 알림]").append("\n\n");
+        sb.append(getIntro());
+        sb.append("계좌이체가 완료되었습니다.").append("\n");
+        sb.append("신청서 제목: ").append(getApplyTitle()).append("\n");
+        sb.append("신청서 아이디: ").append(getApplyId()).append("\n");
+        sb.append("상태: ").append(getPaymentStatus()).append("\n");
+        sb.append(getOutTro());
         return sb.toString();
     }
 

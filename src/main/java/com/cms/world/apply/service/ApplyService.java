@@ -2,7 +2,7 @@ package com.cms.world.apply.service;
 
 
 import com.cms.world.alert.AlertMsg;
-import com.cms.world.alert.telegram.TelegramBotApi;
+import com.cms.world.alert.AlertService;
 import com.cms.world.apply.domain.ApplyDto;
 import com.cms.world.apply.domain.ApplyImgDto;
 import com.cms.world.authentication.member.domain.MemberDto;
@@ -53,7 +53,7 @@ public class ApplyService {
 
     private final MemberRepository memberRepository;
 
-    private final TelegramBotApi TelegramBotApi;
+    private final AlertService AlertService;
 
 
     /* 전화번호 유효성 검사 */
@@ -118,7 +118,7 @@ public class ApplyService {
                 .receiverNickName(memberDto.get().getNickName()) // 신청자를 수신자로 설정
                 .build();
         String messageStr = alertMsg.createAlertMsg();
-        TelegramBotApi.sendAlertToAdmin(messageStr);
+        AlertService.sendAlertToAdmin(messageStr);
 
         return newApplication.getId();
     }

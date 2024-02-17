@@ -4,7 +4,7 @@ import com.cms.world.alert.telegram.ChatBotApi;
 import com.cms.world.apply.repository.CmsApplyImgRepository;
 import com.cms.world.apply.repository.CmsApplyRepository;
 import com.cms.world.alert.AlertMsg;
-import com.cms.world.alert.telegram.TelegramBotApi;
+import com.cms.world.alert.AlertService;
 import com.cms.world.repository.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +32,7 @@ class CmsWorldApplicationTests {
     AlertMsg alertMsg;
 
     @Autowired
-    TelegramBotApi telegramBotApi;
+    AlertService alertService;
 
     @Autowired
     ChatBotApi chatBotApi;
