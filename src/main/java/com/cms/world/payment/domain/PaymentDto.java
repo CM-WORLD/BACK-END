@@ -3,6 +3,7 @@ package com.cms.world.payment.domain;
 
 import com.cms.world.apply.domain.ApplyDto;
 import com.cms.world.utils.DateUtil;
+import com.cms.world.utils.SnowflakeIdGenerator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -19,7 +20,6 @@ public class PaymentDto {
 
     @Schema(description = "결제 ID", example = "1")
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private Long id;
 
@@ -27,9 +27,13 @@ public class PaymentDto {
     @JoinColumn(name = "APLY_ID", referencedColumnName = "ID")
     private ApplyDto applyDto;
 
+    @Schema(description = "결제 제목", example = "뭉이커미션기본금")
+    @Column(name = "TITLE")
+    private String title;
+
     @Schema(description = "결제 금액", example = "1000")
     @Column(name = "AMOUNT")
-    private Double amount;
+    private int amount;
 
     @Schema(description = "결제 상태", example = "결제완료")
     @Column(name = "STATUS")
