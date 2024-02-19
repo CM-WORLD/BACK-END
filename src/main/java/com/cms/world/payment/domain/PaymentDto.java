@@ -29,7 +29,7 @@ public class PaymentDto {
     private ApplyDto applyDto;
 
     @Schema(description = "결제 제목", example = "뭉이커미션기본금")
-    @Column(name = "TITLE")
+    @Column(name = "TITLE", nullable = false)
     private String title;
 
     @Schema(description = "결제 금액", example = "1000")
