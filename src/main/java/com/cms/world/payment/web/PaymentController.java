@@ -19,40 +19,4 @@ public class PaymentController {
 
     private final PaymentService service;
 
-    @PostMapping("/form")
-    public Map<String, Object> form(PaymentVo vo) {
-        Map<String, Object> map = new HashMap<>();
-        try {
-            service.form(vo);
-            map.put("status", GlobalStatus.SUCCESS.getStatus());
-            map.put("msg", GlobalStatus.SUCCESS.getMsg());
-            return map;
-        } catch (Exception e) {
-            map.put("status", GlobalStatus.INTERNAL_SERVER_ERR.getStatus());
-            map.put("msg", GlobalStatus.INTERNAL_SERVER_ERR.getMsg());
-            return map;
-        }
-    }
-
-//    /**
-//     * 신청 ID별 결제요청서 조회
-//     */
-//    @GetMapping("/")
-//    public Map<String, Object> getPayList(String applyId) {
-//        Map<String, Object> map = new HashMap<>();
-//        try {
-//            map.put("status", GlobalStatus.SUCCESS.getStatus());
-//            map.put("msg", GlobalStatus.SUCCESS.getMsg());
-////            map.put("data", service.getPayList(applyId));
-//            return map;
-//        } catch (Exception e) {
-//            return CommonUtil.failResultMap(GlobalStatus.INTERNAL_SERVER_ERR.getStatus(), e.getMessage());
-//        }
-//    }
-
-
-
-
-
-
 }

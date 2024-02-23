@@ -55,7 +55,13 @@ public enum GlobalCode { //타입 등의 코드
     PAYMENT_FAIL("PM03", "결제 실패"),
     PAYMENT_CANCEL("PM04", "결제 취소"),
     PAYMENT_REFUND("PM05", "환불 완료"),
-    PAYMENT_BANK_PROCESS("PM06", "처리 대기중(계좌이체)");
+    PAYMENT_BANK_PROCESS("PM06", "처리 대기중(계좌이체)"),
+
+    /* 결제, 결제수단 타입 */
+    PAYMENT_TOSS("PY01", "TOSS"),
+    PAYMENT_BANK("PY02", "계좌이체"),
+    PAY_BASE_AMT("PD01", "기본금"),
+    PAY_ADD_AMT("PD02", "추가금");
 
     private final String code;
     private final String desc;

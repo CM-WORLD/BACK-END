@@ -36,13 +36,16 @@ public class PaymentDto {
     @Column(name = "AMOUNT")
     private int amount;
 
-    @Schema(description = "결제 상태", example = "결제완료")
+    @Schema(description = "결제 상태", example = "PM01")
     @Column(name = "STATUS")
     private String status;
 
     @Schema(description = "결제 상태명", example = "결제완료")
     @Transient
     private String statusNm;
+
+    @Schema(description = "결제 타입, 기본 금액 또는 추가 금액", example = "")
+    private String type;
 
     @Schema(description = "결제 수단", example = "신용카드")
     @Column(name = "PYMT_MTHD")
