@@ -2,9 +2,8 @@ package com.cms.world.authentication.infra.kakao;
 
 
 import com.cms.world.authentication.domain.oauth.OAuthInfoResponse;
-import com.cms.world.authentication.domain.oauth.OAuthProvider;
-import com.cms.world.utils.GlobalCode;
-import com.cms.world.utils.StringUtil;
+import com.cms.world.common.code.GlobalCode;
+import com.cms.world.common.util.StringUtil;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;

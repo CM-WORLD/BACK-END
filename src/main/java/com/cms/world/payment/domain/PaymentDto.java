@@ -2,10 +2,8 @@ package com.cms.world.payment.domain;
 
 
 import com.cms.world.apply.domain.ApplyDto;
-import com.cms.world.utils.DateUtil;
-import com.cms.world.utils.GlobalCode;
-import com.cms.world.utils.SnowflakeIdGenerator;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.cms.world.common.util.DateUtil;
+import com.cms.world.common.code.GlobalCode;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.persistence.*;

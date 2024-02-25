@@ -1,15 +1,11 @@
 package com.cms.world.payment.service;
 
 
-import com.cms.world.apply.repository.CmsApplyRepository;
 import com.cms.world.payment.api.TossConfirmApi;
-import com.cms.world.payment.domain.PaymentVo;
 import com.cms.world.payment.domain.TossConfirmVo;
 import com.cms.world.payment.domain.TossPaymentConfig;
 import com.cms.world.payment.domain.TossPaymentVo;
 import com.cms.world.payment.repository.PaymentRepository;
-import com.cms.world.utils.GlobalStatus;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Base64;

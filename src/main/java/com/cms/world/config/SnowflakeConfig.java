@@ -1,6 +1,6 @@
 package com.cms.world.config;
 
-import com.cms.world.utils.SnowflakeIdGenerator;
+import com.cms.world.common.id.SnowflakeIdGenerator;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

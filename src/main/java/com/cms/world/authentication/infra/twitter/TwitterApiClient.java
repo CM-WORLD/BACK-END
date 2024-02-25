@@ -1,18 +1,7 @@
 package com.cms.world.authentication.infra.twitter;
 
-import com.cms.world.authentication.TwitterApiInfo;
-import com.cms.world.authentication.domain.oauth.OAuthApiClient;
-import com.cms.world.authentication.domain.oauth.OAuthInfoResponse;
-import com.cms.world.authentication.domain.oauth.OAuthLoginParams;
-import com.cms.world.authentication.domain.oauth.OAuthProvider;
-import com.cms.world.authentication.infra.kakao.KakaoInfoResponse;
-import com.cms.world.authentication.infra.kakao.KakaoTokens;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.social.oauth1.AuthorizedRequestToken;
 import org.springframework.social.oauth1.OAuth1Operations;
 import org.springframework.social.oauth1.OAuth1Parameters;
@@ -22,9 +11,6 @@ import org.springframework.social.twitter.api.TwitterProfile;
 import org.springframework.social.twitter.api.impl.TwitterTemplate;
 import org.springframework.social.twitter.connect.TwitterConnectionFactory;
 import org.springframework.stereotype.Component;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.client.RestTemplate;
 
 
 @Component

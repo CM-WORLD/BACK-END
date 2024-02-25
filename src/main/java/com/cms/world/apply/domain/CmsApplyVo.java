@@ -1,7 +1,6 @@
 package com.cms.world.apply.domain;
 
 
-import com.cms.world.domain.vo.BoardVo;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.GroupSequence;
 import jakarta.validation.constraints.NotEmpty;

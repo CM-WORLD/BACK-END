@@ -4,9 +4,9 @@ import com.cms.world.authentication.domain.AuthTokensGenerator;
 
 import com.cms.world.apply.domain.CmsApplyVo;
 import com.cms.world.apply.service.ApplyService;
-import com.cms.world.utils.CommonUtil;
-import com.cms.world.utils.GlobalStatus;
-import com.cms.world.validator.JwtValidator;
+import com.cms.world.common.util.CommonUtil;
+import com.cms.world.common.code.GlobalStatus;
+import com.cms.world.authentication.validator.JwtValidator;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.BindingResult;
