@@ -1,39 +1,39 @@
 package com.cms.world.payment.service;
 
 
-import com.cms.world.apply.repository.CmsApplyRepository;
-import com.cms.world.payment.domain.PaymentVo;
+import com.cms.world.payment.api.TossConfirmApi;
+import com.cms.world.payment.domain.TossConfirmVo;
+import com.cms.world.payment.domain.TossPaymentConfig;
+import com.cms.world.payment.domain.TossPaymentVo;
 import com.cms.world.payment.repository.PaymentRepository;
-import com.cms.world.utils.GlobalStatus;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Base64;
 
 @Service
 public class PaymentService {
 
+
     private final PaymentRepository repository;
+    private final TossConfirmApi confirmApi;
 
-    @Autowired
-    private CmsApplyRepository cmsApplyRepository;
+    private final TossPaymentConfig tossPaymentConfig;
 
-    public PaymentService(PaymentRepository repository) {
+    public PaymentService(PaymentRepository repository, TossConfirmApi confirmApi, TossPaymentConfig tossPaymentConfig) {
         this.repository = repository;
+        this.confirmApi = confirmApi;
+        this.tossPaymentConfig = tossPaymentConfig;
     }
 
-    public int form (PaymentVo vo) throws Exception {
-//        Optional<CmsApplyDto> applyDto = cmsApplyRepository.findById(vo.getApplyId());
-//
-//        if (!applyDto.isPresent()) throw new Exception("applyDto for payment not found");
-//
-//        InvoiceDto dto = new InvoiceDto();
-//        dto.setApplyDto(applyDto.get());
-//        dto.setPayAmt(vo.getPayAmt());
-//        dto.setComment(vo.getComment());
-//
-//        LocalDateTime localDateTime = LocalDateTime.ofInstant(vo.getEndDate().toInstant(), ZoneId.systemDefault());
-//        dto.setEndDate(localDateTime);
-//
-//        if(repository.save(dto) == null) throw new Exception("payRepository.save returned null");
-        return GlobalStatus.EXECUTE_SUCCESS.getStatus();
+    public TossPaymentVo confirmPayment(TossConfirmVo paymentConfirmVO) {
+
+        String secretValue = tossPaymentConfig.getClientSecret() + ":";
+        String basicAuth = Base64.getEncoder().encodeToString(secretValue.getBytes());
+
+        TossPaymentVo paymentResult = confirmApi.confirmPayment(
+                "Basic " + basicAuth,
+                paymentConfirmVO
+        );
+        return paymentResult;
     }
 }

@@ -2,10 +2,8 @@ package com.cms.world.payment.domain;
 
 
 import com.cms.world.apply.domain.ApplyDto;
-import com.cms.world.utils.DateUtil;
-import com.cms.world.utils.GlobalCode;
-import com.cms.world.utils.SnowflakeIdGenerator;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.cms.world.common.util.DateUtil;
+import com.cms.world.common.code.GlobalCode;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.persistence.*;
@@ -29,20 +27,23 @@ public class PaymentDto {
     private ApplyDto applyDto;
 
     @Schema(description = "결제 제목", example = "뭉이커미션기본금")
-    @Column(name = "TITLE")
+    @Column(name = "TITLE", nullable = false)
     private String title;
 
     @Schema(description = "결제 금액", example = "1000")
     @Column(name = "AMOUNT")
     private int amount;
 
-    @Schema(description = "결제 상태", example = "결제완료")
+    @Schema(description = "결제 상태", example = "PM01")
     @Column(name = "STATUS")
     private String status;
 
     @Schema(description = "결제 상태명", example = "결제완료")
     @Transient
     private String statusNm;
+
+    @Schema(description = "결제 타입, 기본 금액 또는 추가 금액", example = "")
+    private String type;
 
     @Schema(description = "결제 수단", example = "신용카드")
     @Column(name = "PYMT_MTHD")

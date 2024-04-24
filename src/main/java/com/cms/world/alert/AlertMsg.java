@@ -5,7 +5,7 @@ import lombok.*;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.stereotype.Component;
 
-import static com.cms.world.utils.GlobalCode.*;
+import static com.cms.world.common.code.GlobalCode.*;
 
 
 @Component

@@ -2,8 +2,7 @@ package com.cms.world.authentication.infra.kakao;
 
 
 import com.cms.world.authentication.domain.oauth.OAuthLoginParams;
-import com.cms.world.authentication.domain.oauth.OAuthProvider;
-import com.cms.world.utils.GlobalCode;
+import com.cms.world.common.code.GlobalCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
