@@ -68,6 +68,10 @@ dependencies {
     // mapping
     implementation ("org.modelmapper:modelmapper:2.4.4")
 
+    //excel
+    implementation ("org.apache.poi:poi:5.2.3")
+    implementation ("org.apache.poi:poi-ooxml:5.2.3")
+
 
     testImplementation("org.mybatis.spring.boot:mybatis-spring-boot-starter-test:3.0.3")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
